@@ -2,7 +2,7 @@
   <div id="nav-top">
     <!--搜索-->
     <div id="search">
-      <input type="hidden" id="userId" name="userId" value="${userId}">
+      <input type="hidden" id="userId" name="userId" value="">
       <input type="text" name="" id="search-text" value="" placeholder="任务名/内容/标签"/>
       <button id="search-button"><img src="./../assets/icon/search.png"/></button>
     </div>
@@ -27,10 +27,9 @@
 
 <script>
   export default {
-    name: '$',
+    name: 'navTop',
     data() {
       return {
-        msg: $
       }
     }
   }

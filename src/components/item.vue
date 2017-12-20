@@ -1,35 +1,72 @@
 <template>
   <div>
-    <input type="hidden"  class="detailId" value="${item.taskDetailId}">
-    <div class="items">
-      <input type="checkbox"/>
-      <div class="checkBox"></div>
-      <span>详细列表加新的</span>
-    </div>
-    <div class="itemInput">
-      <input type="hidden" id="" class="detailId">
-      <div class="checkBox"></div>
-      <input class="changeInput" type="text" >
-      <img class="changeDel" src="./../assets/icon/del.png" alt="">
-      <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
+    <div v-for="item in detail" v-on:click="checkBoxChoose">
+      <input type="hidden"  class="detailId" value="" >
+      <div class="items" v-show="isItems">
+        <input type="checkbox"/>
+        <div class="checkBox" v-bind:class="{c:isc}"></div>
+        <span v-bind:class="{spanChecked:isSpanChecked}">{{item.detailItem}}</span>
+      </div>
+      <div class="itemInput" v-show="isItemInput">
+        <input type="hidden" id="" class="detailId">
+        <div class="checkBox"></div>
+        <input class="changeInput" type="text" :value="item.detailItem" v-on:blur="changeBlur">
+        <img class="changeDel" src="./../assets/icon/del.png" alt="" v-on:click="delItem">
+        <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
   export default {
-    name: '$',
+    name: 'item',
     data() {
       return {
-        msg: $
+        detail:[
+          {
+            detailItem:'第1条'
+          },
+          {
+            detailItem:'第2条'
+          },
+          {
+            detailItem:'第3条'
+          }
+        ],
+        isItemInput:false,
+        isc:false,
+        isSpanChecked:false,
+        isItems:true
       }
+    },
+    methods:{
+      //选中checkbox。加对勾、传数据控制checkbox
+      checkBoxChoose:function () {
+        this.isc=!this.isc;
+        this.isSpanChecked=!this.isSpanChecked;
+      },
+      //右上角的修改按钮
+      changeItem:function () {
+        this.isItems=!this.isItems;
+        this.isItemInput=!this.isItemInput;
+      },
+      //鼠标离开输入框保存并赋给span、传数据
+      changeBlur:function () {
+
+      },
+      //删除item、传数据
+      delItem:function () {
+
+      }
+      //进度条
     }
   }
 </script>
 <style>
   /*增加和删除小项目*/
   .itemInput{
-    display: none;
     border: 1px solid #D3D3D3;
     width: 600px;
     height: 50px;
@@ -92,7 +129,6 @@
   input[type=checkbox]{
     display: none;
   }
-
 
   @-moz-keyframes dothabottomcheck {
     0% {

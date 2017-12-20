@@ -1,65 +1,83 @@
 <template>
-  <div class="task c" >
-    <input type="hidden" class="taskId" value="${item.taskId}">
-    <!--附加信息-->
-    <div class="stateBar">
-      <!--紧急程度-->
+  <div>
+    <!--<div class="task c" v-on:click="choose">-->
+    <div class="task" v-bind:class="{choose:isChoose}" v-on:click="chooseTask" v-for="item in tasks">
+      <input type="hidden" class="taskId" value="">
+      <!--附加信息-->
+      <div class="stateBar">
+        <!--紧急程度-->
 
-      <div class="grade grade3" >
-        <input type="hidden" value="3">
-      </div>
+        <div class="grade grade3" >
+          <input type="hidden" value="3">
+        </div>
 
-      <div class="gradeBox" hidden>
-        <div class="grade grade1" >
-          <input type="hidden" name="grade1" value="1">
+        <div class="gradeBox" hidden>
+          <grade></grade>
         </div>
-        <div class="grade grade2">
-          <input type="hidden" name="grade2" value="2">
-        </div>
-        <div class="grade grade3">
-          <input type="hidden" name="grade3" value="3">
-        </div>
+        <!--标签-->
+        <input type="hidden" class="labelId" value="">
+        <span class="tag theTag1 labelChoose">家</span>
+        <!--<span class="tag theTag2">+</span>-->
       </div>
-      <!--标签-->
-      <input type="hidden" class="labelId" value="${item.labelId}">
-      <span class="tag theTag1 labelChoose">家</span>
-      <!--<span class="tag theTag2">+</span>-->
-    </div>
-    <!--标签悬浮-->
-    <div class="allTag">
-      <input type="hidden" value="1">
-      <span class="tag">家</span>
-      <input type="hidden" value="2">
-      <span class="tag">公司</span>
-    </div>
+      <!--标签悬浮-->
+      <tag-window></tag-window>
 
-    <!--标题-->
-    <div class="title">
-      <input type="text" class="listInput" placeholder="标题">
-      <span class="listSpan">标题</span>
-    </div>
-    <!--日期-->
-    <div class="day">
-      <input type="date" class="listInput">
-      <span class="listSpan">2017</span>
-    </div>
-    <!--进度条-->
-    <div class="rate">
-      <div class="ratio">
+      <!--标题-->
+      <div class="title">
+        <input type="text" class="listInput" placeholder="标题">
+        <span class="listSpan">{{item.tit}}</span>
       </div>
+      <!--日期-->
+      <div class="day">
+        <input type="date" class="listInput">
+        <span class="listSpan">{{item.date}}</span>
+      </div>
+      <!--进度条-->
+      <div class="rate">
+        <div class="ratio">
+        </div>
+      </div>
+      <span class="rateVal">{{item.rat}}/{{item.allRat}}</span>
+      <!--删除-->
+      <img src="./../assets/icon/del.png" alt="" class="del">
     </div>
-    <span class="rateVal">0/0</span>
-    <!--删除-->
-    <img src="icon/del.png" alt="" class="del">
   </div>
 </template>
 
 <script>
+  import grade from './../components/grade.vue'
+  import tagWindow from './../components/tagWindow.vue'
+  import tag from './../components/tag.vue'
   export default {
-    name: '$',
+    name: 'task',
     data() {
       return {
-        msg: $
+        isChoose:false,
+        tasks:[
+          {
+            tit:'第一个',
+            date:'2017-11-11',
+            rat:'2',
+            allRat:'3'
+          },
+          {
+            tit:'第二个',
+            date:'2017-12-12',
+            rat:'1',
+            allRat:'5'
+          }
+        ]
+      }
+    },
+    components:{
+      grade:grade,
+      tagWindow:tagWindow,
+      tag:tag
+    },
+    methods:{
+      //点击添加选中效果、传数据、在右边显示
+      chooseTask:function () {
+        this.isChoose=true;
       }
     }
   }
@@ -92,30 +110,7 @@
     overflow: visible;
     float: left;
   }
-  /*紧急程度*/
-  .grade{
-    height: 20px;
-    width: 20px;
-    left: 15px;
-    top: 20px;
-    border-radius: 10px;
-    float: left;
-    margin: 5px;
-    cursor: pointer;
-  }
 
-  .grade1{
-    border: 5px solid red;
-    opacity: 0.1;
-  }
-  .grade2{
-    border: 5px solid orange;
-    opacity: 0.1;
-  }
-  .grade3{
-    border: 5px solid green;
-    opacity: 0.1;
-  }
 
   /*标题*/
   .title{

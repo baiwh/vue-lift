@@ -23,10 +23,9 @@
 
 <script>
   export default {
-    name: '$',
+    name: 'navLeft',
     data() {
       return {
-        msg: $
       }
     }
   }

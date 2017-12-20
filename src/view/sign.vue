@@ -1,6 +1,6 @@
 <template>
   <div id="contentDiv">
-    <div id="content">
+    <div id="contentSign">
       <div id="lift">
         Lift
       </div>
@@ -105,7 +105,7 @@
   a{
     text-decoration: none;
   }
-  #content{
+  #contentSign{
     /*border: 1px solid #d3d3d3;*/
     height: 500px;
     width: 300px;
