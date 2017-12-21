@@ -24,13 +24,13 @@
 
       <!--标题-->
       <div class="title">
-        <input type="text" class="listInput" placeholder="标题">
-        <span class="listSpan">{{item.tit}}</span>
+        <input type="text" class="listInput" :value="item.tit" v-on:blur="inputBlur" v-show="titInput">
+        <span class="listSpan" v-on:click="titInputChange" v-show="titSpan">{{item.tit}}</span>
       </div>
       <!--日期-->
       <div class="day">
-        <input type="date" class="listInput">
-        <span class="listSpan">{{item.date}}</span>
+        <input type="date" class="listInput" :value="item.date" v-on:blur="inputBlur" v-show="dayInput">
+        <span class="listSpan" v-on:click="dayInputChange" v-show="daySpan">{{item.date}}</span>
       </div>
       <!--进度条-->
       <div class="rate">
@@ -48,25 +48,18 @@
   import grade from './../components/grade.vue'
   import tagWindow from './../components/tagWindow.vue'
   import tag from './../components/tag.vue'
+  import axios from 'axios'
+
   export default {
     name: 'task',
     data() {
       return {
         isChoose:false,
-        tasks:[
-          {
-            tit:'第一个',
-            date:'2017-11-11',
-            rat:'2',
-            allRat:'3'
-          },
-          {
-            tit:'第二个',
-            date:'2017-12-12',
-            rat:'1',
-            allRat:'5'
-          }
-        ]
+        titInput:false,
+        titSpan:true,
+        dayInput:false,
+        daySpan:true,
+        tasks:[]
       }
     },
     components:{
@@ -74,10 +67,36 @@
       tagWindow:tagWindow,
       tag:tag
     },
+    mounted:function(){
+        this.getTask();
+    },
     methods:{
+      getTask:function(){
+          axios.get("../../json/task.json").then((result)=>{
+              var res = result.data;
+              this.tasks=res.result;
+          })
+      },
       //点击添加选中效果、传数据、在右边显示
       chooseTask:function () {
         this.isChoose=true;
+      },
+      //点击task的标题切换成input
+      titInputChange:function () {
+        this.titInput=true;
+        this.titSpan=false;
+      },
+      //点击task的日期切换成input
+      dayInputChange:function () {
+        this.dayInput=true;
+        this.daySpan=false;
+      },
+      //鼠标离开input。保存传数据、恢复原样
+      inputBlur:function () {
+        this.titInput=false;
+        this.titSpan=true;
+        this.dayInput=false;
+        this.daySpan=true;
       }
     }
   }
@@ -166,10 +185,6 @@
   }
   .del:hover{
     opacity: 0.6;
-  }
-  /*小列表的标题*/
-  .listInput{
-    display: none;
   }
   .title,.day{
     height: 25px;

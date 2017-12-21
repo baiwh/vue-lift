@@ -11,15 +11,46 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+const axios = require('axios');
+const express = require('express');
+const router = express.Router();
+// const apiRoutes = express.Router();
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
   // cheap-module-eval-source-map is faster for development
-  devtool: config.dev.devtool,
-
+  // devtool: config.dev.devtool,
+  devtool:'source-map',
   // these devServer options should be customized in /config/index.js
   devServer: {
+    // before(apiRoutes){
+    //   apiRoutes.get('/api/getDiscList',(req,res)=>{
+    //     const url = '/api/getDiscList';
+    //   //  axios.get(url, {
+    //       headers: {
+    //         // referer: '配置api地址referer',
+    //         // host: '配置api地址host'
+    //       },
+    //    //   params: req.query  //这是请求的query
+    //    // }).then((response) => {
+    //       //response是api地址返回的，数据在data里。
+    //       res.json(response.data)
+    //     }).catch((e) => {
+    //       console.log(e);
+    //     })
+    //   });
+    //   // apiRoutes.use('/api', apiRoutes);
+    // },
+
+    before(router){
+      const task='../json/task.json';
+      router.get(task,(req,res)=>{
+        res.json(task.data);
+      });
+    },
+
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,
