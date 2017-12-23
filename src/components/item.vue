@@ -34,11 +34,11 @@
     },
     methods:{
       getItem:function(){
-        axios.get("http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1")
-          .then((data)=>{
-          var res = data.data;
-          this.detail=res.data;
-        })
+//        axios.get("http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1")
+//          .then((data)=>{
+//          var res = data.data;
+//          this.detail=res.data;
+//        })
       },
       //选中checkbox。加对勾、传数据控制checkbox
       checkBoxChoose:function (index) {

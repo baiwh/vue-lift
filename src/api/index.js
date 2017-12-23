@@ -48,9 +48,12 @@ function apiAxios (method, url, params, success, failure) {
     withCredentials: false
   })
     .then(function (res) {
-      if (res.data.success === true) {
+
+      window.alert(res.data.status);
+      if (res.data.status=== true) {
         if (success) {
           success(res.data)
+          alert(JSON.stringify(res.data))
         }
       } else {
         if (failure) {

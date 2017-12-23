@@ -53,7 +53,8 @@
     },
     created () {
       this.$api.get('/taskDetail/getDetailJson.action?userId=1&taskId=1', null, r => {
-        console.log(r)
+        console.log(r);
+
       })
     }
   }
