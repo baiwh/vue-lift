@@ -1,45 +1,47 @@
 <template>
   <div>
-    <!--<div class="task c" v-on:click="choose">-->
-    <div class="task" v-bind:class="{choose:isChoose}" v-on:click="chooseTask" v-for="item in tasks">
-      <input type="hidden" class="taskId" value="">
-      <!--附加信息-->
-      <div class="stateBar">
-        <!--紧急程度-->
+    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)">
+    <!--<div class="task" v-bind:class="{choose:isChoose}" v-on:click="chooseTask">-->
+      <div class="task" v-bind:class="{'choose':isChoose==index}">
+        <input type="hidden" class="taskId" value="">
+        <!--附加信息-->
+        <div class="stateBar">
+          <!--紧急程度-->
 
-        <div class="grade grade3" >
-          <input type="hidden" value="3">
-        </div>
+          <div class="grade grade3" >
+            <input type="hidden" value="3">
+          </div>
 
-        <div class="gradeBox" hidden>
-          <grade></grade>
+          <div class="gradeBox" hidden>
+            <grade></grade>
+          </div>
+          <!--标签-->
+          <input type="hidden" class="labelId" value="">
+          <tag></tag>
+          <!--<span class="tag theTag2">+</span>-->
         </div>
-        <!--标签-->
-        <input type="hidden" class="labelId" value="">
-        <span class="tag theTag1 labelChoose">家</span>
-        <!--<span class="tag theTag2">+</span>-->
-      </div>
-      <!--标签悬浮-->
-      <tag-window></tag-window>
+        <!--标签悬浮-->
+        <tag-window></tag-window>
 
-      <!--标题-->
-      <div class="title">
-        <input type="text" class="listInput" :value="item.tit" v-on:blur="inputBlur" v-show="titInput">
-        <span class="listSpan" v-on:click="titInputChange" v-show="titSpan">{{item.tit}}</span>
-      </div>
-      <!--日期-->
-      <div class="day">
-        <input type="date" class="listInput" :value="item.date" v-on:blur="inputBlur" v-show="dayInput">
-        <span class="listSpan" v-on:click="dayInputChange" v-show="daySpan">{{item.date}}</span>
-      </div>
-      <!--进度条-->
-      <div class="rate">
-        <div class="ratio">
+        <!--标题-->
+        <div class="title">
+          <input type="text" class="listInput" :value="item.tit" v-on:blur="inputBlur" v-show="titInput">
+          <span class="listSpan" v-on:click="titInputChange" v-show="titSpan">{{item.tit}}</span>
         </div>
+        <!--日期-->
+        <div class="day">
+          <input type="date" class="listInput" :value="item.date" v-on:blur="inputBlur" v-show="dayInput">
+          <span class="listSpan" v-on:click="dayInputChange" v-show="daySpan">{{item.date}}</span>
+        </div>
+        <!--进度条-->
+        <div class="rate">
+          <div class="ratio">
+          </div>
+        </div>
+        <span class="rateVal">{{item.rat}}/{{item.allRat}}</span>
+        <!--删除-->
+        <img src="./../assets/icon/del.png" alt="" class="del">
       </div>
-      <span class="rateVal">{{item.rat}}/{{item.allRat}}</span>
-      <!--删除-->
-      <img src="./../assets/icon/del.png" alt="" class="del">
     </div>
   </div>
 </template>
@@ -54,12 +56,13 @@
     name: 'task',
     data() {
       return {
-        isChoose:false,
+//        isChoose:false,
         titInput:false,
         titSpan:true,
         dayInput:false,
         daySpan:true,
-        tasks:[]
+        tasks:[],
+        isChoose:'all'
       }
     },
     components:{
@@ -72,14 +75,15 @@
     },
     methods:{
       getTask:function(){
-          axios.get("../../json/task.json").then((result)=>{
-              var res = result.data;
-              this.tasks=res.result;
+          axios.get("../../json/task.json").then((taskData)=>{
+              var res = taskData.data;
+              this.tasks=res.taskData;
           })
       },
       //点击添加选中效果、传数据、在右边显示
-      chooseTask:function () {
-        this.isChoose=true;
+      chooseTask:function (index) {
+          this.isChoose=index;
+//        this.isChoose=true;
       },
       //点击task的标题切换成input
       titInputChange:function () {

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-for="item in detail" v-on:click="checkBoxChoose">
+    <div v-for="(item,index) in detail">
       <input type="hidden"  class="detailId" value="" >
-      <div class="items" v-show="isItems">
+      <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
         <input type="checkbox"/>
-        <div class="checkBox" v-bind:class="{c:isc}"></div>
-        <span v-bind:class="{spanChecked:isSpanChecked}">{{item.detailItem}}</span>
+        <div class="checkBox" v-bind:class="{'c':item.choose==1}"></div>
+        <span v-bind:class="{'spanChecked':item.choose==1}">{{item.taskDetailName}}</span>
       </div>
       <div class="itemInput" v-show="isItemInput">
         <input type="hidden" id="" class="detailId">
@@ -16,36 +16,38 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'item',
     data() {
       return {
-        detail:[
-          {
-            detailItem:'第1条'
-          },
-          {
-            detailItem:'第2条'
-          },
-          {
-            detailItem:'第3条'
-          }
-        ],
+        detail:[],
         isItemInput:false,
-        isc:false,
-        isSpanChecked:false,
-        isItems:true
+        isItems:true,
       }
     },
+    mounted:function(){
+      this.getItem();
+    },
     methods:{
+      getItem:function(){
+        axios.get("http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1")
+          .then((data)=>{
+          var res = data.data;
+          this.detail=res.data;
+        })
+      },
       //选中checkbox。加对勾、传数据控制checkbox
-      checkBoxChoose:function () {
-        this.isc=!this.isc;
-        this.isSpanChecked=!this.isSpanChecked;
+      checkBoxChoose:function (index) {
+        if (this.detail[index].choose==1) {
+          this.detail[index].choose=0;
+        }else {
+          this.detail[index].choose=1;
+        }
+
       },
       //右上角的修改按钮
       changeItem:function () {

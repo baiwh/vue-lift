@@ -49,6 +49,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       router.get(task,(req,res)=>{
         res.json(task.data);
       });
+      // const item='http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1';
+      // router.get(item,(req,res)=>{
+      //   res.jsonp(item.data);
+      // });
+
     },
 
     clientLogLevel: 'warning',
@@ -63,6 +68,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       : false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
+
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,

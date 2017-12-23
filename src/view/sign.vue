@@ -9,14 +9,14 @@
         <div id="main">
           <!--选项卡-->
           <ul>
-            <li id="li-signIn" class="cli">登录</li>
+            <li id="li-signIn" v-bind:class="signInLi" v-on:click="signInClick">登录</li>
             <div id="space">
 
             </div>
-            <li id="li-signUp" class="no_cli">注册</li>
+            <li id="li-signUp" v-bind:class="signUpLi" v-on:click="signUpClick">注册</li>
           </ul>
           <!--登录-->
-          <div id="signIn">
+          <div id="signIn" v-show="signIn">
             <!--用户名-->
             <div class="inputDiv" >
               <input type="text" class="inputText" name="userName" id="userName" value="" placeholder="用户名/邮箱"/>
@@ -52,9 +52,8 @@
             </div>
           </div>
 
-
           <!--注册-->
-          <div id="signUp">
+          <div id="signUp" v-show="signUp">
             <!--邮箱-->
             <input type="email" name="email" id="email" value="" class="inputText" placeholder="用于注册的email"/>
             <span id="emailInfo" class="info"></span>
@@ -86,27 +85,54 @@
 
 <script>
   export default {
-    name: 'sign'
+    name: 'sign',
+    data(){
+        return{
+          signUp:false,
+          signIn:true,
+          signUpLi:{
+            no_cli:true,
+            cli:false
+          },
+          signInLi:{
+            no_cli:false,
+            cli:true
+          }
+        }
+    },
+    methods:{
+        signInClick:function () {
+          this.signUp=false,
+          this.signIn=true,
+            this.signUpLi.no_cli=true,
+            this.signUpLi.cli=false,
+            this.signInLi.no_cli=false,
+            this.signInLi.cli=true
+        },
+      signUpClick:function () {
+        this.signUp=true,
+          this.signIn=false,
+          this.signUpLi.no_cli=false,
+          this.signUpLi.cli=true,
+          this.signInLi.no_cli=true,
+          this.signInLi.cli=false
+      }
+    }
   }
 </script>
 
 <style>
-
   #contentDiv{
     height: 100vh;
     width: 100vw;
-    /*background: url(background.png);
-      background-size: 100% 100%;*/
   }
   div{
-    /*overflow: hidden;*/
     float: left;
   }
   a{
     text-decoration: none;
   }
   #contentSign{
-    /*border: 1px solid #d3d3d3;*/
     height: 500px;
     width: 300px;
     position: absolute;
@@ -170,9 +196,6 @@
   }
 
   /*登录*/
-  #signIn{
-    /*display: none;*/
-  }
   .inputDiv{
     height: 60px;
     width: 300px;
@@ -197,7 +220,6 @@
     background-size: 25px 25px;
     background-position: 7px 7px;
   }
-
   /*记住密码和前边的框*/
   #remember{
     height: 50px;
@@ -237,7 +259,6 @@
   #signInBtn:hover{
     background: #009cff;
   }
-
   /*关联登录*/
   #other{
     height: 50px;
@@ -264,9 +285,6 @@
     background-position: -40px 0px;
   }
   /*注册*/
-  #signUp{
-    display: none;
-  }
   /*提示*/
   .info{
     float: left;
@@ -281,10 +299,6 @@
     top: 5px;
     height: 20px;
     width: 20px;
-  }
-  /*密码强度*/
-  #strength{
-
   }
   /*强度等级*/
   #strength{
