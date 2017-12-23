@@ -10,15 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    // proxyTable: {
-    //   '/list': {
-    //     target: 'http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1',
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '^/list': '/list'
-    //     }
-    //   }
-    // }
+
     proxyTable: {
       '/liftVue/**': {
         target: 'http://www.codinghou.com', // 你接口的域名

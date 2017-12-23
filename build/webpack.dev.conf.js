@@ -25,35 +25,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devtool:'source-map',
   // these devServer options should be customized in /config/index.js
   devServer: {
-    // before(apiRoutes){
-    //   apiRoutes.get('/api/getDiscList',(req,res)=>{
-    //     const url = '/api/getDiscList';
-    //   //  axios.get(url, {
-    //       headers: {
-    //         // referer: '配置api地址referer',
-    //         // host: '配置api地址host'
-    //       },
-    //    //   params: req.query  //这是请求的query
-    //    // }).then((response) => {
-    //       //response是api地址返回的，数据在data里。
-    //       res.json(response.data)
-    //     }).catch((e) => {
-    //       console.log(e);
-    //     })
-    //   });
-    //   // apiRoutes.use('/api', apiRoutes);
-    // },
-
     before(router){
       const task='../json/task.json';
       router.get(task,(req,res)=>{
         res.json(task.data);
       });
-      // const item='http://www.codinghou.com/liftVue/taskDetail/getDetailJson.action?userId=1&taskId=1';
-      // router.get(item,(req,res)=>{
-      //   res.jsonp(item.data);
-      // });
-
     },
 
     clientLogLevel: 'warning',
