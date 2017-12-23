@@ -96,6 +96,7 @@
     position: relative;
     top: 5px;
     cursor: auto;
+    overflow: hidden;
   }
   /*大列表里的标签*/
   .header .stateBar .tag{

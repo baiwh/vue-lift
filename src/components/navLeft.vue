@@ -43,6 +43,7 @@
     padding: 80px 0px;
     float: left;
     top: 0px;
+    overflow: hidden;
   }
   /*侧导航链接*/
   .navLeftA{

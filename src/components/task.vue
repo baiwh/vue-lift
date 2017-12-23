@@ -162,6 +162,7 @@
     background: #D3D3D3;
     border-radius: 10px;
     margin: 20px 25px;
+    overflow: hidden;
   }
   .ratio{
     height: 10px;

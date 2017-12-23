@@ -4,13 +4,13 @@
       <input type="hidden"  class="detailId" value="" >
       <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
         <input type="checkbox"/>
-        <div class="checkBox" v-bind:class="{'c':item.choose==1}"></div>
-        <span v-bind:class="{'spanChecked':item.choose==1}">{{item.taskDetailName}}</span>
+        <div class="checkBox" v-bind:class="{'c':item.dataState==2}"></div>
+        <span v-bind:class="{'spanChecked':item.dataState==2}">{{item.taskDetailName}}</span>
       </div>
       <div class="itemInput" v-show="isItemInput">
         <input type="hidden" id="" class="detailId">
         <div class="checkBox"></div>
-        <input class="changeInput" type="text" :value="item.detailItem" v-on:blur="changeBlur">
+        <input class="changeInput" type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)">
         <img class="changeDel" src="./../assets/icon/del.png" alt="" v-on:click="delItem">
         <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
       </div>
@@ -42,18 +42,17 @@
           baseURL: '/liftVue',
           withCredentials: false
         }).then((result)=>{
-          var res = result.data;
+          let res = result.data;
           this.detail=res.data;
         })
       },
       //选中checkbox。加对勾、传数据控制checkbox
       checkBoxChoose:function (index) {
-        if (this.detail[index].choose==1) {
-          this.detail[index].choose=0;
+        if (this.detail[index].dataState==2) {
+          this.detail[index].dataState=1;
         }else {
-          this.detail[index].choose=1;
+          this.detail[index].dataState=2;
         }
-
       },
       //右上角的修改按钮
       changeItem:function () {
@@ -61,8 +60,25 @@
         this.isItemInput=!this.isItemInput;
       },
       //鼠标离开输入框保存并赋给span、传数据
-      changeBlur:function () {
-
+      itemInputBlur:function (index) {
+        let inputItem=this.detail[index].taskDetailName;
+        axios.get('/taskDetail/updateDetail.action?', {
+          params: {
+            userId:1,
+            taskId:1,
+            taskDetailId:index,
+            taskDetailName:inputItem
+          },
+          baseURL: '/liftVue',
+          withCredentials: false,
+        }).then((result)=>{
+            let res=result.data;
+            let success=res.status;
+            let alertMsg=res.msg;
+            if(success==true){
+                alert(alertMsg);
+            }
+        })
       },
       //删除item、传数据
       delItem:function () {

@@ -56,19 +56,12 @@
     height: 100vh;
     width: 100vw;
   }
-
-  div {
-    overflow: hidden;
-  }
-
   a {
     text-decoration: none;
   }
-
   body {
     background: #efefef;
   }
-
   /*主体部分*/
   #content {
     top: 100px;
@@ -88,6 +81,7 @@
     width: 400px;
     float: left;
     padding: 10px 10px;
+    margin: 0 0 70px 0;
   }
 
   .stateBar .tag {
@@ -98,6 +92,7 @@
   #item-box {
     float: left;
     padding: 10px 10px;
+    margin: 0 0 70px 0;
 
   }
 
