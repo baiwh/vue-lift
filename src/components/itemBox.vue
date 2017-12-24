@@ -6,8 +6,7 @@
     <div class="header">
       <div class="stateBar">
         <!--紧急程度-->
-        <grade class="grade">
-        </grade>
+        <grade class="grade"></grade>
         <!--修改-->
         <img class="change" src="./../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->

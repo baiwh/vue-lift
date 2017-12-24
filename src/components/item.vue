@@ -1,23 +1,20 @@
 <template>
   <div>
-    <div v-for="(item,index) in detail">
-      <input type="hidden"  class="detailId" value="" >
+    <div v-for="(item,index) in detail" v-if="item.dataState!=3">
       <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
         <input type="checkbox"/>
         <div class="checkBox" v-bind:class="{'c':item.dataState==2}"></div>
         <span v-bind:class="{'spanChecked':item.dataState==2}">{{item.taskDetailName}}</span>
       </div>
       <div class="itemInput" v-show="isItemInput">
-        <input type="hidden" id="" class="detailId">
         <div class="checkBox"></div>
-        <input class="changeInput" type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)">
-        <img class="changeDel" src="./../assets/icon/del.png" alt="" v-on:click="delItem">
+        <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)">
+        <img src="./../assets/icon/del.png" alt="" v-on:click="delItem(index)">
         <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
       </div>
     </div>
   </div>
 </template>
-
 <script>
   import axios from 'axios'
   export default {
@@ -33,6 +30,7 @@
       this.getItem();
     },
     methods:{
+        //获取detail的内容
       getItem:function(){
         axios.get('/taskDetail/getDetailJson.action?', {
           params: {
@@ -48,11 +46,25 @@
       },
       //选中checkbox。加对勾、传数据控制checkbox
       checkBoxChoose:function (index) {
+          //如果是选中。就改为补选中。否则相反
         if (this.detail[index].dataState==2) {
           this.detail[index].dataState=1;
         }else {
           this.detail[index].dataState=2;
         }
+        //传数据回去
+        let detailId=this.detail[index].taskDetailId;
+        let dataState=this.detail[index].dataState;
+        axios.get('/taskDetail/updateDetail.action?', {
+          params: {
+            userId:1,
+            taskId:1,
+            taskDetailId:detailId,
+            dataState:dataState
+          },
+          baseURL: '/liftVue',
+          withCredentials: false,
+        })
       },
       //右上角的修改按钮
       changeItem:function () {
@@ -62,27 +74,39 @@
       //鼠标离开输入框保存并赋给span、传数据
       itemInputBlur:function (index) {
         let inputItem=this.detail[index].taskDetailName;
+        let detailId=this.detail[index].taskDetailId;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             userId:1,
             taskId:1,
-            taskDetailId:index,
+            taskDetailId:detailId,
             taskDetailName:inputItem
           },
           baseURL: '/liftVue',
           withCredentials: false,
         }).then((result)=>{
-            let res=result.data;
-            let success=res.status;
-            let alertMsg=res.msg;
-            if(success==true){
-                alert(alertMsg);
-            }
+          let res=result.data;
+          let success=res.status;
+          let alertMsg=res.msg;
+          if(success==true){
+            alert(alertMsg);
+          }
         })
       },
       //删除item、传数据
-      delItem:function () {
-
+      delItem:function (index) {
+        this.detail[index].dataState=3;
+        let delId=this.detail[index].taskDetailId;
+        axios.get('/taskDetail/updateDetail.action?', {
+          params: {
+            userId:1,
+            taskId:1,
+            taskDetailId:delId,
+            dataState:3
+          },
+          baseURL: '/liftVue',
+          withCredentials: false,
+        })
       }
       //进度条
     }
@@ -112,7 +136,6 @@
     border: 1px solid #f1f1f1;
     top: -4px;
   }
-
   .itemInput img{
     float: right;
     height: 20px;
@@ -138,7 +161,6 @@
   .items:hover{
     border: 1px solid #46B6FD;
   }
-
   .items input{
     background: #FFFFFF;
     height: 15px;
@@ -153,12 +175,10 @@
   input[type=checkbox]{
     display: none;
   }
-
   @-moz-keyframes dothabottomcheck {
     0% {
       height: 0;
     }
-
     100% {
       height: 17px;
     }
@@ -167,7 +187,6 @@
     0% {
       height: 0;
     }
-
     100% {
       height: 17px;
     }
@@ -176,7 +195,6 @@
     0% {
       height: 0;
     }
-
     100% {
       height: 17px;
     }
@@ -185,11 +203,9 @@
     0% {
       height: 0;
     }
-
     50% {
       height: 0;
     }
-
     100% {
       height: 27px;
     }
@@ -198,11 +214,9 @@
     0% {
       height: 0;
     }
-
     50% {
       height: 0;
     }
-
     100% {
       height:27px;
     }

@@ -5,7 +5,7 @@
     <!--上导航-->
     <nav-top></nav-top>
     <!--主体部分-->
-    <div id="content">
+    <div id="contentHome">
       <!--标签-->
       <!--<form action="" id="labelForm">-->
       <div id="contentTag">
@@ -63,19 +63,17 @@
     background: #efefef;
   }
   /*主体部分*/
-  #content {
+  #contentHome {
     top: 100px;
     margin: 0px 0 50px 0;
     left: 10%;
     width: 1200px;
   }
-
   /*标签*/
   #contentTag {
     width: 1100px;
     overflow: visible;
   }
-
   /*列表大盒子*/
   #list-box {
     width: 400px;
@@ -83,17 +81,13 @@
     padding: 10px 10px;
     margin: 0 0 70px 0;
   }
-
   .stateBar .tag {
     top: 15px;
   }
-
   /*右边详细内容的大盒子*/
   #item-box {
     float: left;
     padding: 10px 10px;
     margin: 0 0 70px 0;
-
   }
-
 </style>

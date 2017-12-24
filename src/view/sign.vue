@@ -51,7 +51,6 @@
               </div>
             </div>
           </div>
-
           <!--注册-->
           <div id="signUp" v-show="signUp">
             <!--邮箱-->
@@ -69,14 +68,9 @@
             <!--再输入一次密码-->
             <input type="password" name="pwd2" id="pwd2" class="inputText" value="" placeholder="请再次输入密码"/>
             <span id="pwd2Info" class="info"></span>
-
-
             <!--提交-->
             <input type="button" name="" id="signUpBtn" value="立即注册" />
-
-
           </div>
-
         </div>
       </form>
     </div>
@@ -127,7 +121,7 @@
     width: 100vw;
   }
   div{
-    float: left;
+
   }
   a{
     text-decoration: none;
@@ -171,7 +165,6 @@
     width: 100px;
     display: inline-block;
     font-size: 25px;
-
     font-weight: 600;
     line-height: 80px;
     text-align: center;
@@ -193,6 +186,7 @@
     background: #808080;
     top: 30px;
     left: 125px;
+    float: left;
   }
 
   /*登录*/
@@ -264,6 +258,10 @@
     height: 50px;
     width: 300px;
     padding: 10px 50px;
+    float: left;
+  }
+  #other div{
+    float: left;
   }
   #qq a{
     background: url(./../assets/icon/qq.png) no-repeat;
@@ -303,6 +301,7 @@
   /*强度等级*/
   #strength{
     display: none;
+    float: left;
   }
   #strength span{
     float: left;
