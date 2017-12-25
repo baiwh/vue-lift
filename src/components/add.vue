@@ -10,7 +10,6 @@
         name: 'add',
         data() {
             return {
-
             }
         }
     }

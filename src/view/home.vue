@@ -28,9 +28,7 @@
       <!--</form>-->
     </div>
     <!--测悬浮-->
-    <div id="add" v-on:click="addTaskBtn">
-      <img src="./../assets/icon/add.png" alt="添加新项目">
-    </div>
+    <add v-on:click.native="addTaskBtn"></add>
   </div>
 </template>
 
@@ -40,6 +38,7 @@
   import tagBox from './../components/tagBox.vue'
   import task from './../components/task.vue'
   import itemBox from './../components/itemBox.vue'
+  import add from './../components/add.vue'
   import axios from 'axios'
   export default {
     name: 'home',
@@ -51,12 +50,15 @@
       navLeft: navLeft,
       tagBox: tagBox,
       task: task,
-      itemBox: itemBox
+      itemBox: itemBox,
+      add:add
     },
     methods:{
+        //新增task
         addTaskBtn:function () {
           let father=this;
           father.$refs.task.addTask();
+          //回传数据
         }
     }
   }
@@ -99,23 +101,5 @@
     float: left;
     padding: 10px 10px;
     margin: 0 0 70px 0;
-  }
-  #add{
-     position: fixed;
-     right: 5vw;
-     bottom: 5vw;
-     background: #46B6FD;
-     padding: 15px;
-     height: 50px;
-     width: 50px;
-     cursor: pointer;
-     border-radius: 25px;
-   }
-  #add:hover{
-    background: #009cff;
-  }
-  #add img{
-    height: 20px;
-    width: 20px;
   }
 </style>
