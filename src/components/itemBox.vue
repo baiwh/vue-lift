@@ -1,10 +1,7 @@
 <template>
   <div class="item" id="item">
-
-    <input type="hidden" id="taskId" value="">
-
     <div class="header">
-      <div class="stateBar">
+      <div>
         <!--紧急程度-->
         <grade class="grade"></grade>
         <!--修改-->
@@ -66,7 +63,12 @@
       },
       //添加新项目、显示输入框
       addItemButton:function () {
-
+        //调用子组件的方法。插入新数组
+        let fatherItemBox=this;
+        fatherItemBox.$refs.item.addItem();
+        //改为编辑状态
+        this.addItem=false;
+        this.changeOk=true;
       }
     }
   }
@@ -91,7 +93,7 @@
     opacity: 1;
   }
   /*大列表里的红绿灯*/
-  .header .stateBar .grade{
+  .header .grade{
     position: relative;
     top: 5px;
     cursor: auto;

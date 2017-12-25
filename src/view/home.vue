@@ -16,7 +16,7 @@
       <!--列表-->
       <!--<form action="" id="taskForm">-->
       <div id="list-box">
-        <task></task>
+        <task ref="task"></task>
       </div>
       <!--</form>-->
 
@@ -26,6 +26,10 @@
         <item-box></item-box>
       </div>
       <!--</form>-->
+    </div>
+    <!--测悬浮-->
+    <div id="add" v-on:click="addTaskBtn">
+      <img src="./../assets/icon/add.png" alt="添加新项目">
     </div>
   </div>
 </template>
@@ -49,6 +53,12 @@
       task: task,
       itemBox: itemBox
     },
+    methods:{
+        addTaskBtn:function () {
+          let father=this;
+          father.$refs.task.addTask();
+        }
+    }
   }
 </script>
 <style>
@@ -89,5 +99,23 @@
     float: left;
     padding: 10px 10px;
     margin: 0 0 70px 0;
+  }
+  #add{
+     position: fixed;
+     right: 5vw;
+     bottom: 5vw;
+     background: #46B6FD;
+     padding: 15px;
+     height: 50px;
+     width: 50px;
+     cursor: pointer;
+     border-radius: 25px;
+   }
+  #add:hover{
+    background: #009cff;
+  }
+  #add img{
+    height: 20px;
+    width: 20px;
   }
 </style>

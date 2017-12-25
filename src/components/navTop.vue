@@ -18,10 +18,6 @@
       <img src="./../assets/icon/remind.png"/>
       <span></span>
     </div>
-    <!--测悬浮-->
-    <div id="add">
-      <img src="./../assets/icon/add.png" alt="添加新项目">
-    </div>
   </div>
 </template>
 
@@ -102,23 +98,5 @@
     width: 20px;
     top: -5px;
     margin: 5px;
-  }
-  #add{
-    position: fixed;
-    right: 5vw;
-    bottom: 5vw;
-    background: #46B6FD;
-    padding: 15px;
-    height: 50px;
-    width: 50px;
-    cursor: pointer;
-    border-radius: 25px;
-  }
-  #add:hover{
-    background: #009cff;
-  }
-  #add img{
-    height: 20px;
-    width: 20px;
   }
 </style>

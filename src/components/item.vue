@@ -39,12 +39,12 @@
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then((result)=>{
-          let res = result.data;
+        }).then((detail)=>{
+          let res = detail.data;
           this.detail=res.data;
         })
       },
-      //选中checkbox。加对勾、传数据控制checkbox
+      //选中checkbox。加对勾、传数据
       checkBoxChoose:function (index) {
           //如果是选中。就改为补选中。否则相反
         if (this.detail[index].dataState==2) {
@@ -66,12 +66,12 @@
           withCredentials: false,
         })
       },
-      //右上角的修改按钮
+      //右上角的修改按钮（在它爸爸里调用的）
       changeItem:function () {
         this.isItems=!this.isItems;
         this.isItemInput=!this.isItemInput;
       },
-      //鼠标离开输入框保存并赋给span、传数据
+      //鼠标离开输入框保存、传数据
       itemInputBlur:function (index) {
         let inputItem=this.detail[index].taskDetailName;
         let detailId=this.detail[index].taskDetailId;
@@ -84,14 +84,8 @@
           },
           baseURL: '/liftVue',
           withCredentials: false,
-        }).then((result)=>{
-          let res=result.data;
-          let success=res.status;
-          let alertMsg=res.msg;
-          if(success==true){
-            alert(alertMsg);
-          }
         })
+        //判空。空就删掉
       },
       //删除item、传数据
       delItem:function (index) {
@@ -107,6 +101,18 @@
           baseURL: '/liftVue',
           withCredentials: false,
         })
+      },
+      //新增item
+      addItem:function () {
+//          let taskId=this.detail[0].taskId;
+        //插入新数组
+        this.detail.push({
+          taskDetailName:'',
+          taskId:1
+        });
+        //改为编辑状态
+        this.isItems=false;
+        this.isItemInput=true;
       }
       //进度条
     }
