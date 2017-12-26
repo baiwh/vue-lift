@@ -1,6 +1,6 @@
 <template>
   <!--测悬浮-->
-  <div id="add" v-on:click="addTaskBtn">
+  <div id="add">
     <img src="./../assets/icon/add.png" alt="添加新项目">
   </div>
 </template>

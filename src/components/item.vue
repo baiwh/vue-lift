@@ -46,7 +46,7 @@
       },
       //选中checkbox。加对勾、传数据
       checkBoxChoose:function (index) {
-          //如果是选中。就改为补选中。否则相反
+          //如果是选中。就改为被选中。否则相反
         if (this.detail[index].dataState==2) {
           this.detail[index].dataState=1;
         }else {
@@ -56,14 +56,19 @@
         let detailId=this.detail[index].taskDetailId;
         let dataState=this.detail[index].dataState;
         axios.get('/taskDetail/updateDetail.action?', {
+//          axios.post('/liftVue/taskDetail/updateTaskDetail.action', {
           params: {
             userId:1,
             taskId:1,
             taskDetailId:detailId,
-            dataState:dataState
+            dataState:dataState,
           },
           baseURL: '/liftVue',
           withCredentials: false,
+        }).then((tasks)=>{
+          let res = tasks.data;
+          let alertMsg=res.msg;
+            alert(alertMsg);
         })
       },
       //右上角的修改按钮（在它爸爸里调用的）
@@ -71,21 +76,37 @@
         this.isItems=!this.isItems;
         this.isItemInput=!this.isItemInput;
       },
-      //鼠标离开输入框保存、传数据
+      //鼠标离开输入框
       itemInputBlur:function (index) {
         let inputItem=this.detail[index].taskDetailName;
         let detailId=this.detail[index].taskDetailId;
-        axios.get('/taskDetail/updateDetail.action?', {
-          params: {
-            userId:1,
-            taskId:1,
-            taskDetailId:detailId,
-            taskDetailName:inputItem
-          },
-          baseURL: '/liftVue',
-          withCredentials: false,
-        })
-        //判空。空就删掉
+        //判空。
+        if (inputItem!=''){
+            //保存、传数据
+          axios.get('/taskDetail/updateDetail.action?', {
+            params: {
+              userId:1,
+              taskId:1,
+              taskDetailId:detailId,
+              taskDetailName:inputItem
+            },
+            baseURL: '/liftVue',
+            withCredentials: false,
+          })
+        }else {
+            //空就删掉
+          this.detail[index].dataState=3;
+          axios.get('/taskDetail/updateDetail.action?', {
+            params: {
+              userId:1,
+              taskId:1,
+              taskDetailId:detailId,
+              dataState:3
+            },
+            baseURL: '/liftVue',
+            withCredentials: false,
+          })
+        }
       },
       //删除item、传数据
       delItem:function (index) {
