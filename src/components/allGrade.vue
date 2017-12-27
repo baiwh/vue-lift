@@ -33,11 +33,12 @@
         ]
       }
     },
-    mounted:function () {
-      let newGradeNum=this.gradeNum-1;
-      this.gradeColor[newGradeNum].opacity='1';
-    },
     methods:{
+        //修改透明度。在父组件中调用
+      getColor:function () {
+        let newGradeNum=this.gradeNum-1;
+        this.gradeColor[newGradeNum].opacity='1';
+      },
         //更改重要程度
       changeGradeBox:function (index) {
           //先把所有的透明度都改成0.1
