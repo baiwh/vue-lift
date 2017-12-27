@@ -1,14 +1,6 @@
 <template>
   <div class="gradeBox">
-    <div class="grade grade1" >
-      <input type="hidden" name="grade1" value="1">
-    </div>
-    <div class="grade grade2">
-      <input type="hidden" name="grade2" value="2">
-    </div>
-    <div class="grade grade3">
-      <input type="hidden" name="grade3" value="3">
-    </div>
+    <div class="grade" v-bind:style="item" v-for="(item,index) in gradeColor"></div>
   </div>
 </template>
 
@@ -17,13 +9,28 @@
     name: 'allGrade',
     data() {
       return {
+        gradeColor:[
+          {
+            border:'5px solid red',
+            opacity:'0.1'
+          },
+          {
+            border:'5px solid orange',
+            opacity:'0.1'
+          },
+          {
+            border: '5px solid green',
+            opacity: '0.1'
+          }
+        ],
+
       }
-    }
+    },
+
   }
 </script>
 <style>
   .gradeBox{
-    overflow: visible;
     float: left;
   }
   /*紧急程度*/
@@ -37,16 +44,7 @@
     margin: 5px;
     cursor: pointer;
   }
-  .grade1{
+  .grade1 {
     border: 5px solid red;
-    opacity: 0.1;
-  }
-  .grade2{
-    border: 5px solid orange;
-    opacity: 0.1;
-  }
-  .grade3{
-    border: 5px solid green;
-    opacity: 0.1;
   }
 </style>

@@ -5,14 +5,13 @@
         <!--附加信息-->
         <div class="stateBar">
           <!--紧急程度-->
-          <div class="grade grade3" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
+          <div class="grade grade1" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
           <allGrade v-if="allGradeIndex==index"></allGrade>
           <!--标签-->
           <tag v-on:click.native="changeTag(index)"></tag>
         </div>
         <!--标签悬浮-->
         <tag-window v-if="tagWindowIndex==index"></tag-window>
-
         <!--标题-->
         <div class="title">
           <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
@@ -54,7 +53,8 @@
         isChoose:'0',
         tagWindowIndex:'no',
         allGradeIndex:'no',
-        gradeChoose:'no'
+        gradeChoose:'no',
+        theGradeColor:['','red','orange','green']
       }
     },
     filters:{
@@ -239,9 +239,6 @@
     margin: 5px 25px;
     overflow: visible;
   }
-  .day input{
-
-  }
   /*进度条*/
   .rate{
     height: 10px;
@@ -262,7 +259,6 @@
     color: #808080;
     margin: 0px 25px;
   }
-
   .task .ratio{
     left: -325px;
   }

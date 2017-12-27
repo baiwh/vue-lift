@@ -99,11 +99,6 @@
     cursor: auto;
     overflow: hidden;
   }
-  /*大列表里的标签*/
-  .header .stateBar .tag{
-    top: 2px;
-    cursor: auto;
-  }
   /*修改*/
   .change{
     float: right;
@@ -155,4 +150,5 @@
   .newDiv {
     display: none;
   }
+
 </style>
