@@ -37,7 +37,6 @@
     right: 10px;
     overflow: visible;
     border-radius: 5px;
-    display: none;
   }
   .allTag:after{
     content: "";

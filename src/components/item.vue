@@ -46,7 +46,7 @@
       },
       //选中checkbox。加对勾、传数据
       checkBoxChoose:function (index) {
-          //如果是选中。就改为被选中。否则相反
+          //如果是选中。就改为未选中。否则相反
         if (this.detail[index].dataState==2) {
           this.detail[index].dataState=1;
         }else {
@@ -65,10 +65,6 @@
           },
           baseURL: '/liftVue',
           withCredentials: false,
-        }).then((tasks)=>{
-          let res = tasks.data;
-          let alertMsg=res.msg;
-            alert(alertMsg);
         })
       },
       //右上角的修改按钮（在它爸爸里调用的）
@@ -125,7 +121,6 @@
       },
       //新增item
       addItem:function () {
-//          let taskId=this.detail[0].taskId;
         //插入新数组
         this.detail.push({
           taskDetailName:'',

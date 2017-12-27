@@ -9,6 +9,7 @@
     name: 'tag',
     data() {
       return {
+          theColor:false
       }
     }
   }

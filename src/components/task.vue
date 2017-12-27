@@ -1,31 +1,27 @@
 <template>
   <div>
-    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)">
+    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1">
       <div class="task" v-bind:class="{'choose':isChoose==index}">
         <!--附加信息-->
         <div class="stateBar">
           <!--紧急程度-->
-          <div class="grade grade3" >
-            <input type="hidden" value="3">
-          </div>
-          <div class="gradeBox" hidden>
-            <grade></grade>
-          </div>
+          <div class="grade grade3" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
+          <allGrade v-if="allGradeIndex==index"></allGrade>
           <!--标签-->
-          <tag></tag>
+          <tag v-on:click.native="changeTag(index)"></tag>
         </div>
         <!--标签悬浮-->
-        <tag-window></tag-window>
+        <tag-window v-if="tagWindowIndex==index"></tag-window>
 
         <!--标题-->
         <div class="title">
-          <input type="text" v-model="item.taskName" v-on:blur="inputBlur(index)" v-on:keyup.enter="inputBlur(index)" v-show="titInput">
-          <span v-on:click="titInputChange(index)" v-show="titSpan">{{item.taskName}}</span>
+          <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
+          <input type="text" v-show="titInput==index" v-model="item.taskName" v-on:blur="inputBlur(index)" v-on:keyup.enter="inputBlur(index)">
         </div>
         <!--日期-->
         <div class="day">
-          <input type="date" v-model="item.beginDate" v-on:blur="inputBlur(index)" v-on:keyup.enter="inputBlur(index)" v-show="dayInput">
-          <span v-on:click="dayInputChange(index)" v-show="daySpan">{{item.beginDate}}</span>
+          <span v-show="daySpan!=index" v-on:click="dayInputChange(index)">{{item.beginDate | time}}</span>
+          <input type="date" v-show="dayInput==index" v-model="item.beginDate" v-on:blur="inputBlur(index)">
         </div>
         <!--进度条-->
         <div class="rate">
@@ -41,7 +37,7 @@
 </template>
 
 <script>
-  import grade from './../components/grade.vue'
+  import allGrade from './allGrade.vue'
   import tagWindow from './../components/tagWindow.vue'
   import tag from './../components/tag.vue'
   import axios from 'axios'
@@ -50,16 +46,29 @@
     name: 'task',
     data() {
       return {
-        titInput:false,
-        titSpan:true,
-        dayInput:false,
-        daySpan:true,
         tasks:[],
-        isChoose:'nothing'
+        titInput:'no',
+        titSpan:'no',
+        dayInput:'no',
+        daySpan:'no',
+        isChoose:'0',
+        tagWindowIndex:'no',
+        allGradeIndex:'no',
+        gradeChoose:'no'
       }
     },
+    filters:{
+        time:function (value) {
+          function newTime(str){
+            let arr=str.split(' ');
+            let showTime=''+arr[0];
+            return showTime;
+          }
+          return newTime(value);
+        }
+    },
     components:{
-      grade:grade,
+      allGrade:allGrade,
       tagWindow:tagWindow,
       tag:tag
     },
@@ -82,87 +91,108 @@
         })
         //给第一个加上选中状态
       },
-      //点击task
+      //点击task?
       chooseTask:function (index) {
           //添加选中效果
           this.isChoose=index;
           //传数据
 
-        //在右边显示
+        //调用item的getItem
+      },
+      //点击grade?
+      changeGrade:function (index) {
+        //隐藏单个的grade
+        this.gradeChoose=index;
+        //显示所有grade
+        this.allGradeIndex=index
+      },
+      //点击task里的标签?
+      changeTag:function (index) {
+        //如果索引不相等
+        if(this.tagWindowIndex!=index){
+            //就让它显示
+          this.tagWindowIndex=index;
+        }else {
+            //相等隐藏
+          this.tagWindowIndex='no';
+        }
       },
       //点击task的标题
       titInputChange:function (index) {
           //切换成input
-        this.titInput=true;
-        this.titSpan=false;
+        this.titInput=index;
+        this.titSpan=index;
       },
-      //点击task的日期切换成input
+      //点击task的日期
       dayInputChange:function (index) {
-        this.dayInput=true;
-        this.daySpan=false;
+          //切换成input
+        this.dayInput=index;
+        this.daySpan=index;
       },
       //鼠标离开input或者按回车
       inputBlur:function (index) {
           //恢复原样
-        this.titInput=false;
-        this.titSpan=true;
-        this.dayInput=false;
-        this.daySpan=true;
+        this.titInput='no';
+        this.titSpan='no';
+        this.dayInput='no';
+        this.daySpan='no';
         //保存传数据
-//        let inputName=this.tasks[index].taskName;
-//        let inputDate=this.tasks[index].beginDate;
-//        axios.get('/task/updateTask.action',{
-//            params:{
-//              userId:1,
-//              taskId:7,
+        let taskId=this.tasks[index].taskId;
+        let inputName=this.tasks[index].taskName;
+        let falseDate=this.tasks[index].beginDate;
+        let newDate=falseDate.split(' ');
+        let inputDate=''+newDate[0];
+        axios.get('/task/updateTask.action',{
+            params:{
+              userId:1,
+              taskId:taskId,
 //              beginDate:inputDate,
-//              taskDetailName:inputName
-//            },
-//          baseURL:'/liftVue',
-//          withCredentials:false
-//        })
-//        .then((tasks)=>{
-//          let res = tasks.data;
-//          let success=res.status;
-//          let alertMsg=res.msg;
-//          if(success==true){
-//            alert(alertMsg);
-//          }
-//        })
+              taskName:inputName
+            },
+          baseURL:'/liftVue',
+          withCredentials:false
+        })
       },
       //删除task
       taskDelete:function (index) {
-//        this.tasks[index].dataState=2;
-//        let delId=this.tasks[index].taskName;
-//        axios.get('/task/updateTask.action',{
-//            params:{
-//              userId:1,
-//              taskId:7,
-//              dataState:2,
-//              taskDetailName:delId
-//            },
-//          baseURL:'/liftVue',
-//          withCredentials:false
-//        })
-//        .then((tasks)=>{
-//          let res = tasks.data;
-//          let success=res.status;
-//          let alertMsg=res.msg;
-//          if(success==true){
-//            alert(alertMsg);
-//          }
-//        })
+          //改变状态
+        this.tasks[index].dataState=2;
+        //传数据
+        let taskId=this.tasks[index].taskId;
+        axios.get('/task/updateTask.action',{
+            params:{
+              userId:1,
+              taskId:taskId,
+              dataState:2
+            },
+          baseURL:'/liftVue',
+          withCredentials:false
+        })
       },
       //新增task
       addTask:function () {
-//        let data=new Date();
+        let data=new Date();
+        let beginDate=data.getFullYear()+'-'+(data.getMonth()+1)+'-'+data.getDate();
+        //新增内容
         this.tasks.unshift({
           labelName:'家',
-          taskName:'新任务加进来了',
-//          beginDate:data.getFullYear()+'-'+data.getMonth()+'-'+data.getDate(),
-          beginDate:'2017-01-01 00:00:00',
-        completedDetail:0,
-          totalDetail:0
+          taskName:'新任务',
+          beginDate:beginDate,
+          completedDetail:0,
+          totalDetail:0,
+          dataState:1
+        })
+        //回传数据?
+        axios.get('/task/insertTask.action',{
+            params:{
+              userId:1,
+            },
+          baseURL:'/liftVue',
+          withCredentials:false
+        }).then((newTask)=>{
+            //返回数据后还要把返回的东西重新赋给新增的数组
+          let res = newTask.data;
+          this.tasks[0]=res.data;
         })
       }
     }
@@ -191,10 +221,6 @@
   .stateBar{
     height: 50px;
     margin: 5px 10px;
-  }
-  .gradeBox{
-    overflow: visible;
-    float: left;
   }
   /*标题*/
   .title{

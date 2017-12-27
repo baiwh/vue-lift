@@ -26,7 +26,7 @@
 
 <script>
   import item from './../components/item.vue'
-  import grade from './../components/grade.vue'
+  import grade from './allGrade.vue'
   import tag from './../components/tag.vue'
 
   export default {

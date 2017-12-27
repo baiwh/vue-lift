@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="gradeBox">
     <div class="grade grade1" >
       <input type="hidden" name="grade1" value="1">
     </div>
@@ -14,7 +14,7 @@
 
 <script>
   export default {
-    name: 'grade',
+    name: 'allGrade',
     data() {
       return {
       }
@@ -22,6 +22,10 @@
   }
 </script>
 <style>
+  .gradeBox{
+    overflow: visible;
+    float: left;
+  }
   /*紧急程度*/
   .grade{
     height: 20px;
@@ -33,7 +37,6 @@
     margin: 5px;
     cursor: pointer;
   }
-
   .grade1{
     border: 5px solid red;
     opacity: 0.1;
