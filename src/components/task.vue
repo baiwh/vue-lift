@@ -5,8 +5,8 @@
         <!--附加信息-->
         <div class="stateBar">
           <!--紧急程度-->
-          <div class="grade grade1" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
-          <allGrade v-if="allGradeIndex==index"></allGrade>
+          <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
+          <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-if="allGradeIndex==index" v-on:click.native="changeGradeBox"></allGrade>
           <!--标签-->
           <tag v-on:click.native="changeTag(index)"></tag>
         </div>
@@ -104,7 +104,13 @@
         //隐藏单个的grade
         this.gradeChoose=index;
         //显示所有grade
-        this.allGradeIndex=index
+        this.allGradeIndex=index;
+      },
+      changeGradeBox:function(){
+        //显示单个的grade
+        this.gradeChoose='no';
+        //隐藏所有grade
+        this.allGradeIndex='no';
       },
       //点击task里的标签?
       changeTag:function (index) {
