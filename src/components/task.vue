@@ -8,7 +8,7 @@
           <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
           <allGrade ref="allGrade" v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-if="allGradeIndex==index" v-on:click.native="changeGradeBox"></allGrade>
           <!--标签-->
-          <tag v-on:click.native="changeTag(index)"></tag>
+          <span class="tag" v-on:click.native="changeTag(index)">家</span>
         </div>
         <!--标签悬浮-->
         <tag-window v-if="tagWindowIndex==index"></tag-window>
@@ -38,7 +38,6 @@
 <script>
   import allGrade from './allGrade.vue'
   import tagWindow from './../components/tagWindow.vue'
-  import tag from './../components/tag.vue'
   import axios from 'axios'
 
   export default {
@@ -58,6 +57,7 @@
       }
     },
     filters:{
+        //时间格式过滤器。后台非要我把时分秒去掉
         time:function (value) {
           function newTime(str){
             let arr=str.split(' ');
@@ -69,8 +69,7 @@
     },
     components:{
       allGrade:allGrade,
-      tagWindow:tagWindow,
-      tag:tag
+      tagWindow:tagWindow
     },
     mounted:function(){
         this.getTask();
@@ -156,7 +155,7 @@
             params:{
               userId:1,
               taskId:taskId,
-//              beginDate:inputDate,
+              beginTime:inputDate,
               taskName:inputName
             },
           baseURL:'/liftVue',

@@ -3,28 +3,22 @@
     <img class="tagOk" src="./../assets/icon/changeOk2.png" alt="">
     <img class="tagChange" src="./../assets/icon/change.png" alt="">
 
-    <tag></tag>
+    <span class="tag">家</span>
     <span class="tagDel">-</span>
-    <input type="hidden" value="">
 
-    <tag></tag>
+    <span class="tag">家</span>
     <span class="tagDel">-</span>
-    <input type="hidden" value="">
 
     <span class="addTag">添加新标签</span>
   </div>
 </template>
 
 <script>
-  import tag from './../components/tag.vue'
   export default {
     name: 'tagBox',
     data() {
       return {
       }
-    },
-    components:{
-      tag:tag
     }
   }
 </script>
@@ -91,7 +85,6 @@
     border: 1px solid #C2C2C2;
     float: right;
   }
-
 
   /*选中。蓝色*/
   .labelChoose{

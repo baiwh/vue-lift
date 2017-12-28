@@ -7,7 +7,7 @@
         <!--修改-->
         <img class="change" src="./../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
-        <tag></tag>
+        <span class="tag">家</span>
       </div>
     </div>
     <h2>接下来。。</h2>
@@ -27,7 +27,6 @@
 <script>
   import item from './../components/item.vue'
   import grade from './allGrade.vue'
-  import tag from './../components/tag.vue'
 
   export default {
     name: 'itemBox',
@@ -39,8 +38,7 @@
     },
     components:{
       item:item,
-      grade:grade,
-      tag:tag
+      grade:grade
     },
     methods:{
       //右上角的修改按钮

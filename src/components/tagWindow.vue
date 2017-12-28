@@ -1,22 +1,16 @@
 <template>
   <div class="allTag">
-    <input type="hidden" value="1">
-    <tag></tag>
-    <input type="hidden" value="2">
-    <tag></tag>
+    <span class="tag">家</span>
+    <span class="tag">家</span>
   </div>
 </template>
 
 <script>
-  import tag from './../components/tag.vue'
   export default {
     name: 'tagWindow',
     data() {
       return {
       }
-    },
-    components:{
-      tag:tag
     }
   }
 </script>
