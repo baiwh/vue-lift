@@ -3,7 +3,7 @@
     <div class="header">
       <div>
         <!--紧急程度-->
-        <grade class="grade"></grade>
+        <div class="grade" v-bind:style="{border:'5px solid '+itemGrade}"></div>
         <!--修改-->
         <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
@@ -33,7 +33,8 @@
     data() {
       return {
         addItem:true,
-        changeOk:false
+        changeOk:false,
+        itemGrade:'red'
       }
     },
     components:{
@@ -59,7 +60,7 @@
         this.addItem=!this.addItem;
         this.changeOk=!this.changeOk;
       },
-      //添加新项目、显示输入框
+      //添加新项目
       addItemButton:function () {
         //调用子组件的方法。插入新数组
         let fatherItemBox=this;
@@ -67,7 +68,8 @@
         //改为编辑状态
         this.addItem=false;
         this.changeOk=true;
-      }
+      },
+      //grade？tag？
     }
   }
 
@@ -85,7 +87,7 @@
   .header{
     height: 80px;
     border-bottom: 1px solid #D3D3D3;
-    padding: 15px;
+    padding: 20px;
   }
   .header div{
     opacity: 1;

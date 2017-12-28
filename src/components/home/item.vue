@@ -8,7 +8,7 @@
       </div>
       <div class="itemInput" v-show="isItemInput">
         <div class="checkBox"></div>
-        <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)">
+        <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)"  v-on:keyup.enter="itemInputBlur(index)">
         <img src="../../assets/icon/del.png" alt="" v-on:click="delItem(index)">
         <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
       </div>
@@ -56,7 +56,6 @@
         let detailId=this.detail[index].taskDetailId;
         let dataState=this.detail[index].dataState;
         axios.get('/taskDetail/updateDetail.action?', {
-//          axios.post('/liftVue/taskDetail/updateTaskDetail.action', {
           params: {
             userId:1,
             taskId:1,
@@ -69,10 +68,11 @@
       },
       //右上角的修改按钮（在它爸爸里调用的）
       changeItem:function () {
+          //切换input
         this.isItems=!this.isItems;
         this.isItemInput=!this.isItemInput;
       },
-      //鼠标离开输入框
+      //鼠标离开输入框。或者enter
       itemInputBlur:function (index) {
         let inputItem=this.detail[index].taskDetailName;
         let detailId=this.detail[index].taskDetailId;
@@ -119,16 +119,34 @@
           withCredentials: false,
         })
       },
-      //新增item
+      //新增item（在父组件调用）
       addItem:function () {
+          //传进来个taskId
+//        let taskId=
         //插入新数组
         this.detail.push({
           taskDetailName:'',
-          taskId:1
+          taskId:1,
+          taskDetailId:'',
+          dataState:1
         });
-        //改为编辑状态
+        //切换input
         this.isItems=false;
         this.isItemInput=true;
+        //回传数据并赋值新的item
+        axios.get('/taskDetail/insertTaskDetail.action', {
+          params: {
+            userId:1,
+            taskId:1,
+            taskDetailName:'',
+          },
+          baseURL: '/liftVue',
+          withCredentials: false,
+        }).then((newItem)=>{
+            let res=newItem.data;
+            let len=this.detail.length-1;
+            this.detail[len].taskDetailId=res.data;
+        })
       }
       //进度条
     }
