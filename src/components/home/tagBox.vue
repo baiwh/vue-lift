@@ -1,7 +1,7 @@
 <template>
   <div id="tag-box">
-    <img class="tagOk" src="./../assets/icon/changeOk2.png" alt="">
-    <img class="tagChange" src="./../assets/icon/change.png" alt="">
+    <img class="tagOk" src="../../assets/icon/changeOk2.png" alt="">
+    <img class="tagChange" src="../../assets/icon/change.png" alt="">
 
     <span class="tag">家</span>
     <span class="tagDel">-</span>

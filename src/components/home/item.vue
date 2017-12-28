@@ -9,7 +9,7 @@
       <div class="itemInput" v-show="isItemInput">
         <div class="checkBox"></div>
         <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)">
-        <img src="./../assets/icon/del.png" alt="" v-on:click="delItem(index)">
+        <img src="../../assets/icon/del.png" alt="" v-on:click="delItem(index)">
         <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
       </div>
     </div>

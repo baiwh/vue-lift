@@ -35,9 +35,9 @@
 <script>
   import navTop from './../components/navTop.vue'
   import navLeft from './../components/navLeft.vue'
-  import tagBox from './../components/tagBox.vue'
-  import task from './../components/task.vue'
-  import itemBox from './../components/itemBox.vue'
+  import tagBox from '../components/home/tagBox.vue'
+  import task from '../components/home/task.vue'
+  import itemBox from '../components/home/itemBox.vue'
   import add from './../components/add.vue'
   import axios from 'axios'
   export default {

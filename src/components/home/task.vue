@@ -5,8 +5,8 @@
         <!--附加信息-->
         <div class="stateBar">
           <!--紧急程度-->
-          <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-if="gradeChoose!=index"></div>
-          <allGrade ref="allGrade" v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-if="allGradeIndex==index" v-on:click.native="changeGradeBox"></allGrade>
+          <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-show="gradeChoose!=index"></div>
+          <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-show="allGradeIndex==index" v-on:click.native="changeGradeBox" ref="allGrade"></allGrade>
           <!--标签-->
           <span class="tag" v-on:click.native="changeTag(index)">家</span>
         </div>
@@ -29,7 +29,7 @@
         </div>
         <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
         <!--删除-->
-        <img src="./../assets/icon/del.png" class="del" v-on:click="taskDelete(index)">
+        <img src="../../assets/icon/del.png" class="del" v-on:click="taskDelete(index)">
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
 
 <script>
   import allGrade from './allGrade.vue'
-  import tagWindow from './../components/tagWindow.vue'
+  import tagWindow from './tagWindow.vue'
   import axios from 'axios'
 
   export default {
@@ -106,7 +106,7 @@
         this.allGradeIndex=index;
         //调用子组件allGrade中的方法
         let father=this;
-        father.$refs.allGrade.getColor();
+        father.$refs.allGrade[index].getColor();
       },
       //点击allGrade恢复原样
       changeGradeBox:function(){

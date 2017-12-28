@@ -5,7 +5,7 @@
         <!--紧急程度-->
         <grade class="grade"></grade>
         <!--修改-->
-        <img class="change" src="./../assets/icon/change.png" alt="change" v-on:click="changeItems">
+        <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
         <span class="tag">家</span>
       </div>
@@ -16,16 +16,16 @@
     </div>
     <!--添加新项目-->
     <div class="add" id="newItem" v-show="addItem" v-on:click="addItemButton">
-      <img src="./../assets/icon/add.png" alt="">
+      <img src="../../assets/icon/add.png" alt="">
     </div>
     <div class="changeOk" v-show="changeOk" v-on:click="changeOkButton">
-      <img src="./../assets/icon/changeOk.png" alt="">
+      <img src="../../assets/icon/changeOk.png" alt="">
     </div>
   </div>
 </template>
 
 <script>
-  import item from './../components/item.vue'
+  import item from './item.vue'
   import grade from './allGrade.vue'
 
   export default {
