@@ -7,7 +7,7 @@
         <!--修改-->
         <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
-        <span class="tag">家</span>
+        <span class="tag tagChoose">家</span>
       </div>
     </div>
     <h2>接下来。。</h2>
@@ -144,9 +144,6 @@
     width: 20px;
     height: 20px;
     margin: 10px;
-  }
-  .newDiv {
-    display: none;
   }
 
 </style>

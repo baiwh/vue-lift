@@ -56,6 +56,7 @@
     methods:{
         //新增task
         addTaskBtn:function () {
+            //调用组件的插入task
           let father=this;
           father.$refs.task.addTask();
         }
@@ -92,9 +93,6 @@
     padding: 10px 10px;
     margin: 0 0 70px 0;
   }
-  .stateBar .tag {
-    top: 15px;
-  }
   /*右边详细内容的大盒子*/
   #item-box {
     float: left;
@@ -112,10 +110,8 @@
     margin: 5px 5px 5px 15px;
     cursor: pointer;
     font-size: 15px;
-    color: #FFFFFF;
-    border: 2px solid #C2C2C2;
-    background: #C2C2C2;
     text-align: center;
+    color: #FFFFFF;
   }
   /*标签的白色圆点*/
   .tag:after{
@@ -134,10 +130,25 @@
     width: 0;
     height: 4px;
     border-top: 10px solid transparent;
-    border-right: 10px solid #C2C2C2;
     border-bottom: 10px solid transparent;
     position: absolute;
     left: -9px;
     top: -2px;
+  }
+  /*标签颜色*/
+  .tagColor{
+    border: 2px solid #C2C2C2;
+    background: #C2C2C2;
+  }
+  .tagColor:before{
+    border-right: 10px solid #C2C2C2;
+  }
+  /*选中。蓝色*/
+  .tagChoose{
+    background: #46B6FD;
+    border: 2px solid #46B6FD;
+  }
+  .tagChoose:before{
+    border-right: 10px solid #46B6FD;
   }
 </style>

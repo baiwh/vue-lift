@@ -1,15 +1,12 @@
 <template>
   <div id="tag-box">
-    <img class="tagOk" src="../../assets/icon/changeOk2.png" alt="">
-    <img class="tagChange" src="../../assets/icon/change.png" alt="">
-
-    <span class="tag">家</span>
-    <span class="tagDel">-</span>
-
-    <span class="tag">家</span>
-    <span class="tagDel">-</span>
-
-    <span class="addTag">添加新标签</span>
+    <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../assets/icon/changeOk2.png" alt="">
+    <img v-on:click="changeTagBtn" v-show="tagChange" src="../../assets/icon/change.png" alt="">
+    <div v-for="(item,index) in tags">
+      <span class="tag" v-bind:class="isChooseTag">{{item.tagName}}</span>
+      <span class="tagDel">-</span>
+    </div>
+    <span class="addTag" v-on:click="addTag">添加新标签</span>
   </div>
 </template>
 
@@ -18,7 +15,50 @@
     name: 'tagBox',
     data() {
       return {
+        tags:[
+        {
+          tagId:0,
+          tagName:'家',
+          dataCSS:'tagColor'
+        },
+        {
+          tagId:1,
+          tagName:'公司',
+          dataCSS:'tagColor'
+        },
+        {
+          tagId:2,
+          tagName:'做梦的时候',
+          dataCSS:'tagChoose'
+        }
+        ],
+        tagOk:false,
+        tagChange:true,
+        isChooseTag:'tagColor'
       }
+    },
+    methods:{
+        //获取全部tag
+      //修改完成按钮
+      changeTagOkBtn:function () {
+        //切换按钮
+        this.tagOk=false;
+        this.tagChange=true;
+        //隐藏减号和新增
+      },
+      //修改按钮
+      changeTagBtn:function () {
+        //切换按钮
+        this.tagOk=true;
+        this.tagChange=false;
+        //显示减号和新增
+      },
+      //点击新增标签
+      addTag:function () {
+        //显示输入框
+      }
+      //鼠标离开新标签输入框。隐藏输入框显示新增按钮。回传。push数组。显示新的tag
+      //点击减号。改变状态？移除？回传数据
     }
   }
 </script>
@@ -34,10 +74,6 @@
     width: 20px;
     margin: 5px;
     cursor: pointer;
-  }
-  /*对勾*/
-  .tagOk{
-    display: none;
   }
   /*删除标签（减号）*/
   .tagDel{
@@ -72,10 +108,6 @@
     line-height: 23px;
     text-align: center;
   }
-  /*新的标签*/
-  .newTag{
-    display: none;
-  }
   .inputTag{
     top: 3px;
     width: 80px;
@@ -84,22 +116,6 @@
     border-radius: 5px;
     border: 1px solid #C2C2C2;
     float: right;
-  }
-
-  /*选中。蓝色*/
-  .labelChoose{
-    background: #46B6FD;
-    border: 2px solid #46B6FD;
-  }
-  .labelChoose:before{
-    border-right: 10px solid #46B6FD;
-  }
-  .labelChoose{
-    background: #46B6FD;
-    border: 2px solid #46B6FD;
-  }
-  .labelChoose:before{
-    border-right: 10px solid #46B6FD;
   }
 
 </style>

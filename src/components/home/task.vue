@@ -8,10 +8,10 @@
           <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-show="gradeChoose!=index"></div>
           <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-show="allGradeIndex==index" v-on:click.native="changeGradeBox" ref="allGrade"></allGrade>
           <!--标签-->
-          <span class="tag" v-on:click.native="changeTag(index)">家</span>
+          <span class="tag tagChoose" v-on:click="changeTag(index)">家</span>
         </div>
         <!--标签悬浮-->
-        <tag-window v-if="tagWindowIndex==index"></tag-window>
+        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId"v-show="tagWindowIndex==index" ref="tag-window"></tag-window>
         <!--标题-->
         <div class="title">
           <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
@@ -90,7 +90,7 @@
         })
         //给第一个加上选中状态
       },
-      //点击task?
+      //点击task？
       chooseTask:function (index) {
           //添加选中效果
           this.isChoose=index;
@@ -108,14 +108,14 @@
         let father=this;
         father.$refs.allGrade[index].getColor();
       },
-      //点击allGrade恢复原样
+      //点击allGrade？
       changeGradeBox:function(){
-        //显示单个的grade
+        //恢复原样
         this.gradeChoose='no';
-        //隐藏所有grade
         this.allGradeIndex='no';
+        //修改右边的
       },
-      //点击task里的标签?
+      //点击task里的标签？
       changeTag:function (index) {
         //如果索引不相等
         if(this.tagWindowIndex!=index){
@@ -125,6 +125,15 @@
             //相等隐藏
           this.tagWindowIndex='no';
         }
+        //调用子组件方法改变里边的颜色
+        let father=this;
+//        father.$refs.tagWindow[index].getTagColor();
+      },
+      //点击tagWindow？
+      changeTagWindow:function () {
+          //恢复原样
+//          this.tagWindowIndex='no';
+        //修改右边的
       },
       //点击task的标题
       titInputChange:function (index) {
@@ -230,6 +239,9 @@
   .stateBar{
     height: 50px;
     margin: 5px 10px;
+  }
+  .stateBar .tag{
+    top: 15px;
   }
   /*标题*/
   .title{

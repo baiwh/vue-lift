@@ -1,15 +1,67 @@
 <template>
   <div class="allTag">
-    <span class="tag">家</span>
-    <span class="tag">家</span>
+    <span class="tag"
+          v-bind:class="item.dataCSS"
+          v-for="(item,index) in tags"
+          v-on:click="changeTagBox(index)">{{item.tagName}}</span>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'tagWindow',
+    props:[
+        'tagName',
+      'taskNum'
+    ],
     data() {
       return {
+        tags:[
+          {
+            tagId:0,
+            tagName:'家',
+            dataCSS:'tagColor'
+          },
+          {
+            tagId:1,
+            tagName:'公司',
+            dataCSS:'tagColor'
+          },
+          {
+            tagId:2,
+            tagName:'做梦的时候',
+            dataCSS:'tagChoose'
+          }
+        ]
+      }
+    },
+    mounted:function () {
+      this.getAllTag();
+    },
+    methods:{
+        //获取所有tag
+      getAllTag:function () {
+//        axios.get('/label/getLabelList.action?',{
+//            params:{
+//                userId:1,
+//
+//            },
+//          baseURL: '/liftVue',
+//          withCredentials: false
+//        }).then((tags)=>{
+//            let res=tags.data;
+//            this.tags=tags.data;
+//        })
+      },
+        //改变选中的颜色
+      getTagColor:function (index) {
+
+      },
+      changeTagBox:function (index) {
+        //修改css
+        //通知爸爸
+        //回传数据
       }
     }
   }
