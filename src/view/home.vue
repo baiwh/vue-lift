@@ -68,8 +68,9 @@
           //点击tag悬浮窗内的告诉itemBox
           //修改title时告诉itemBox
           //itemBox修改进度条时告诉task的进度条
-        }
+        },
         //搜索功能？
+
     }
   }
 </script>

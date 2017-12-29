@@ -61,6 +61,7 @@
           baseURL: '/liftVue',
           withCredentials: false
         })
+
       }
     }
   }

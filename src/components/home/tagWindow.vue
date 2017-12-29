@@ -1,9 +1,9 @@
 <template>
   <div class="allTag">
-    <span class="tag"
+    <span class="tag tagColor"
           v-bind:class="item.dataCSS"
           v-for="(item,index) in tags"
-          v-on:click="changeTagBox(index)">{{item.tagName}}</span>
+          v-on:click="changeTagBox(index)">{{item.labelName}}</span>
   </div>
 </template>
 
@@ -17,42 +17,24 @@
     ],
     data() {
       return {
-        tags:[
-          {
-            tagId:0,
-            tagName:'家',
-            dataCSS:'tagColor'
-          },
-          {
-            tagId:1,
-            tagName:'公司',
-            dataCSS:'tagColor'
-          },
-          {
-            tagId:2,
-            tagName:'做梦的时候',
-            dataCSS:'tagChoose'
-          }
-        ]
+        tags:[]
       }
     },
     mounted:function () {
-      this.getAllTag();
     },
     methods:{
         //获取所有tag
       getAllTag:function () {
-//        axios.get('/label/getLabelList.action?',{
-//            params:{
-//                userId:1,
-//
-//            },
-//          baseURL: '/liftVue',
-//          withCredentials: false
-//        }).then((tags)=>{
-//            let res=tags.data;
-//            this.tags=tags.data;
-//        })
+        axios.get('/label/getLabelList.action?',{
+            params:{
+                userId:1,
+            },
+          baseURL: '/liftVue',
+          withCredentials: false
+        }).then((tags)=>{
+            let res=tags.data;
+            this.tags=res.data;
+        })
       },
         //改变选中的颜色
       getTagColor:function (index) {

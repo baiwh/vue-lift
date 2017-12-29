@@ -7,7 +7,7 @@
         <!--修改-->
         <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
-        <span class="tag tagChoose">家</span>
+        <span class="tag tagChoose"> </span>
       </div>
     </div>
     <h2>接下来。。</h2>
@@ -70,6 +70,7 @@
         this.changeOk=true;
       },
       //grade？tag？
+
     }
   }
 

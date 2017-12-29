@@ -11,7 +11,7 @@
           <span class="tag tagChoose" v-on:click="changeTag(index)">家</span>
         </div>
         <!--标签悬浮-->
-        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId"v-show="tagWindowIndex==index" ref="tag-window"></tag-window>
+        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId"v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
         <!--标题-->
         <div class="title">
           <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
@@ -107,6 +107,7 @@
         //调用子组件allGrade中的方法
         let father=this;
         father.$refs.allGrade[index].getColor();
+
       },
       //点击allGrade？
       changeGradeBox:function(){
@@ -128,6 +129,7 @@
         //调用子组件方法改变里边的颜色
         let father=this;
 //        father.$refs.tagWindow[index].getTagColor();
+        father.$refs.tagWindow[index].getAllTag();
       },
       //点击tagWindow？
       changeTagWindow:function () {
@@ -212,8 +214,9 @@
           let res = newTask.data;
           this.tasks[0]=res.data;
         })
-      }
+      },
       //进度条？
+
     }
   }
 </script>
