@@ -3,7 +3,7 @@
     <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../assets/icon/changeOk2.png" alt="">
     <img v-on:click="changeTagBtn" v-show="tagChange" src="../../assets/icon/change.png" alt="">
     <div v-for="(item,index) in tags" v-if="item.dataState==1">
-      <span class="tag" v-bind:class="isChooseTag">{{item.labelName}}</span>
+      <span class="tag" v-on:click="tagFilter(index)" v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
       <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>
     </div>
     <span class="addTag" v-on:click="addTag" v-show="isAddTag">添加新标签</span>
@@ -20,7 +20,8 @@
         tags:[],
         tagOk:false,
         tagChange:true,
-        isChooseTag:'tagColor',
+        isTagColor:'no',
+        isTagChoose:'no',
         isTagDel:false,
         isAddTag:false,
         isInputTag:false,
@@ -112,7 +113,12 @@
           withCredentials: false
         })
       },
-      //点击tag筛选。修改颜色
+      //点击tag筛选。修改颜色？
+      tagFilter:function (index) {
+          //改变颜色
+        this.isTagColor=index;
+        this.isTagChoose=index;
+      }
     }
   }
 </script>
