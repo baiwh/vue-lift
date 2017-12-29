@@ -1,7 +1,7 @@
 <template>
   <div class="allTag">
-    <span class="tag tagColor"
-          v-bind:class="item.dataCSS"
+    <span class="tag"
+          v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}"
           v-for="(item,index) in tags"
           v-on:click="changeTagBox(index)">{{item.labelName}}</span>
   </div>
@@ -12,15 +12,16 @@
   export default {
     name: 'tagWindow',
     props:[
-        'tagName',
-      'taskNum'
+      'tagName',
+      'taskNum',
     ],
     data() {
       return {
-        tags:[]
+        tags:[],
+        isTagColor:'no',
+        isTagChoose:'no',
+        trydata:1
       }
-    },
-    mounted:function () {
     },
     methods:{
         //获取所有tag
@@ -37,13 +38,45 @@
         })
       },
         //改变选中的颜色
-      getTagColor:function (index) {
-
+      getTagColor:function () {
+          //获取到相同的name的索引
+          let name1=this.tagName;
+          let len=this.tags.length;
+          let ind='';
+          for (let i=0;i<len;i++){
+            let name2=this.tags[i].labelName;
+            if(name1==name2){
+              ind=i;
+            }
+          }
+          //改颜色
+          this.isTagColor=ind;
+        this.isTagChoose=ind;
       },
+      //点击悬浮穿内的标签时
       changeTagBox:function (index) {
+        //先把所有的都改成灰色
+        for(let i=0;i<this.tags.length;i++){
+          this.isTagColor='no';
+          this.isTagChoose='no';
+        };
         //修改css
+        this.isTagColor=index;
+        this.isTagChoose=index;
         //通知爸爸
+        let updateTag=this.tags[index].labelName;
+        this.$emit('update:tagName',updateTag);
         //回传数据
+        let gradeTaskId=this.taskNum;
+        axios.get('/task/updateTask.action',{
+          params:{
+            userId:1,
+            taskId:gradeTaskId,
+            labelName:updateTag
+          },
+          baseURL: '/liftVue',
+          withCredentials: false
+        })
       }
     }
   }

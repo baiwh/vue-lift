@@ -2,11 +2,12 @@
   <div id="tag-box">
     <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../assets/icon/changeOk2.png" alt="">
     <img v-on:click="changeTagBtn" v-show="tagChange" src="../../assets/icon/change.png" alt="">
-    <div v-for="(item,index) in tags">
+    <div v-for="(item,index) in tags" v-if="item.dataState==1">
       <span class="tag" v-bind:class="isChooseTag">{{item.labelName}}</span>
-      <span class="tagDel">-</span>
+      <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>
     </div>
-    <span class="addTag" v-on:click="addTag">添加新标签</span>
+    <span class="addTag" v-on:click="addTag" v-show="isAddTag">添加新标签</span>
+    <input class="inputTag" v-model="inputNewTag" v-show="isInputTag" v-on:blur="addTagOk" v-on:keyup.enter="addTagOk" type="text" placeholder="新标签">
   </div>
 </template>
 
@@ -19,7 +20,11 @@
         tags:[],
         tagOk:false,
         tagChange:true,
-        isChooseTag:'tagColor'
+        isChooseTag:'tagColor',
+        isTagDel:false,
+        isAddTag:false,
+        isInputTag:false,
+        inputNewTag:''
       }
     },
     mounted:function () {
@@ -39,28 +44,75 @@
           this.tags=res.data;
         })
       },
-      //修改完成按钮?
-      changeTagOkBtn:function () {
-        //切换按钮
-        this.tagOk=false;
-        this.tagChange=true;
-        //隐藏减号和新增
-      },
-      //修改按钮?
+      //修改按钮
       changeTagBtn:function () {
         //切换按钮
         this.tagOk=true;
         this.tagChange=false;
         //显示减号和新增
+        this.isTagDel=true;
+          this.isAddTag=true;
       },
-      //点击新增标签?
+      //修改完成按钮
+      changeTagOkBtn:function () {
+        //切换按钮
+        this.tagOk=false;
+        this.tagChange=true;
+        //隐藏减号和新增
+        this.isTagDel=false;
+          this.isAddTag=false;
+      },
+      //点击新增标签
       addTag:function () {
         //显示输入框
-      }
-      //鼠标离开新标签输入框。隐藏输入框显示新增按钮。回传。push数组。显示新的tag
-      //点击减号。改变状态？移除？回传数据
+        this.isInputTag=true;
+        this.isAddTag=false;
+      },
+      //鼠标离开新标签输入框
+      addTagOk:function () {
+        // push数组
+        this.tags.unshift({
+          userId:1,
+          labelName:'',
+          dataState:1,
+          labelId:''
+        })
+        //同步输入框内容
+        this.tags[0].labelName=this.inputNewTag;
+        // 回传数据、赋值
+        let newTag=this.tags[0].labelName;
+        axios.get('/label/insertLabel.action',{
+          params:{
+            userId:1,
+            labelName:newTag
+          },
+          baseURL: '/liftVue',
+          withCredentials: false
+        }).then((newTags)=>{
+          let res=newTags.data;
+          this.tags[0].labelId=res.data;
+        })
+        //隐藏输入框显示新增按钮
+        this.isInputTag=false;
+        this.isAddTag=true;
+      },
+      //点击减号
+      tagDelBtn:function (index) {
+        // 改变状态
+        this.tags[index].dataState=2;
+        // 回传数据
+        let delTagId=this.tags[index].labelId;
+        axios.get('/label/updateLabel.action',{
+          params:{
+            userId:1,
+            labelId:delTagId,
+            dataState:2
+          },
+          baseURL: '/liftVue',
+          withCredentials: false
+        })
+      },
       //点击tag筛选。修改颜色
-
     }
   }
 </script>
@@ -79,7 +131,6 @@
   }
   /*删除标签（减号）*/
   .tagDel{
-    display: none;
     float: right;
     height: 20px;
     width: 20px;
@@ -97,7 +148,6 @@
   }
   /*添加新标签*/
   .addTag{
-    display: none;
     float: right;
     height: 25px;
     width: 90px;
@@ -111,7 +161,7 @@
     text-align: center;
   }
   .inputTag{
-    top: 3px;
+    top: 4px;
     width: 80px;
     height: 25px;
     line-height: 25px;

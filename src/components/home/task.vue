@@ -8,10 +8,10 @@
           <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}" v-on:click="changeGrade(index)" v-show="gradeChoose!=index"></div>
           <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-show="allGradeIndex==index" v-on:click.native="changeGradeBox" ref="allGrade"></allGrade>
           <!--标签-->
-          <span class="tag tagChoose" v-on:click="changeTag(index)">家</span>
+          <span class="tag tagChoose" v-on:click="changeTag(index)">{{item.labelName}}</span>
         </div>
         <!--标签悬浮-->
-        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId"v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
+        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId" v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
         <!--标题-->
         <div class="title">
           <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
@@ -24,8 +24,7 @@
         </div>
         <!--进度条-->
         <div class="rate">
-          <div class="ratio">
-          </div>
+          <div class="ratio"></div>
         </div>
         <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
         <!--删除-->
@@ -53,7 +52,7 @@
         tagWindowIndex:'no',
         allGradeIndex:'no',
         gradeChoose:'no',
-        theGradeColor:['','red','orange','green']
+        theGradeColor:['','red','orange','green'],
       }
     },
     filters:{
@@ -128,8 +127,8 @@
         }
         //调用子组件方法改变里边的颜色
         let father=this;
-//        father.$refs.tagWindow[index].getTagColor();
         father.$refs.tagWindow[index].getAllTag();
+        father.$refs.tagWindow[index].getTagColor();
       },
       //点击tagWindow？
       changeTagWindow:function () {

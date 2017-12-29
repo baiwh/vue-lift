@@ -61,14 +61,14 @@
           let father=this;
           father.$refs.task.addTask();
         },
-      //组件间的中转站
-        taskBus:function () {
-          //加载时告诉itemBox第一个taskId
-          //点击task的grade时告诉itemBox
-          //点击tag悬浮窗内的告诉itemBox
-          //修改title时告诉itemBox
-          //itemBox修改进度条时告诉task的进度条
-        },
+
+
+      //加载时告诉itemBox第一个taskId
+      //点击task的grade时告诉itemBox
+      //点击tag悬浮窗内的告诉itemBox
+      //修改title时告诉itemBox
+      //itemBox修改进度条时告诉task的进度条
+
         //搜索功能？
 
     }
