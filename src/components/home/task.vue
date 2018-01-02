@@ -106,7 +106,6 @@
         //调用子组件allGrade中的方法
         let father=this;
         father.$refs.allGrade[index].getColor();
-
       },
       //点击allGrade？
       changeGradeBox:function(){

@@ -3,12 +3,27 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import Vuex from 'vuex'
 
+Vue.use(Vuex);
 Vue.config.productionTip = false
+
+const store=new Vuex.Store({
+  state:{
+    // tasks:[]
+  },
+  mutations:{
+    updateGrade(state,numGrade){
+      state.gradeId=numGrade;
+    }
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App },

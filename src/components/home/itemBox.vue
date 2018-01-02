@@ -3,7 +3,7 @@
     <div class="header">
       <div>
         <!--紧急程度-->
-        <div class="grade" v-bind:style="{border:'5px solid '+itemGrade}"></div>
+        <div class="gradeItem" v-bind:style="{border:'5px solid '+itemGrade}"></div>
         <!--修改-->
         <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
@@ -148,5 +148,14 @@
     height: 20px;
     margin: 10px;
   }
-
+  .gradeItem{
+    height: 20px;
+    width: 20px;
+    left: 15px;
+    top: 20px;
+    border-radius: 10px;
+    float: left;
+    margin: 5px;
+    cursor: pointer;
+  }
 </style>
