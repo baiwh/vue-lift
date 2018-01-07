@@ -13,7 +13,7 @@
     name: 'tagWindow',
     props:[
       'tagName',
-      'taskNum',
+      'taskNum'
     ],
     data() {
       return {
@@ -77,6 +77,8 @@
           baseURL: '/liftVue',
           withCredentials: false
         })
+        //修改右侧的
+        this.$store.commit('updateTag',updateTag);
       }
     }
   }

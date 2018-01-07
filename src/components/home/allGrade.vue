@@ -61,7 +61,8 @@
           baseURL: '/liftVue',
           withCredentials: false
         })
-
+        //同步右侧
+        this.$store.commit('updateGrade',updateGrade);
       }
     }
   }

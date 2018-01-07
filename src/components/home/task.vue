@@ -44,6 +44,7 @@
     data() {
       return {
         tasks:[],
+//        tasks:'',
         titInput:'no',
         titSpan:'no',
         dayInput:'no',
@@ -72,6 +73,7 @@
     },
     mounted:function(){
         this.getTask();
+//      this.tasks=this.$store.state.task;
     },
     methods:{
         //初始加载
@@ -83,19 +85,28 @@
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then((tasks)=>{
-          let res = tasks.data;
-          this.tasks=res.data;
+        }).then((task)=>{
+          let res = task.data;
+          let tasks=res.data;
+          this.tasks=tasks;
+          //获取第一个task的id
+          let taskIdStore=tasks[0].taskId;
+          this.$store.commit('updateTaskId',taskIdStore);
+          //获取第一个task的grade状态
+          let gradeIdStore=tasks[0].gradeId;
+          this.$store.commit('updateGrade',gradeIdStore);
+          //获取第一个task的tag
+          let tagStore=tasks[0].labelName;
+          this.$store.commit('updateTag',tagStore);
         })
-        //给第一个加上选中状态
       },
       //点击task？
       chooseTask:function (index) {
           //添加选中效果
           this.isChoose=index;
           //传数据
-
-        //调用item的getItem
+        let taskIdStore=this.tasks[index].taskId;
+        this.$store.commit('updateTaskId',taskIdStore);
       },
       //点击grade
       changeGrade:function (index) {
@@ -107,12 +118,11 @@
         let father=this;
         father.$refs.allGrade[index].getColor();
       },
-      //点击allGrade？
+      //点击allGrade
       changeGradeBox:function(){
         //恢复原样
         this.gradeChoose='no';
         this.allGradeIndex='no';
-        //修改右边的
       },
       //点击task里的标签？
       changeTag:function (index) {

@@ -7,7 +7,7 @@
         <!--修改-->
         <img class="change" src="../../assets/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
-        <span class="tag tagChoose"> </span>
+        <span class="tag tagChoose">{{this.itemTag}}</span>
       </div>
     </div>
     <h2>接下来。。</h2>
@@ -33,13 +33,29 @@
     data() {
       return {
         addItem:true,
-        changeOk:false,
-        itemGrade:'red'
+        changeOk:false
       }
     },
     components:{
       item:item,
       grade:grade
+    },
+    computed:{
+        //修改grade
+      itemGrade(){
+          let gradeIdStore=this.$store.state.gradeIdStore;
+          if(gradeIdStore==1){
+              return 'red';
+          }else if(gradeIdStore==2){
+              return 'orange';
+          }else if(gradeIdStore==3){
+              return 'green';
+        }
+      },
+      //修改标签
+      itemTag(){
+          return this.$store.state.tagStore;
+      }
     },
     methods:{
       //右上角的修改按钮
@@ -93,13 +109,6 @@
   .header div{
     opacity: 1;
   }
-  /*大列表里的红绿灯*/
-  .header .grade{
-    position: relative;
-    top: 5px;
-    cursor: auto;
-    overflow: hidden;
-  }
   /*修改*/
   .change{
     float: right;
@@ -152,10 +161,12 @@
     height: 20px;
     width: 20px;
     left: 15px;
-    top: 20px;
     border-radius: 10px;
     float: left;
     margin: 5px;
-    cursor: pointer;
+    position: relative;
+    top: 5px;
+    cursor: auto;
+    overflow: hidden;
   }
 </style>

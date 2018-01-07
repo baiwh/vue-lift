@@ -1,16 +1,12 @@
 {
   "itemData":[
     {
-      "detailItem":"第1条11111",
-      "choose":0
+      "taskDetailName":"第1条11111",
+      "dataState":1
     },
     {
-      "detailItem":"第2条",
-      "choose":0
-    },
-    {
-      "detailItem":"第3条",
-      "choose":0
+      "taskDetailName":"第2条",
+      "dataState":2
     }
   ]
 }
