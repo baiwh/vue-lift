@@ -107,6 +107,7 @@
           //传数据
         let taskIdStore=this.tasks[index].taskId;
         this.$store.commit('updateTaskId',taskIdStore);
+        this.$store.commit('changeToGet','ok');
       },
       //点击grade
       changeGrade:function (index) {

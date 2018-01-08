@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     gradeIdStore: '',
     tagStore: '',
     detailStore: [],
-
+    toGet:'ok'
   },
   getters: {
     // getDetail:state => {
@@ -53,11 +53,14 @@ const store = new Vuex.Store({
 
     updateStoreDetail(state, detailStore){
       state.detailStore = detailStore;
+    },
+    changeToGet(state,toGet){
+      state.toGet = toGet;
     }
   },
   actions: {
     updateStoreDetail({commit,state}){
-      if (state.taskIdStore != '') {
+      if (state.taskIdStore != ''&&state.toGet=='ok') {
         axios.get('/taskDetail/getDetailJson.action?', {
           params: {
             userId: 1,
@@ -68,6 +71,7 @@ const store = new Vuex.Store({
         }).then((res)=>{
           let list=res.data.data;
           commit('updateStoreDetail',list);
+          commit('changeToGet','stop');
         })
       }
     }

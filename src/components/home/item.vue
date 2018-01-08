@@ -65,7 +65,7 @@
 //          return data;
 //        }
       getDetail(){
-//        if(this.$store.state.taskIdStore != ''){
+//        if(this.$store.state.taskIdStore!='' && this.$store.state.toGet==0){
           this.$store.dispatch('updateStoreDetail');
           return this.$store.state.detailStore;
 //        }
