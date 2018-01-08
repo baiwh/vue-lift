@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     taskIdStore: '',
     gradeIdStore: '',
     tagStore: '',
-    detailStore: '',
+    detailStore: [],
 
   },
   getters: {
@@ -51,7 +51,6 @@ const store = new Vuex.Store({
       state.tagStore = tagStore;
     },
 
-
     updateStoreDetail(state, detailStore){
       state.detailStore = detailStore;
     }
@@ -66,12 +65,9 @@ const store = new Vuex.Store({
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then((result)=>{
-          let res=result.data;
-          commit({
-            type:'updateDetail',
-            res:res.data
-          })
+        }).then((res)=>{
+          let list=res.data.data;
+          commit('updateStoreDetail',list);
         })
       }
     }

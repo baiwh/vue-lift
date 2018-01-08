@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div type="text" name="hahha" >{{1}}</div>
+    <!--<div type="text" name="hahha" >{{1}}</div>-->
     <!--<div v-for="(item,index) in detail" v-if="item.dataState!=3">-->
     <div v-for="(item,index) in getDetail" v-if="item.dataState!=3">
       <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
@@ -19,7 +19,9 @@
 </template>
 <script>
   import axios from 'axios'
+  import {mapState} from 'vuex'
   import { mapActions } from 'vuex'
+
 
   export default {
     name: 'item',
@@ -63,17 +65,29 @@
 //          return data;
 //        }
       getDetail(){
+//        if(this.$store.state.taskIdStore != ''){
+          this.$store.dispatch('updateStoreDetail');
           return this.$store.state.detailStore;
+//        }
       }
+//      ...mapState({
+//        detailStore:state=>state.detailStore
+//      })
+
     },
     mounted(){
 //        this.submitForm();
+
+
     },
     methods:{
+//        detailInfo(){
+//          this.updateStoreDetail();
+//        },
         //用action调用main.js中获取数据的方法
-      ...mapActions([
-        'updateStoreDetail'
-      ]),
+//      ...mapActions([
+//        'updateStoreDetail'
+//      ]),
         //获取detail的内容
 //      getItem:function(){
 //        axios.get('/taskDetail/getDetailJson.action?', {
