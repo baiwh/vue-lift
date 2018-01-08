@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!--<div type="text" name="hahha" >{{1}}</div>-->
-    <!--<div v-for="(item,index) in detail" v-if="item.dataState!=3">-->
     <div v-for="(item,index) in getDetail" v-if="item.dataState!=3">
       <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
         <input type="checkbox"/>
@@ -19,17 +17,12 @@
 </template>
 <script>
   import axios from 'axios'
-  import {mapState} from 'vuex'
-  import { mapActions } from 'vuex'
-
 
   export default {
     name: 'item',
     data() {
       return {
-//        detail:this.getDetail,
         detail:[],
-//        detail:this.$store.detailStore,
         isItemInput:false,
         isItems:true
       }
@@ -37,75 +30,12 @@
     //这里用computed获取taskId，从后台获取detail明细，但是then函数加载落后于页面渲染，此路不通。
     //换成action，将获取的数据放入vuex的store中进行尝试
     computed:{
-//        getDetail(){
-//          let id= this.$store.state.taskIdStore;
-//            let data="haha";
-//              if (id!=''){
-//                axios.get('/taskDetail/getDetailJson.action?', {
-//                  params: {
-//                    userId:1,
-//                    taskId:id
-//                  },
-//                  baseURL: '/liftVue',
-//                  withCredentials: false
-//                })
-//                axios.interceptors.response.use(function (response) {
-//                  let res = response.data;
-//                    data =  res.msg;
-//                })
-////                .then(
-////                  function (detail) {
-////                    let res = detail.data;
-////                    data =  res.msg;
-//////                    return data;
-////                  }
-////                )
-//              }
-//
-//          return data;
-//        }
       getDetail(){
-//        if(this.$store.state.taskIdStore!='' && this.$store.state.toGet==0){
           this.$store.dispatch('updateStoreDetail');
           return this.$store.state.detailStore;
-//        }
       }
-//      ...mapState({
-//        detailStore:state=>state.detailStore
-//      })
-
-    },
-    mounted(){
-//        this.submitForm();
-
-
     },
     methods:{
-//        detailInfo(){
-//          this.updateStoreDetail();
-//        },
-        //用action调用main.js中获取数据的方法
-//      ...mapActions([
-//        'updateStoreDetail'
-//      ]),
-        //获取detail的内容
-//      getItem:function(){
-//        axios.get('/taskDetail/getDetailJson.action?', {
-//          params: {
-//            userId:1,
-//            taskId:this.taskId222
-//          },
-//          baseURL: '/liftVue',
-//          withCredentials: false
-//        }).then((detail)=>{
-//          let res = detail.data;
-//          this.detail=res.data;
-//        })
-//      },
-//      submitForm:function () {
-//        let data=this.$store.dispatch('getDetailList');
-//        this.detail=data;
-//      },
       //选中checkbox。加对勾、传数据
       checkBoxChoose:function (index) {
           //如果是选中。就改为未选中。否则相反

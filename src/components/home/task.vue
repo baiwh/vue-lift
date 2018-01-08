@@ -73,7 +73,6 @@
     },
     mounted:function(){
         this.getTask();
-//      this.tasks=this.$store.state.task;
     },
     methods:{
         //初始加载

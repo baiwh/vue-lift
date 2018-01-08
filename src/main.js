@@ -50,16 +50,19 @@ const store = new Vuex.Store({
     updateTag(state, tagStore){
       state.tagStore = tagStore;
     },
-
+    //修改detail的item列表
     updateStoreDetail(state, detailStore){
       state.detailStore = detailStore;
     },
+    //控制获取detial时get的执行次数
     changeToGet(state,toGet){
       state.toGet = toGet;
     }
   },
   actions: {
+    //detail的item的get请求
     updateStoreDetail({commit,state}){
+      //如果taskId非空。且允许执行
       if (state.taskIdStore != ''&&state.toGet=='ok') {
         axios.get('/taskDetail/getDetailJson.action?', {
           params: {
@@ -71,10 +74,13 @@ const store = new Vuex.Store({
         }).then((res)=>{
           let list=res.data.data;
           commit('updateStoreDetail',list);
+          //停止执行
           commit('changeToGet','stop');
         })
       }
     }
+
+
   }
 
 
