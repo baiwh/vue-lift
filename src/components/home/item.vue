@@ -44,14 +44,15 @@
           this.getDetail[index].dataState=2;
         }
         //进度条
-        
+
         //传数据回去
         let detailId=this.getDetail[index].taskDetailId;
         let dataState=this.getDetail[index].dataState;
+        let id=this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             userId:1,
-            taskId:1,
+            taskId:id,
             taskDetailId:detailId,
             dataState:dataState,
           },
@@ -69,13 +70,14 @@
       itemInputBlur:function (index) {
         let inputItem=this.getDetail[index].taskDetailName;
         let detailId=this.getDetail[index].taskDetailId;
+        let id=this.$store.state.taskIdStore;
         //判空。
         if (inputItem!=''){
             //保存、传数据
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
               userId:1,
-              taskId:1,
+              taskId:id,
               taskDetailId:detailId,
               taskDetailName:inputItem
             },
@@ -88,7 +90,7 @@
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
               userId:1,
-              taskId:1,
+              taskId:id,
               taskDetailId:detailId,
               dataState:3
             },
@@ -101,10 +103,11 @@
       delItem:function (index) {
         this.getDetail[index].dataState=3;
         let delId=this.getDetail[index].taskDetailId;
+        let id=this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             userId:1,
-            taskId:1,
+            taskId:id,
             taskDetailId:delId,
             dataState:3
           },
@@ -115,9 +118,10 @@
       //新增item（在父组件调用）?
       addItem:function () {
         //插入新数组
-        this.detail.push({
+        let id=this.$store.state.taskIdStore;
+        this.getDetail.push({
           taskDetailName:'',
-          taskId:7,
+          taskId:id,
           taskDetailId:'',
           dataState:1
         });
@@ -125,11 +129,10 @@
         this.isItems=false;
         this.isItemInput=true;
         //回传数据并赋值新的item
-        let taskId=this.$store.state.taskIdStore;
         axios.get('/taskDetail/insertTaskDetail.action', {
           params: {
             userId:1,
-            taskId:taskId,
+            taskId:id,
             taskDetailName:'',
           },
           baseURL: '/liftVue',
