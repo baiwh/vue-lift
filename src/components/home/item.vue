@@ -22,7 +22,6 @@
     name: 'item',
     data() {
       return {
-//        detail:[],
         isItemInput:false,
         isItems:true
       }
@@ -30,7 +29,6 @@
     computed:{
       getDetail(){
           this.$store.dispatch('updateStoreDetail');
-          this.detail=this.$store.state.detailStore;
           return this.$store.state.detailStore;
       }
     },

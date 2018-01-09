@@ -12,15 +12,13 @@
   export default {
     name: 'tagWindow',
     props:[
-      'tagName',
-      'taskNum'
+      'tagName'
     ],
     data() {
       return {
         tags:[],
         isTagColor:'no',
-        isTagChoose:'no',
-        trydata:1
+        isTagChoose:'no'
       }
     },
     methods:{
@@ -35,12 +33,8 @@
         }).then((tags)=>{
             let res=tags.data;
             this.tags=res.data;
-        })
-      },
-        //改变选中的颜色
-      getTagColor:function () {
           //获取到相同的name的索引
-          let name1=this.tagName;
+          let name1=this.$store.state.tagStore;
           let len=this.tags.length;
           let ind='';
           for (let i=0;i<len;i++){
@@ -51,15 +45,14 @@
           }
           //改颜色
           this.isTagColor=ind;
-        this.isTagChoose=ind;
+          this.isTagChoose=ind;
+        })
       },
       //点击悬浮穿内的标签时
       changeTagBox:function (index) {
         //先把所有的都改成灰色
-        for(let i=0;i<this.tags.length;i++){
           this.isTagColor='no';
           this.isTagChoose='no';
-        };
         //修改css
         this.isTagColor=index;
         this.isTagChoose=index;
@@ -67,7 +60,7 @@
         let updateTag=this.tags[index].labelName;
         this.$emit('update:tagName',updateTag);
         //回传数据
-        let gradeTaskId=this.taskNum;
+        let gradeTaskId=this.$store.state.taskIdStore;
         axios.get('/task/updateTask.action',{
           params:{
             userId:1,
@@ -78,7 +71,7 @@
           withCredentials: false
         })
         //修改右侧的
-        this.$store.commit('updateTag',updateTag);
+        this.$store.commit('updateStoreTag',updateTag);
       }
     }
   }

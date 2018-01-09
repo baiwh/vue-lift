@@ -15,19 +15,20 @@ const store = new Vuex.Store({
     gradeIdStore: '',
     tagStore: '',
     detailStore: [],
-    toGet:'ok'
+    toGet:'ok',
+    titleStore:''
   },
   mutations: {
     //获取itemBox中需要的taskId
-    updateTaskId(state, taskIdStore){
+    updateStoreTaskId(state, taskIdStore){
       state.taskIdStore = taskIdStore;
     },
     //获取itemBox中grade的颜色序号
-    updateGrade(state, gradeIdStore){
+    updateStoreGrade(state, gradeIdStore){
       state.gradeIdStore = gradeIdStore;
     },
     //获取itemBox中的tag
-    updateTag(state, tagStore){
+    updateStoreTag(state, tagStore){
       state.tagStore = tagStore;
     },
     //修改detail的item列表
@@ -37,6 +38,10 @@ const store = new Vuex.Store({
     //控制获取detial时get的执行次数
     changeToGet(state,toGet){
       state.toGet = toGet;
+    },
+    //标题
+    updateStoreTitle(state,titleStore){
+      state.titleStore = titleStore;
     }
   },
   actions: {

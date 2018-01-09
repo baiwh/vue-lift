@@ -62,7 +62,7 @@
           withCredentials: false
         })
         //同步右侧
-        this.$store.commit('updateGrade',updateGrade);
+        this.$store.commit('updateStoreGrade',updateGrade);
       }
     }
   }

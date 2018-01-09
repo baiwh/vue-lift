@@ -11,11 +11,11 @@
           <span class="tag tagChoose" v-on:click="changeTag(index)">{{item.labelName}}</span>
         </div>
         <!--标签悬浮-->
-        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"  v-bind:taskNum="item.taskId" v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
+        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName" v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
         <!--标题-->
         <div class="title">
           <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
-          <input type="text" v-show="titInput==index" v-model="item.taskName" v-on:blur="inputBlur(index)" v-on:keyup.enter="inputBlur(index)">
+          <input type="text" v-show="titInput==index" v-model="item.taskName" v-on:blur="inputBlur(index)" v-on:keyup.enter="inputBlur(index)" v-on:keyup="titleInputKeyup(index)">
         </div>
         <!--日期-->
         <div class="day">
@@ -89,13 +89,16 @@
           this.tasks=tasks;
           //获取第一个task的id
           let taskIdStore=tasks[0].taskId;
-          this.$store.commit('updateTaskId',taskIdStore);
+          this.$store.commit('updateStoreTaskId',taskIdStore);
           //获取第一个task的grade状态
           let gradeIdStore=tasks[0].gradeId;
-          this.$store.commit('updateGrade',gradeIdStore);
+          this.$store.commit('updateStoreGrade',gradeIdStore);
           //获取第一个task的tag
           let tagStore=tasks[0].labelName;
-          this.$store.commit('updateTag',tagStore);
+          this.$store.commit('updateStoreTag',tagStore);
+          //获取第一个task的title
+          let titleStore=tasks[0].taskName;
+          this.$store.commit('updateStoreTitle',titleStore);
         })
       },
       //点击task
@@ -104,14 +107,17 @@
           this.isChoose=index;
           //获取点击的task的ID
         let taskIdStore=this.tasks[index].taskId;
-        this.$store.commit('updateTaskId',taskIdStore);
+        this.$store.commit('updateStoreTaskId',taskIdStore);
         this.$store.commit('changeToGet','ok');
         //获取点击的task的grade状态
         let gradeIdStore=this.tasks[index].gradeId;
-        this.$store.commit('updateGrade',gradeIdStore);
+        this.$store.commit('updateStoreGrade',gradeIdStore);
         //获取点击的task的tag
         let tagStore=this.tasks[index].labelName;
-        this.$store.commit('updateTag',tagStore);
+        this.$store.commit('updateStoreTag',tagStore);
+        //获取点击的task的title
+        let titleStore=this.tasks[index].taskName;
+        this.$store.commit('updateStoreTitle',titleStore);
       },
       //点击grade
       changeGrade:function (index) {
@@ -142,18 +148,23 @@
         //调用子组件方法改变里边的颜色
         let father=this;
         father.$refs.tagWindow[index].getAllTag();
-        father.$refs.tagWindow[index].getTagColor();
       },
-      //点击tagWindow？
+      //点击tagWindow
       changeTagWindow:function () {
           //恢复原样
-//          this.tagWindowIndex='no';
+          this.tagWindowIndex='no';
       },
       //点击task的标题
       titInputChange:function (index) {
           //切换成input
         this.titInput=index;
         this.titSpan=index;
+      },
+      //标题输入时同步store
+      titleInputKeyup:function (index) {
+        //获取点击的task的title
+        let titleStore=this.tasks[index].taskName;
+        this.$store.commit('updateStoreTitle',titleStore);
       },
       //点击task的日期
       dayInputChange:function (index) {

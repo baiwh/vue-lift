@@ -10,7 +10,7 @@
         <span class="tag tagChoose">{{this.itemTag}}</span>
       </div>
     </div>
-    <h2>接下来。。</h2>
+    <h2>{{this.itemTitel}}</h2>
     <div id="toDoList">
       <item ref="item"></item>
     </div>
@@ -55,6 +55,10 @@
       //修改标签
       itemTag(){
           return this.$store.state.tagStore;
+      },
+      //修改标题
+      itemTitel(){
+          return this.$store.state.titleStore;
       }
     },
     methods:{
@@ -85,8 +89,6 @@
         this.addItem=false;
         this.changeOk=true;
       },
-      //grade？tag？
-
     }
   }
 
