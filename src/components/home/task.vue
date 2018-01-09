@@ -44,7 +44,6 @@
     data() {
       return {
         tasks:[],
-//        tasks:'',
         titInput:'no',
         titSpan:'no',
         dayInput:'no',
@@ -99,14 +98,20 @@
           this.$store.commit('updateTag',tagStore);
         })
       },
-      //点击task？
+      //点击task
       chooseTask:function (index) {
           //添加选中效果
           this.isChoose=index;
-          //传数据
+          //获取点击的task的ID
         let taskIdStore=this.tasks[index].taskId;
         this.$store.commit('updateTaskId',taskIdStore);
         this.$store.commit('changeToGet','ok');
+        //获取点击的task的grade状态
+        let gradeIdStore=this.tasks[index].gradeId;
+        this.$store.commit('updateGrade',gradeIdStore);
+        //获取点击的task的tag
+        let tagStore=this.tasks[index].labelName;
+        this.$store.commit('updateTag',tagStore);
       },
       //点击grade
       changeGrade:function (index) {
@@ -124,7 +129,7 @@
         this.gradeChoose='no';
         this.allGradeIndex='no';
       },
-      //点击task里的标签？
+      //点击task里的标签
       changeTag:function (index) {
         //如果索引不相等
         if(this.tagWindowIndex!=index){
@@ -143,7 +148,6 @@
       changeTagWindow:function () {
           //恢复原样
 //          this.tagWindowIndex='no';
-        //修改右边的
       },
       //点击task的标题
       titInputChange:function (index) {

@@ -22,31 +22,32 @@
     name: 'item',
     data() {
       return {
-        detail:[],
+//        detail:[],
         isItemInput:false,
         isItems:true
       }
     },
-    //这里用computed获取taskId，从后台获取detail明细，但是then函数加载落后于页面渲染，此路不通。
-    //换成action，将获取的数据放入vuex的store中进行尝试
     computed:{
       getDetail(){
           this.$store.dispatch('updateStoreDetail');
+          this.detail=this.$store.state.detailStore;
           return this.$store.state.detailStore;
       }
     },
     methods:{
       //选中checkbox。加对勾、传数据
       checkBoxChoose:function (index) {
-          //如果是选中。就改为未选中。否则相反
-        if (this.detail[index].dataState==2) {
-          this.detail[index].dataState=1;
+          //如果当前是选中。就改为未选中。否则相反
+        if (this.getDetail[index].dataState==2) {
+          this.getDetail[index].dataState=1;
         }else {
-          this.detail[index].dataState=2;
+          this.getDetail[index].dataState=2;
         }
+        //进度条
+        
         //传数据回去
-        let detailId=this.detail[index].taskDetailId;
-        let dataState=this.detail[index].dataState;
+        let detailId=this.getDetail[index].taskDetailId;
+        let dataState=this.getDetail[index].dataState;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             userId:1,
@@ -66,8 +67,8 @@
       },
       //鼠标离开输入框。或者enter
       itemInputBlur:function (index) {
-        let inputItem=this.detail[index].taskDetailName;
-        let detailId=this.detail[index].taskDetailId;
+        let inputItem=this.getDetail[index].taskDetailName;
+        let detailId=this.getDetail[index].taskDetailId;
         //判空。
         if (inputItem!=''){
             //保存、传数据
@@ -83,7 +84,7 @@
           })
         }else {
             //空就删掉
-          this.detail[index].dataState=3;
+          this.getDetail[index].dataState=3;
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
               userId:1,
@@ -98,8 +99,8 @@
       },
       //删除item、传数据
       delItem:function (index) {
-        this.detail[index].dataState=3;
-        let delId=this.detail[index].taskDetailId;
+        this.getDetail[index].dataState=3;
+        let delId=this.getDetail[index].taskDetailId;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             userId:1,
@@ -111,10 +112,8 @@
           withCredentials: false,
         })
       },
-      //新增item（在父组件调用）
+      //新增item（在父组件调用）?
       addItem:function () {
-          //传进来个taskId
-//        let taskId=
         //插入新数组
         this.detail.push({
           taskDetailName:'',
@@ -126,18 +125,19 @@
         this.isItems=false;
         this.isItemInput=true;
         //回传数据并赋值新的item
+        let taskId=this.$store.state.taskIdStore;
         axios.get('/taskDetail/insertTaskDetail.action', {
           params: {
             userId:1,
-            taskId:7,
+            taskId:taskId,
             taskDetailName:'',
           },
           baseURL: '/liftVue',
           withCredentials: false,
         }).then((newItem)=>{
             let res=newItem.data;
-            let len=this.detail.length-1;
-            this.detail[len].taskDetailId=res.data;
+            let len=this.getDetail.length-1;
+            this.getDetail[len].taskDetailId=res.data;
         })
       }
       //进度条
