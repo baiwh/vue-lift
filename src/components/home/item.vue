@@ -8,8 +8,9 @@
       </div>
       <div class="itemInput" v-show="isItemInput">
         <div class="checkBox"></div>
-        <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)"  v-on:keyup.enter="itemInputBlur(index)">
-        <img src="../../assets/icon/del.png" alt="" v-on:click="delItem(index)">
+        <input type="text" v-model="item.taskDetailName" v-on:blur="itemInputBlur(index)"
+               v-on:keyup.enter="itemInputBlur(index)">
+        <img src="../../../static/icon/del.png" alt="" v-on:click="delItem(index)">
         <!--<img class="changeAdd" src="icon/changeAdd.png" alt="">-->
       </div>
     </div>
@@ -22,75 +23,75 @@
     name: 'item',
     data() {
       return {
-        isItemInput:false,
-        isItems:true
+        isItemInput: false,
+        isItems: true
       }
     },
-    computed:{
+    computed: {
       getDetail(){
-          this.$store.dispatch('updateStoreDetail');
-          return this.$store.state.detailStore;
+        this.$store.dispatch('updateStoreDetail');
+        return this.$store.state.detailStore;
       }
     },
-    methods:{
+    methods: {
       //选中checkbox。加对勾、传数据
-      checkBoxChoose:function (index) {
-          //如果当前是选中。就改为未选中。否则相反
-        if (this.getDetail[index].dataState==2) {
-          this.getDetail[index].dataState=1;
-        }else {
-          this.getDetail[index].dataState=2;
+      checkBoxChoose: function (index) {
+        //如果当前是选中。就改为未选中。否则相反
+        if (this.getDetail[index].dataState == 2) {
+          this.getDetail[index].dataState = 1;
+        } else {
+          this.getDetail[index].dataState = 2;
         }
         //进度条
 
         //传数据回去
-        let detailId=this.getDetail[index].taskDetailId;
-        let dataState=this.getDetail[index].dataState;
-        let id=this.$store.state.taskIdStore;
+        let detailId = this.getDetail[index].taskDetailId;
+        let dataState = this.getDetail[index].dataState;
+        let id = this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
-            userId:1,
-            taskId:id,
-            taskDetailId:detailId,
-            dataState:dataState,
+            userId: 1,
+            taskId: id,
+            taskDetailId: detailId,
+            dataState: dataState,
           },
           baseURL: '/liftVue',
           withCredentials: false,
         })
       },
       //右上角的修改按钮（在它爸爸里调用的）
-      changeItem:function () {
-          //切换input
-        this.isItems=!this.isItems;
-        this.isItemInput=!this.isItemInput;
+      changeItem: function () {
+        //切换input
+        this.isItems = !this.isItems;
+        this.isItemInput = !this.isItemInput;
       },
       //鼠标离开输入框。或者enter
-      itemInputBlur:function (index) {
-        let inputItem=this.getDetail[index].taskDetailName;
-        let detailId=this.getDetail[index].taskDetailId;
-        let id=this.$store.state.taskIdStore;
+      itemInputBlur: function (index) {
+        let inputItem = this.getDetail[index].taskDetailName;
+        let detailId = this.getDetail[index].taskDetailId;
+        let id = this.$store.state.taskIdStore;
         //判空。
-        if (inputItem!=''){
-            //保存、传数据
+        if (inputItem != '') {
+          //保存、传数据
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
-              userId:1,
-              taskId:id,
-              taskDetailId:detailId,
-              taskDetailName:inputItem
+              userId: 1,
+              taskId: id,
+              taskDetailId: detailId,
+              taskDetailName: inputItem
             },
             baseURL: '/liftVue',
             withCredentials: false,
           })
-        }else {
-            //空就删掉
-          this.getDetail[index].dataState=3;
+        } else {
+          //空就删掉
+          this.getDetail[index].dataState = 3;
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
-              userId:1,
-              taskId:id,
-              taskDetailId:detailId,
-              dataState:3
+              userId: 1,
+              taskId: id,
+              taskDetailId: detailId,
+              dataState: 3
             },
             baseURL: '/liftVue',
             withCredentials: false,
@@ -98,47 +99,47 @@
         }
       },
       //删除item、传数据
-      delItem:function (index) {
-        this.getDetail[index].dataState=3;
-        let delId=this.getDetail[index].taskDetailId;
-        let id=this.$store.state.taskIdStore;
+      delItem: function (index) {
+        this.getDetail[index].dataState = 3;
+        let delId = this.getDetail[index].taskDetailId;
+        let id = this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
-            userId:1,
-            taskId:id,
-            taskDetailId:delId,
-            dataState:3
+            userId: 1,
+            taskId: id,
+            taskDetailId: delId,
+            dataState: 3
           },
           baseURL: '/liftVue',
           withCredentials: false,
         })
       },
       //新增item（在父组件调用）?
-      addItem:function () {
+      addItem: function () {
         //插入新数组
-        let id=this.$store.state.taskIdStore;
+        let id = this.$store.state.taskIdStore;
         this.getDetail.push({
-          taskDetailName:'',
-          taskId:id,
-          taskDetailId:'',
-          dataState:1
+          taskDetailName: '',
+          taskId: id,
+          taskDetailId: '',
+          dataState: 1
         });
         //切换input
-        this.isItems=false;
-        this.isItemInput=true;
+        this.isItems = false;
+        this.isItemInput = true;
         //回传数据并赋值新的item
         axios.get('/taskDetail/insertTaskDetail.action', {
           params: {
-            userId:1,
-            taskId:id,
-            taskDetailName:'',
+            userId: 1,
+            taskId: id,
+            taskDetailName: '',
           },
           baseURL: '/liftVue',
           withCredentials: false,
-        }).then((newItem)=>{
-            let res=newItem.data;
-            let len=this.getDetail.length-1;
-            this.getDetail[len].taskDetailId=res.data;
+        }).then((newItem) => {
+          let res = newItem.data;
+          let len = this.getDetail.length - 1;
+          this.getDetail[len].taskDetailId = res.data;
         })
       }
       //进度条
@@ -147,7 +148,7 @@
 </script>
 <style>
   /*增加和删除小项目*/
-  .itemInput{
+  .itemInput {
     border: 1px solid #D3D3D3;
     width: 600px;
     height: 50px;
@@ -156,12 +157,14 @@
     margin: 0px 50px;
     border-radius: 2px;
   }
-  .itemInput:hover{
+
+  .itemInput:hover {
     border: 1px solid #46B6FD;
   }
+
   /*输入框*/
-  .itemInput input{
-    padding: 0px 10px ;
+  .itemInput input {
+    padding: 0px 10px;
     font-size: 15px;
     height: 45px;
     width: 450px;
@@ -169,7 +172,8 @@
     border: 1px solid #f1f1f1;
     top: -4px;
   }
-  .itemInput img{
+
+  .itemInput img {
     float: right;
     height: 20px;
     width: 20px;
@@ -177,11 +181,13 @@
     cursor: pointer;
     margin: 15px 10px 15px 15px;
   }
-  .itemInput img:hover{
+
+  .itemInput img:hover {
     opacity: 0.6;
   }
+
   /*每一个小小的项目*/
-  .items{
+  .items {
     border: 1px solid #D3D3D3;
     width: 600px;
     height: 50px;
@@ -191,23 +197,28 @@
     border-radius: 2px;
     display: block;
   }
-  .items:hover{
+
+  .items:hover {
     border: 1px solid #46B6FD;
   }
-  .items input{
+
+  .items input {
     background: #FFFFFF;
     height: 15px;
     width: 15px;
   }
+
   /*下划线和改变颜色*/
-  .spanChecked{
+  .spanChecked {
     text-decoration: line-through;
     color: #C2C2C2;
   }
+
   /*对勾*/
-  input[type=checkbox]{
+  input[type=checkbox] {
     display: none;
   }
+
   @-moz-keyframes dothabottomcheck {
     0% {
       height: 0;
@@ -216,6 +227,7 @@
       height: 17px;
     }
   }
+
   @-webkit-keyframes dothabottomcheck {
     0% {
       height: 0;
@@ -224,6 +236,7 @@
       height: 17px;
     }
   }
+
   @keyframes dothabottomcheck {
     0% {
       height: 0;
@@ -232,6 +245,7 @@
       height: 17px;
     }
   }
+
   @keyframes dothatopcheck {
     0% {
       height: 0;
@@ -243,6 +257,7 @@
       height: 27px;
     }
   }
+
   @-webkit-keyframes dothatopcheck {
     0% {
       height: 0;
@@ -251,9 +266,10 @@
       height: 0;
     }
     100% {
-      height:27px;
+      height: 27px;
     }
   }
+
   @-moz-keyframes dothatopcheck {
     0% {
       height: 0;
@@ -265,6 +281,7 @@
       height: 27px;
     }
   }
+
   .checkBox:before, .checkBox:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -285,7 +302,8 @@
     -moz-transition: opacity ease 0.5s;
     transition: opacity ease 0.5s;
   }
-  .checkBox:after{
+
+  .checkBox:after {
     top: 5px;
     left: 0px;
     -moz-transform: rotate(-45deg);
@@ -294,6 +312,7 @@
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
   }
+
   .checkBox {
     height: 25px;
     width: 25px;
@@ -312,7 +331,8 @@
     overflow: visible;
     float: left;
   }
-  .checkBox:before{
+
+  .checkBox:before {
     top: 16px;
     left: 13px;
     box-shadow: 0 0 0 2px #ffffff;
@@ -322,14 +342,16 @@
     -webkit-transform: rotate(-135deg);
     transform: rotate(-135deg);
   }
+
   /*点击对勾追加效果*/
-  .c:after{
+  .c:after {
     height: 20px;
     -moz-animation: dothabottomcheck 0.2s ease 0s forwards;
     -o-animation: dothabottomcheck 0.2s ease 0s forwards;
     -webkit-animation: dothabottomcheck 0.2s ease 0s forwards;
     animation: dothabottomcheck 0.2s ease 0s forwards;
   }
+
   .c:before {
     height: 30px;
     -moz-animation: dothatopcheck 0.4s ease 0s forwards;

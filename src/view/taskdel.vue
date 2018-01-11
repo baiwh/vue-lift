@@ -1,5 +1,5 @@
 <template>
-  <div id="homeDiv">
+  <div>
     <!--侧导航-->
     <nav-left></nav-left>
     <!--上导航-->
@@ -28,12 +28,13 @@
   import navTop from './../components/navTop.vue'
   import navLeft from './../components/navLeft.vue'
   import tagBox from '../components/home/tagBox.vue'
-  import task from '../components/home/task.vue'
-  import itemBox from '../components/home/itemBox.vue'
+  import task from '../components/taskdel/task.vue'
+  import itemBox from '../components/taskdel/itemBox.vue'
   import add from './../components/add.vue'
   import axios from 'axios'
+
   export default {
-    name: 'home',
+    name: 'taskdel',
     data() {
       return {}
     },
@@ -43,18 +44,12 @@
       tagBox: tagBox,
       task: task,
       itemBox: itemBox,
-      add:add
+      add: add
     },
     methods:{
-        //新增task
-        addTaskBtn:function () {
-            //调用组件的插入task
-          let father=this;
-          father.$refs.task.addTask();
-        },
-        //搜索功能？
 
     }
+    //进度条
   }
 </script>
 <style>

@@ -4,41 +4,28 @@
       <div>
         <!--紧急程度-->
         <div class="gradeItem" v-bind:style="{border:'5px solid '+itemGrade}"></div>
-        <!--修改-->
-        <img class="change" src="../../../static/icon/change.png" alt="change" v-on:click="changeItems">
         <!--标签-->
         <span class="tag tagChoose">{{this.itemTag}}</span>
       </div>
     </div>
     <h2>{{this.itemTitel}}</h2>
     <div id="toDoList">
-      <item ref="item"></item>
-    </div>
-    <!--添加新项目-->
-    <div class="add" id="newItem" v-show="addItem" v-on:click="addItemButton">
-      <img src="../../../static/icon/add.png" alt="">
-    </div>
-    <div class="changeOk" v-show="changeOk" v-on:click="changeOkButton">
-      <img src="../../../static/icon/changeOk.png" alt="">
+      <div class="items">
+        <item></item>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import item from './item.vue'
-  import grade from './allGrade.vue'
-
   export default {
     name: 'itemBox',
     data() {
-      return {
-        addItem: true,
-        changeOk: false
-      }
+      return {}
     },
     components: {
       item: item,
-      grade: grade
     },
     computed: {
       //修改grade
@@ -61,38 +48,8 @@
         return this.$store.state.titleStore;
       }
     },
-    methods: {
-      //右上角的修改按钮
-      changeItems: function () {
-        //调用组件的方法
-        let fatherItemBox = this;
-        fatherItemBox.$refs.item.changeItem();
-        //对勾和加号的切换
-        this.addItem = !this.addItem;
-        this.changeOk = !this.changeOk;
-      },
-      //点击对勾切换回去
-      changeOkButton: function () {
-        //调用组件的方法
-        let fatherItemBox = this;
-        fatherItemBox.$refs.item.changeItem();
-        //对勾和加号的切换
-        this.addItem = !this.addItem;
-        this.changeOk = !this.changeOk;
-      },
-      //添加新项目
-      addItemButton: function () {
-        //调用子组件的方法。插入新数组
-        let fatherItemBox = this;
-        fatherItemBox.$refs.item.addItem();
-        //改为编辑状态
-        this.addItem = false;
-        this.changeOk = true;
-      },
-    }
+    methods: {}
   }
-
-
 </script>
 <style>
   /*里边还要套一个小一号的盒纸*/

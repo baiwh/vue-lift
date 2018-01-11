@@ -1,7 +1,7 @@
 <template>
   <div id="tag-box">
-    <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../assets/icon/changeOk2.png" alt="">
-    <img v-on:click="changeTagBtn" v-show="tagChange" src="../../assets/icon/change.png" alt="">
+    <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../../static/icon/changeOk2.png" alt="">
+    <img v-on:click="changeTagBtn" v-show="tagChange" src="../../../static/icon/change.png" alt="">
     <div v-for="(item,index) in tags" v-if="item.dataState==1">
       <span class="tag" v-on:click="tagFilter(index)" v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
       <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>

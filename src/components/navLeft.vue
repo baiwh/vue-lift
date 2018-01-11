@@ -1,23 +1,14 @@
 <template>
   <div id="nav-left">
-    <a href="" title="任务" class="navLeftA navChoose">
-      <img src="./../assets/icon/renwu.png"/>
-    </a>
-    <a href="" title="便笺/备忘" class="navLeftA">
-      <img src="./../assets/icon/bianqian.png"/>
-    </a>
-    <a href="" title="打卡/习惯养成" class="navLeftA">
-      <img src="./../assets/icon/daka.png"/>
-    </a>
-    <a href="" title="成就/种树" class="navLeftA">
-      <img src="./../assets/icon/chengjiu.png"/>
-    </a>
-    <a href="" title="统计" class="navLeftA">
-      <img src="./../assets/icon/tongji.png"/>
-    </a>
-    <a href="" title="回收站" class="navLeftA">
-      <img src="./../assets/icon/delete.png"/>
-    </a>
+    <router-link
+      v-for="(item,index) in navInfo"
+      v-bind:to="item.linkTo"
+      v-bind:title="item.tit"
+      class="navLeftA"
+      v-bind:class="{navChoose:isNavChoose==index}"
+      v-on:click="navChooseClick(index)">
+      <img v-bind:src="'/static/icon/'+item.imgSrc"/>
+    </router-link>
   </div>
 </template>
 
@@ -26,6 +17,45 @@
     name: 'navLeft',
     data() {
       return {
+          navInfo:[
+            {
+              linkTo:'/home',
+              tit:'任务',
+              imgSrc:'renwu.png'
+            },
+            {
+              linkTo:'/notes',
+              tit:'便笺/备忘',
+              imgSrc:'bianqian.png'
+            },
+            {
+              linkTo:'',
+              tit:'打卡/习惯养成',
+              imgSrc:'daka.png'
+            },
+            {
+              linkTo:'',
+              tit:'成就/种树',
+              imgSrc:'chengjiu.png'
+            },
+            {
+              linkTo:'',
+              tit:'统计',
+              imgSrc:'tongji.png'
+            },
+            {
+              linkTo:'/taskdel',
+              tit:'回收站',
+              imgSrc:'delete.png'
+            }
+          ],
+        isNavChoose:0
+      }
+    },
+    methods:{
+        //导航的选中效果？
+      navChooseClick:function (index) {
+//        this.isNavChoose=index;
       }
     }
   }

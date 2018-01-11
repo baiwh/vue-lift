@@ -5,7 +5,6 @@
         Lift
       </div>
       <!--登录框-->
-      <form id="indexForm" action="/index/signIn.action" method="post">
         <div id="main">
           <!--选项卡-->
           <ul>
@@ -60,10 +59,10 @@
             <input type="password" name="pwd" id="pwd" class="inputText" value="" placeholder="请输入密码"/>
             <span id="pwdInfo" class="info"></span>
             <div class="info" id="strength">
-              <span id="strength1" ></span>
-              <span id="strength2" ></span>
+              <span id="strength1"></span>
+              <span id="strength2"></span>
               <span id="strength3"></span>
-              <div id="strengthTab" ></div>
+              <div id="strengthTab"></div>
             </div>
             <!--再输入一次密码-->
             <input type="password" name="pwd2" id="pwd2" class="inputText" value="" placeholder="请再次输入密码"/>
@@ -72,7 +71,6 @@
             <input type="button" name="" id="signUpBtn" value="立即注册" />
           </div>
         </div>
-      </form>
     </div>
   </div>
 </template>
@@ -95,7 +93,8 @@
         }
     },
     methods:{
-        signInClick:function () {
+      //登录
+      signInClick:function () {
           this.signUp=false,
           this.signIn=true,
             this.signUpLi.no_cli=true,
@@ -103,6 +102,7 @@
             this.signInLi.no_cli=false,
             this.signInLi.cli=true
         },
+      //注册
       signUpClick:function () {
         this.signUp=true,
           this.signIn=false,
@@ -110,7 +110,8 @@
           this.signUpLi.cli=true,
           this.signInLi.no_cli=true,
           this.signInLi.cli=false
-      }
+      },
+      //邮箱
     }
   }
 </script>
@@ -205,12 +206,12 @@
     border: 1px solid #D3D3D3;
   }
   #userName{
-    background: url(./../assets/icon/name.png) no-repeat;
+    background: url(../../static/icon/name.png) no-repeat;
     background-size: 25px 25px;
     background-position: 7px 7px;
   }
   #password{
-    background: url(./../assets/icon/password.png) no-repeat;
+    background: url(../../static/icon/password.png) no-repeat;
     background-size: 25px 25px;
     background-position: 7px 7px;
   }
@@ -264,13 +265,13 @@
     float: left;
   }
   #qq a{
-    background: url(./../assets/icon/qq.png) no-repeat;
+    background: url(../../static/icon/qq.png) no-repeat;
   }
   #weixin a{
-    background: url(./../assets/icon/weixin.png) no-repeat;
+    background: url(../../static/icon/weixin.png) no-repeat;
   }
   #pay a{
-    background: url(./../assets/icon/pay.png) no-repeat;
+    background: url(../../static/icon/pay.png) no-repeat;
   }
   #other a{
     display: block;

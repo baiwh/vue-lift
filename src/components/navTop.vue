@@ -4,18 +4,18 @@
     <div id="search">
       <input type="hidden" id="userId" name="userId" value="">
       <input type="text" name="" id="search-text" value="" placeholder="任务名/内容/标签"/>
-      <button id="search-button"><img src="./../assets/icon/search.png"/></button>
+      <button id="search-button"><img src="../../static/icon/search.png"/></button>
     </div>
     <!--个人中心-->
     <div id="personal">
       <a href="">
-        <img src="./../assets/icon/personal.png"/>
-        <img src="./../assets/icon/open.png" id="open"/>
+        <img src="../../static/icon/personal.png"/>
+        <img src="../../static/icon/open.png" id="open"/>
       </a>
     </div>
     <!--提醒-->
     <div id="remind">
-      <img src="./../assets/icon/remind.png"/>
+      <img src="../../static/icon/remind.png"/>
       <span></span>
     </div>
   </div>

@@ -99,7 +99,7 @@
     position: absolute;
     top: -10px;
     right: 7px;
-    background: url("../../assets/icon/arrow.png") no-repeat;
+    background: url("../../../static/icon/arrow.png") no-repeat;
     background-size: 100% 100%;
     height: 10px;
     width: 20px;
