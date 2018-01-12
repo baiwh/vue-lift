@@ -2,13 +2,7 @@
  * Created by 白 on 2017/10/26.
  */
 $(function () {
-    // 获取当前时间
-    var date=new Date();
-    var year=date.getFullYear();
-    var month=date.getMonth()+1;
-    var day=date.getDate();
-    var hour=date.getHours();
-    var minute=date.getMinutes();
+
     // 如果分钟小于10。前边加个0
     if (minute<10){
         minute="0"+minute;
@@ -22,156 +16,6 @@ $(function () {
     $(".year").animate({"scrollTop":(year-2017)*40});
     $(".month").animate({"scrollTop":(month-1)*40});
     $(".day").animate({"scrollTop":(day-1)*40});
-
-
-    // 鼠标移入便签范围。显示垃圾桶
-    $("body").on("mouseover",".note",function () {
-        $(this).find(".delNote").show();
-        $(this).find(".delNote").attr("display", "block");
-    })
-
-    // 鼠标移出便签范围。隐藏垃圾桶
-    $("body").on("mouseout",".note",function () {
-        $(this).find(".delNote").hide();
-    })
-
-    // 鼠标点击某个便签
-    $("body").on("click",".noteInput",function (){
-        // 添加选中效果
-        $(this).parent().addClass("choose");
-        $(this).parent().parent().find(".hour").css("color","#009cff");
-        // 其他的去掉选中效果
-        $(this).parent().parent().siblings().find(".notes").removeClass("choose");
-        $(this).parent().parent().siblings().children(".hour").css("color","#c2c2c2");
-    })
-
-    var userId=$("#userId").val();
-
-    // 鼠标离开输入框
-    $("body").on("blur",".noteInput",function () {
-        // // 计算出时和分
-        // var time=""+hour+":"+minute;
-        // // 赋给对应的span
-        // $(this).parent().parent().find(".hour span").html(time);
-        // 获取它的内容
-        var noteInput=$(this).html();
-        var noteId=$(this).parent().prev().val();
-        var allTime=""+year+"-"+month+"-"+day+"/"+hour+":"+minute;
-        // 回传一个Ajax
-        $.ajax({
-            url: "../note/updateNote.action",
-            dataType: "json",
-            async: false,
-            data: {
-                "allTime":allTime,
-                "noteId":noteId,
-                "content":noteInput,
-                "userId": userId
-            },
-            type: "POST",
-            success: function (data) {
-                if(data.status){
-
-                }else {
-                    alert("保存失败")
-                }
-
-
-            },
-            error: function () {
-                // alert("服务器错误");
-                // return;
-            }
-        });
-
-    })
-    if ($("#noteList").children().length > 0){
-        $("#emptyBG").hide();
-    }else {
-        $("#emptyBG").show();
-    }
-    // 点击垃圾桶就删除他爸爸
-    $("body").on("click",".delNote",function () {
-        var flag=0;
-        // 回传一个Ajax
-        var clickDiv = $(this).parent();
-        var noteId=$(this).siblings("input").val();
-        $.ajax({
-            url: "../note/updateNote.action",
-            dataType: "json",
-            async: false,
-            data: {
-                "noteId":noteId,
-                "userId": userId,
-                "del":"yes"
-            },
-            type: "POST",
-            success: function (data) {
-                if(data.status) {
-                    clickDiv.remove();
-                    if ($("#noteList").children().length == 0){
-                        $("#emptyBG").show();
-                    }
-
-                    // alert("删除成功");
-                }else {
-                    alert("删除失败")
-                }
-                flag=1;
-            },
-            error: function () {
-                // alert("服务器错误");
-                // return;
-            }
-        });
-        // if (flag=1){
-        //     $(this).parent().remove();
-        // }
-    })
-
-    // 点击加号。添加新的
-    $("body").on("click","#add",function () {
-        // $(".contents").prepend("<div class=\"note newNote\"><div class=\"hour\"><span></span></div><input type=\"hidden\" class=\"noteId\"><div class=\"notes\"><div class=\"noteInput\" contenteditable=\"true\"><br/></div></div><img class=\"delNote\" src=\"icon/taskdel.png\" alt=\"\"></div>");
-        // var time=""+hour+":"+minute;
-        // $(".newNote").find(".hour span").html(time);
-        if($(".newNote").is(":hidden")){
-            $(".newNote").slideDown();
-        }
-        // 回传一个Ajax
-        var noteId=$(".contents").children("input:first").val();
-        $.ajax({
-            url: "../note/insertNote.action",
-            dataType: "json",
-            async: false,
-            data: {
-                "userId": userId
-            },
-            type: "POST",
-            success: function (data) {
-                if(data.status) {
-                    $(".contents").prepend("<div class=\"note newNote\"><div class=\"hour\"><span></span></div><input type=\"hidden\" class=\"noteId\"><div class=\"notes\"><div class=\"noteInput\" contenteditable=\"true\"><br/></div></div><img class=\"delNote\" src=\"../icon/taskdel.png\" alt=\"\" ></div>");
-                    var time=""+hour+":"+minute;
-                    $(".newNote").find(".hour span").html(time);
-                    $(".newNote").find(".noteId").val(data.data);
-                    if($(".newNote").is(":hidden")){
-                        $(".newNote").slideDown();
-                    }
-                    if ($("#noteList").children().length > 0){
-                        $("#emptyBG").hide();
-                    }
-                    // alert("新增note成功")
-                }else {
-                    alert("新增note失败")
-                }
-
-            },
-            error: function () {
-                // alert("服务器错误");
-                // return;
-            }
-        });
-    })
-
 
     $(".theYear").click(function () {
         // 如果点击的这个是choose。且没有选择日和月。就去掉透明度。
@@ -281,9 +125,6 @@ $(function () {
             }
         }
     })
-
-
-
 
     //时间筛选的Ajax
     function time(startTime,endTime) {

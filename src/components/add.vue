@@ -6,16 +6,15 @@
 </template>
 
 <script>
-    export default {
-        name: 'add',
-        data() {
-            return {
-            }
-        }
+  export default {
+    name: 'add',
+    data() {
+      return {}
     }
+  }
 </script>
 <style>
-  #add{
+  #add {
     position: fixed;
     right: 5vw;
     bottom: 5vw;
@@ -26,10 +25,12 @@
     cursor: pointer;
     border-radius: 25px;
   }
-  #add:hover{
+
+  #add:hover {
     background: #009cff;
   }
-  #add img{
+
+  #add img {
     height: 20px;
     width: 20px;
   }

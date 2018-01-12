@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==2"
+    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1"
          class="task" v-bind:class="{'choose':isChoose==index}">
       <!--附加信息-->
       <div class="stateBar">
@@ -11,11 +11,11 @@
       </div>
       <!--标题-->
       <div class="title">
-        <span v-show="titSpan!=index">{{item.taskName}}</span>
+        <span>{{item.taskName}}</span>
       </div>
       <!--日期-->
       <div class="day">
-        <span v-show="daySpan!=index">{{item.beginDate | time}}</span>
+        <span>{{item.beginDate | time}}</span>
       </div>
       <!--进度条-->
       <div class="rate">
@@ -147,6 +147,20 @@
   }
   .stateBar .tag {
     top: 15px;
+  }
+  .gradeBox{
+    float: left;
+  }
+  /*紧急程度*/
+  .grade{
+    height: 20px;
+    width: 20px;
+    left: 15px;
+    top: 20px;
+    border-radius: 10px;
+    float: left;
+    margin: 5px;
+    cursor: pointer;
   }
   /*标题*/
   .title {

@@ -1,5 +1,5 @@
 <template>
-  <div class="item" id="item">
+  <div class="item">
     <div class="header">
       <div>
         <!--紧急程度-->
@@ -58,75 +58,21 @@
     width: 700px;
     border: 1px solid #D3D3D3;
     box-shadow: 0px 0px 15px #C2C2C2;
+    padding: 0 0 50px 0;
   }
-
   /*不知道这个可不可以算是页眉*/
   .header {
     height: 80px;
     border-bottom: 1px solid #D3D3D3;
     padding: 20px;
   }
-
   .header div {
     opacity: 1;
   }
-
-  /*修改*/
-  .change {
-    float: right;
-    height: 25px;
-    width: 25px;
-    margin: 5px;
-    cursor: pointer;
-  }
-
   /*标题要大一点吧*/
   h2 {
     margin: 40px;
   }
-
-  /*下边还要添加新的小项目呢*/
-  .add {
-    height: 40px;
-    width: 600px;
-    margin: 30px 50px;
-    background: #46B6FD;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-
-  .add:hover {
-    background: #009cff;
-  }
-
-  .add img {
-    width: 20px;
-    height: 20px;
-    margin: 10px;
-  }
-
-  .changeOk {
-    height: 40px;
-    width: 600px;
-    margin: 30px 50px;
-    background: #34b93d;
-    opacity: 0.8;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-
-  .changeOk:hover {
-    opacity: 1;
-  }
-
-  .changeOk img {
-    width: 20px;
-    height: 20px;
-    margin: 10px;
-  }
-
   .gradeItem {
     height: 20px;
     width: 20px;

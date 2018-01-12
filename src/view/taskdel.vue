@@ -19,8 +19,6 @@
         <item-box></item-box>
       </div>
     </div>
-    <!--测悬浮-->
-    <add v-on:click.native="addTaskBtn"></add>
   </div>
 </template>
 

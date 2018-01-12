@@ -9,10 +9,10 @@
       <!--时间-->
       <time-line></time-line>
       <!--内容-->
-      <contents-notes></contents-notes>
+      <contents-notes ref="contentsNotes"></contents-notes>
     </div>
     <!--测悬浮-->
-    <add v-on:click.native="addTaskBtn"></add>
+    <add v-on:click.native="addNoteBtn"></add>
   </div>
 </template>
 
@@ -33,17 +33,25 @@
       navLeft: navLeft,
       add: add,
       timeLine: timeLine,
-      contentsNotes:contentsNotes
+      contentsNotes: contentsNotes
+    },
+    methods: {
+      //新增note
+      addNoteBtn: function () {
+        let father=this;
+        father.$refs.$refs.contentsNotes.addNote();
+      }
     }
   }
 </script>
 <style>
   /*主体部分*/
   .contentNotes {
-    top: 100px;
+    top: 150px;
     margin: 0px 0px 50px 0px;
     left: 10%;
   }
+
   body {
     background: #efefef;
   }

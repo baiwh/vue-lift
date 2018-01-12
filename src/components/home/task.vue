@@ -216,7 +216,7 @@
           withCredentials: false
         })
       },
-      //新增task
+      //新增task(父组件调用）
       addTask: function () {
         let data = new Date();
         let beginDate = data.getFullYear() + '-' + (data.getMonth() + 1) + '-' + data.getDate();

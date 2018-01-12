@@ -1,37 +1,61 @@
 <template>
   <div class="time">
     <!--年-->
-    <div class="theTime">
-      <div class="yearNotes">
-        <span class="theYear" v-for="(item,index) in theYear">{{item}}</span>
+    <div class="cover">
+      <div class="covered">
+        <span class="theTime" v-for="(item,index) in theYear" v-on:click="yearChoose(index)">{{item}}</span>
       </div>
     </div>
     <!--月-->
-    <div class="theTime">
-      <div class="monthNotes">
-        <span class="theMonth" v-for="(item,index) in theMonth">{{item}}</span>
+    <div class="cover">
+      <div class="covered">
+        <span class="theTime" v-for="(item,index) in theMonth" v-on:click="monthChoose(index)">{{item}}</span>
       </div>
     </div>
     <!--日-->
-    <div class="theTime">
-      <div class="dayNotes">
-        <span class="theDay" v-for="(item,index) in theDay">{{item}}</span>
+    <div class="cover">
+      <div class="covered">
+        <span class="theTime" v-for="(item,index) in theDay" v-on:click="dayChoose(index)">{{item}}</span>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'timeLine',
     data() {
       return {
         theYear: ['2017', '2018', '2019'],
-        theMonth: ['01','02','03','04','05','06','07','08','09','10','11','12'],
-        theDay: ['01','02','03','04','05','06','07','08','09','10','11','12',
-          '13','14','15','16','17','18','19','20','21','22','23','24','25',
-          '26','27','28','29','30','31'],
+        theMonth: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+        theDay: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12',
+          '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25',
+          '26', '27', '28', '29', '30', '31'],
+      }
+    },
+    computed: {
+      allDate(){
+        let date=new Date();
+        let year=date.getFullYear();
+        let month=date.getMonth()+1;
+        let day=date.getDate();
+      },
+      allTime(){
+        let date=new Date();
+        let hour=date.getHours();
+        let minute=date.getMinutes();
+      },
+
+    },
+    methods: {
+      yearChoose:function (index) {
+
+      },
+      monthChoose:function (index) {
+
+      },
+      dayChoose:function (index) {
 
       }
     }
@@ -45,9 +69,25 @@
     float: left;
   }
 
+  /*年月日的最外层的覆盖物。用来盖住滚动条*/
+  .cover {
+    width: 85px;
+    float: left;
+    overflow: hidden;
+    height: 200px;
+    margin: 5px;
+  }
+
+  /*年月日外层被覆盖的滚动条*/
+  .covered {
+    width: 105px;
+    overflow: scroll;
+    height: 215px;
+    padding: 80px 0px 100px 0px;
+  }
+
   /*时间里的所有span*/
-  /*.time span*/
-  .theYear, .theMonth, .theDay {
+  .theTime {
     display: block;
     float: left;
     clear: both;
@@ -64,25 +104,7 @@
     border-radius: 10px;
   }
 
-  .theYear:hover, .theMonth:hover, .theDay:hover {
+  .theTime:hover {
     opacity: 0.7;
   }
-
-  /*年月日的最外层的共同class。用来盖住滚动条*/
-  .theTime {
-    width: 85px;
-    float: left;
-    overflow: hidden;
-    height: 200px;
-    margin: 5px;
-  }
-
-  /*年月日外层的整体*/
-  .dayNotes, .yearNotes, .monthNotes {
-    width: 105px;
-    overflow: scroll;
-    height: 215px;
-    padding: 80px 0px 100px 0px;
-  }
-
 </style>
