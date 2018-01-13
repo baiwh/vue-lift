@@ -1,6 +1,6 @@
 
 $(function () {
-  // 注册页面邮箱判断
+  ``// 注册页面邮箱判断
     $("#email").blur(function () {
         // 判空
         checkNull("email", "emailInfo", "邮箱");

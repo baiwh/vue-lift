@@ -8,12 +8,12 @@
       <div id="signBox">
         <!--选项卡-->
         <ul>
-          <li v-bind:class="signInLi" v-on:click="signInLiClick">登录</li>
+          <li v-bind:class="{'no_cli':signLi=='signUp','cli':signLi=='signIn'}" v-on:click="signInLiClick">登录</li>
           <div id="space"></div>
-          <li v-bind:class="signUpLi" v-on:click="signUpLiClick">注册</li>
+          <li v-bind:class="{'no_cli':signLi=='signIn','cli':signLi=='signUp'}" v-on:click="signUpLiClick">注册</li>
         </ul>
         <!--登录-->
-        <div id="signIn" v-show="signIn">
+        <div id="signIn" v-show="signLi=='signIn'">
           <!--用户名-->
           <div class="inputDiv">
             <input type="text" class="inputText" id="userName" v-on:blur="signInUserName" v-model="userName"
@@ -48,7 +48,7 @@
           </div>
         </div>
         <!--注册-->
-        <div id="signUp" v-show="signUp">
+        <div id="signUp" v-show="signLi=='signUp'">
           <!--邮箱-->
           <input type="email" name="email" id="email" value="" class="inputText" placeholder="用于注册的email"/>
           <span id="emailInfo" class="info"></span>
@@ -78,16 +78,7 @@
     name: 'sign',
     data(){
       return {
-        signUp: false,
-        signIn: true,
-        signUpLi: {
-          no_cli: true,
-          cli: false
-        },
-        signInLi: {
-          no_cli: false,
-          cli: true
-        },
+        signLi:'signIn',
         userName: '',
         passWord: '',
         userNameInfo: '',
@@ -98,24 +89,12 @@
     methods: {
       //登录选项卡
       signInLiClick: function () {
-        this.signUp = false,
-          this.signIn = true,
-          this.signUpLi.no_cli = true,
-          this.signUpLi.cli = false,
-          this.signInLi.no_cli = false,
-          this.signInLi.cli = true
+        this.signLi = 'signIn';
       },
       //注册选项卡
       signUpLiClick: function () {
-        this.signUp = true,
-          this.signIn = false,
-          this.signUpLi.no_cli = false,
-          this.signUpLi.cli = true,
-          this.signInLi.no_cli = true,
-          this.signInLi.cli = false
+        this.signLi = 'signUp';
       },
-      //邮箱
-
       //登录按钮
       signInBtn: function () {
         let userName = this.userName;
@@ -198,15 +177,20 @@
           }).then(res => {
             let user = res.data;
             let suc = user.status;
-            if (suc == 1) {
+            let info=user.msg;
+            if (suc) {
               //去掉报错提示
               this.userNameInfo = '';
-              //插入正确提示符号<img class='ok' src='/lift/icon/ok.png'>
-
+              //插入正确提示符号
+              this.signInUN=true;
+            }else {
+              this.signInUN=false;
+              this.userNameInfo=info;
             }
           })
         }
       }
+
     }
   }
 </script>
