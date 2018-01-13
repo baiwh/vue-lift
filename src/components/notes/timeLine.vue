@@ -49,6 +49,8 @@
 
     },
     methods: {
+        //自动获取当天时间
+        //时间筛选：点击年月日。选择/取消选择。调整滚动条位置
       yearChoose:function (index) {
 
       },
@@ -58,6 +60,7 @@
       dayChoose:function (index) {
 
       }
+
     }
   }
 </script>
@@ -106,5 +109,10 @@
 
   .theTime:hover {
     opacity: 0.7;
+  }
+
+  .chooseTime{
+    opacity: 1;
+
   }
 </style>

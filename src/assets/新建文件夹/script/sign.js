@@ -1,19 +1,6 @@
 
 $(function () {
-
-    // 判空验证
-    function checkNull(inputId, infoId, tip) {
-        var inputValue = $("#" + inputId).val();
-        var info = $("#" + infoId);
-        if (inputValue == "") {
-            info.html(tip + "不能为空").attr("class", "info");
-            return;
-        } else {
-            info.html("");
-        }
-    }
-
-    // 注册页面邮箱判断
+  // 注册页面邮箱判断
     $("#email").blur(function () {
         // 判空
         checkNull("email", "emailInfo", "邮箱");
@@ -127,84 +114,6 @@ $(function () {
         }
     })
 
-    // 验证码
-    $("#verifyCode").blur(function () {
-        // 判空
-        checkNull("verifyCode", "verifyInfo", "验证码");
-        // 对错
-    })
-
-
-    // 登录
-    $("#signInBtn").click(function () {
-        // 对两个input进行判断
-        var userName=$("#userName").val();
-        var password=$("#password").val();
-        // 如果都非空。则判断是否正确。否则提示为空
-        if(userName!=""&&password!=""){
-            var flag=0;
-            // 先判断邮箱是否存在
-            $.ajax({
-                url:"/index/checkUser.action",    //请求的url地址
-                dataType:"json",   //返回格式为json
-                async:false,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{"userName":userName,
-                    "checkType":1},    //参数值
-                type:"POST",   //请求方式
-                success:function(data){
-                    if (data.status){
-                        // 对的
-                        $("#nameInfo").html("");
-                        $("#nameInfo").append("<img class='ok' src='/lift/icon/ok.png'>");
-                        flag=1;
-                    }else {
-                        $("#nameInfo").html("该用户不存在").attr('class', 'info');
-                    }
-                },
-                error:function(){
-                    //请求出错处理
-                    alert("服务器错误");
-                    return;
-                }
-            });
-            if(flag==1){
-                // 再判断是否正确
-                $.ajax({
-                    url:"/index/signIn.action",    //请求的url地址
-                    dataType:"json",   //返回格式为json
-                    async:false,//请求是否异步，默认为异步，这也是ajax重要特性
-                    data:{"userName":userName,
-                        "password":password},    //参数值
-                    type:"POST",   //请求方式
-                    success:function(data){
-                        // 如果登录成功。跳转到主页面。否则提示密码错误
-                        if (data.status){
-                            // 对的
-                            $("#indexForm")[0].action="/task/list.action";
-                            $("#indexForm")[0].submit();
-                        }else {
-                            $("#passwordInfo").html("密码错误").attr('class', 'info');
-                        }
-
-                    },
-                    error:function(){
-                        //请求出错处理
-                        alert("服务器错误");
-                        return;
-                    }
-                });
-            }
-
-
-        }else {
-            if(userName==""){
-                $("#nameInfo").html("请填写用户名").attr('class', 'info');
-            }
-            if (password==""){
-                $("#passwordInfo").html("请输入密码").attr('class', 'info');
-            }
-        }
-    })
     // 注册
     $("#signUpBtn").click(function () {
         var email=$("#email").val();
@@ -258,35 +167,5 @@ $(function () {
 
 
     })
-
-    // 登录判断用户是否存在
-    $("#userName").blur(function () {
-        if ($(this).val()!=""){
-            $.ajax({
-                url:"/index/checkUser.action",    //请求的url地址
-                dataType:"json",   //返回格式为json
-                async:false,//请求是否异步，默认为异步，这也是ajax重要特性
-                data:{"userName":$(this).val(),
-                    "checkType":1},    //参数值
-                type:"POST",   //请求方式
-                success:function(data){
-                    if (data.status){
-                        // 对的
-                        $("#nameInfo").html("");
-                        $("#nameInfo").append("<img class='ok' src='/lift/icon/ok.png'>");
-                    }else {
-                        $("#nameInfo").html("该用户不存在").attr('class', 'info');
-                    }
-                },
-                error:function(){
-                    //请求出错处理
-                    alert("服务器错误");
-                    return;
-                }
-            });
-        }
-    })
-
-
 
 })
