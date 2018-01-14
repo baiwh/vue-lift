@@ -18,7 +18,8 @@
           <div class="inputDiv">
             <input type="text" class="inputText" id="userName" v-on:blur="signInUserName" v-model="userName"
                    placeholder="用户名/邮箱"/>
-            <span class="info">{{userNameInfo}}<img v-show="signInUN" class="ok" src="./../../static/icon/ok.png"></span>
+            <span class="info">{{userNameInfo}}<img v-show="signInUN" class="ok"
+                                                    src="./../../static/icon/ok.png"></span>
           </div>
           <!--密码-->
           <div class="inputDiv">
@@ -50,11 +51,11 @@
         <!--注册-->
         <div id="signUp" v-show="signLi=='signUp'">
           <!--邮箱-->
-          <input type="email" name="email" id="email" value="" class="inputText" placeholder="用于注册的email"/>
-          <span id="emailInfo" class="info"></span>
+          <input type="email" class="inputText" v-model="emailSU" v-on:blur="signUpEmail" placeholder="用于注册的email"/>
+          <span class="info">{{emailSUInfo}}<img v-show="signUpEM" class="ok" src="./../../static/icon/ok.png"></span>
           <!--密码-->
-          <input type="password" name="pwd" id="pwd" class="inputText" value="" placeholder="请输入密码"/>
-          <span id="pwdInfo" class="info"></span>
+          <input type="password" v-on:keyup="signUpPW" class="inputText" v-model="passWordSU" placeholder="请输入密码"/>
+          <span class="info">{{passWordSUInfo}}</span>
           <div class="info" id="strength">
             <span id="strength1"></span>
             <span id="strength2"></span>
@@ -62,10 +63,12 @@
             <div id="strengthTab"></div>
           </div>
           <!--再输入一次密码-->
-          <input type="password" name="pwd2" id="pwd2" class="inputText" value="" placeholder="请再次输入密码"/>
-          <span id="pwd2Info" class="info"></span>
+          <input type="password" v-on:blur="signUpPW2Blur" class="inputText" v-model="passWordSU2"
+                 placeholder="请再次输入密码"/>
+          <span class="info">{{passWordSU2Info}}<img v-show="signUpPW2" class="ok"
+                                                     src="./../../static/icon/ok.png"></span>
           <!--提交-->
-          <input type="button" class="signBtn" value="立即注册"/>
+          <input type="button" v-on:click="signUpBtn" class="signBtn" value="立即注册"/>
         </div>
       </div>
     </div>
@@ -78,12 +81,20 @@
     name: 'sign',
     data(){
       return {
-        signLi:'signIn',
+        signLi: 'signIn',
         userName: '',
         passWord: '',
         userNameInfo: '',
         passWordInfo: '',
-        signInUN:false
+        signInUN: false,
+        emailSU: '',
+        passWordSU: '',
+        passWordSU2: '',
+        emailSUInfo: '',
+        passWordSUInfo: '',
+        passWordSU2Info: '',
+        signUpEM: false,
+        signUpPW2: false,
       }
     },
     methods: {
@@ -112,18 +123,18 @@
           }).then(res => {
             let user = res.data;
             let suc = user.status;
-            let info=user.msg;
+            let info = user.msg;
             //如果用户名存在
             if (suc) {
               //去掉报错提示
               this.userNameInfo = '';
               //插入正确提示符号
-              this.signInUN=true;
+              this.signInUN = true;
               //验证密码是否正确
               axios.get('/index/signIn.action', {
                 params: {
                   userName: userName,
-                  passWord: passWord
+                  password: passWord
                 },
                 baseURL: '/liftVue',
                 withCredentials: false
@@ -145,13 +156,13 @@
           })
         } else if (userName == '' && passWord == '') {
           //如果都空
-          this.signInUN=false;
+          this.signInUN = false;
           this.userNameInfo = '请填写用户名';
           this.passWordInfo = '请输入密码';
         } else {
           //如果有空。报错。
           if (userName == "") {
-              this.signInUN=false;
+            this.signInUN = false;
             this.userNameInfo = '请填写用户名';
             this.passWordInfo = '';
           }
@@ -161,36 +172,135 @@
         }
 
       },
-      //离开登陆用户名输入框
-      signInUserName: function () {
-        let userName = this.userName;
-        //如果用户名非空
-        if (userName != '') {
-          //查询用户名是否存在
+      //离开注册页用户名输入框
+      signUpEmail: function () {
+        let email = this.emailSU;
+        if (email != '') {
+          //如果非空。判断邮箱格式
+          let pattern = /\b(^['_A-Za-z0-9-]+(\.['_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\.[A-Za-z0-9-]+)*((\.[A-Za-z0-9]{2,})|(\.[A-Za-z0-9]{2,}\.[A-Za-z0-9]{2,}))$)\b/;
+          if (!pattern.test(email)) {
+            this.emailSUInfo = '邮箱格式不正确';
+          } else {
+            this.emailSUInfo = '';
+            //判断邮箱是否存在
+            axios.get('/index/checkUser.action', {
+              params: {
+                userName: email,
+                checkType: 2
+              },
+              baseURL: '/liftVue',
+              withCredentials: false
+            }).then(res => {
+              let user = res.data;
+              let suc = user.status;
+              let info = user.msg;
+              if (suc) {
+                this.emailSUInfo = info;
+                this.signUpEM = false;
+              } else {
+                this.emailSUInfo = '';
+                this.signUpEM = true;
+              }
+            })
+          }
+        } else {
+          this.emailSUInfo = '邮箱不能为空';
+        }
+      },
+      //注册页密码
+      signUpPW: function () {
+        let pw=this.passWordSU;
+        let len=pw.length;
+        // 强弱
+        let regxs = [];
+        regxs[0] = /[^a-zA-Z0-9_]/g;
+        regxs[1] = /[a-z]/g;
+        regxs[2] = /[0-9]/g;
+        regxs[3] = /[A-Z]/g;
+        if (pw != '') {
+            //如果密码长度小于6
+            if(len<6){
+                
+            }else {
+
+            }
+        } else {
+          this.passWordSUInfo = '密码不能为空';
+        }
+      },
+      //注册页重复密码
+      signUpPW2Blur: function () {
+        let pw = this.passWordSU;
+        let pw2 = this.passWordSU2;
+        if (pw2 != '') {
+          if (pw != pw2) {
+            this.signUpPW2 = false;
+            this.passWordSU2Info = '两次密码不一致';
+          } else {
+            this.signUpPW2 = true;
+            this.passWordSU2Info = '';
+          }
+        } else {
+          this.signUpPW2 = false;
+          this.passWordSU2Info = '重复密码不能为空';
+        }
+      },
+      //注册按钮
+      signUpBtn: function () {
+        let email = this.emailSU;
+        let pw = this.passWordSU;
+        let pw2 = this.passWordSU2;
+        //判空
+        if (email != '' && pw != '' && pw2 != '') {
+          //判断邮箱是否存在
           axios.get('/index/checkUser.action', {
             params: {
-              userName: userName,
-              checkType: 1
+              userName: email,
+              checkType: 2
             },
             baseURL: '/liftVue',
             withCredentials: false
           }).then(res => {
             let user = res.data;
             let suc = user.status;
-            let info=user.msg;
+            let info = user.msg;
             if (suc) {
-              //去掉报错提示
-              this.userNameInfo = '';
-              //插入正确提示符号
-              this.signInUN=true;
-            }else {
-              this.signInUN=false;
-              this.userNameInfo=info;
+              //不存在
+              this.emailSUInfo = info;
+              this.signUpEM = false;
+            } else {
+              //存在
+              this.emailSUInfo = '';
+              this.signUpEM = true;
+              //判断两次密码是否一致
+              if (pw == pw2) {
+                //跳转。回传数据
+                axios.get('/index/signUp.action', {
+                  params: {},
+                  baseURL: '/liftVue',
+                  withCredentials: false
+                })
+              } else {
+                this.signUpPW2 = false;
+                this.passWordSU2Info = '两次密码不一致';
+              }
             }
           })
+        } else {
+          //有空则提示报错
+          if (email == '') {
+            this.signUpEM = false;
+            this.emailSUInfo = '邮箱不能为空';
+          }
+          if (pw == '') {
+            this.passWordSU2Info = '密码不能为空';
+          }
+          if (pw2 == '') {
+            this.signUpPW2 = false;
+            this.passWordSU2Info = '重复密码不能为空';
+          }
         }
       }
-
     }
   }
 </script>
