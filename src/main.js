@@ -16,7 +16,8 @@ const store = new Vuex.Store({
     tagStore: '',
     detailStore: [],
     toGet:'ok',
-    titleStore:''
+    titleStore:'',
+    navLinkTo:'/home'
   },
   mutations: {
     //获取itemBox中需要的taskId
@@ -42,6 +43,10 @@ const store = new Vuex.Store({
     //标题
     updateStoreTitle(state,titleStore){
       state.titleStore = titleStore;
+    },
+    //导航
+    updateNavLinkTo(state,navLinkTo){
+      state.navLinkTo=navLinkTo;
     }
   },
   actions: {

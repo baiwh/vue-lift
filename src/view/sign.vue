@@ -34,7 +34,9 @@
             <a href="#" id="forget">忘记密码？</a>
           </div>
           <!--登录按钮-->
-          <input type="button" class="signBtn" value="登录" v-on:click="signInBtn"/>
+          <!--<router-link v-bind:to="signBtn">-->
+            <input type="button" class="signBtn" value="登录" v-on:click="signInBtn"/>
+          <!--</router-link>-->
           <!--关联登录-->
           <div id="other">
             <div id="qq">
@@ -57,10 +59,9 @@
           <input type="password" v-on:keyup="signUpPW" class="inputText" v-model="passWordSU" placeholder="请输入密码"/>
           <span class="info">{{passWordSUInfo}}</span>
           <div class="info" id="strength">
-            <span id="strength1"></span>
-            <span id="strength2"></span>
-            <span id="strength3"></span>
-            <div id="strengthTab"></div>
+            <span v-for="item in tabBox" v-bind:style="{background:item.color}" v-bind:class="item.border"
+                  v-show="isStrengthBox"></span>
+            <div id="strengthTab" v-bind:class="isStrengthTab"></div>
           </div>
           <!--再输入一次密码-->
           <input type="password" v-on:blur="signUpPW2Blur" class="inputText" v-model="passWordSU2"
@@ -68,7 +69,9 @@
           <span class="info">{{passWordSU2Info}}<img v-show="signUpPW2" class="ok"
                                                      src="./../../static/icon/ok.png"></span>
           <!--提交-->
-          <input type="button" v-on:click="signUpBtn" class="signBtn" value="立即注册"/>
+          <!--<router-link v-bind:to="signBtn">-->
+            <input type="button" v-on:click="signUpBtn" class="signBtn" value="立即注册"/>
+          <!--</router-link>-->
         </div>
       </div>
     </div>
@@ -95,6 +98,27 @@
         passWordSU2Info: '',
         signUpEM: false,
         signUpPW2: false,
+        isStrengthBox: false,
+        color1:'',
+        color2:'',
+        color3:'',
+        isStrengthTab:''
+      }
+    },
+    computed:{
+      tabBox(){
+          return[
+            {
+              border: 'strength1',
+              color: this.color1
+            }, {
+              border: 'strength2',
+              color: this.color2
+            }, {
+              border: 'strength3',
+              color: this.color3
+            }
+          ]
       }
     },
     methods: {
@@ -105,6 +129,35 @@
       //注册选项卡
       signUpLiClick: function () {
         this.signLi = 'signUp';
+      },
+      //离开登陆页用户名输入框
+      signInUserName: function () {
+        let userName = this.userName;
+        //如果用户名非空
+        if (userName != '') {
+          //查询用户名是否存在
+          axios.get('/index/checkUser.action', {
+            params: {
+              userName: userName,
+              checkType: 1
+            },
+            baseURL: '/liftVue',
+            withCredentials: false
+          }).then(res => {
+            let user = res.data;
+            let suc = user.status;
+            let info = user.msg;
+            if (suc) {
+              //去掉报错提示
+              this.userNameInfo = '';
+              //插入正确提示符号
+              this.signInUN = true;
+            } else {
+              this.signInUN = false;
+              this.userNameInfo = info;
+            }
+          })
+        }
       },
       //登录按钮
       signInBtn: function () {
@@ -143,6 +196,7 @@
                 let sucP = pass.status;
                 if (sucP) {
                   //跳转到主页面
+                  this.$router.push('/home');
                 } else {
                   //密码报错提示
                   this.passWordInfo = '密码错误';
@@ -209,21 +263,49 @@
       },
       //注册页密码
       signUpPW: function () {
-        let pw=this.passWordSU;
-        let len=pw.length;
+        let pw = this.passWordSU;
+        let len = pw.length;
         // 强弱
         let regxs = [];
         regxs[0] = /[^a-zA-Z0-9_]/g;
         regxs[1] = /[a-z]/g;
         regxs[2] = /[0-9]/g;
         regxs[3] = /[A-Z]/g;
+        let strength = 0;
         if (pw != '') {
-            //如果密码长度小于6
-            if(len<6){
-                
-            }else {
-
+          //如果密码长度小于6
+          if (len < 6) {
+            this.isStrengthBox = false;
+            this.passWordSUInfo = '密码不能小于六位';
+          } else {
+            //强弱等级提示
+            this.passWordSUInfo = '';
+            this.isStrengthBox = true;
+            for (let i = 0; i < regxs.length; i++) {
+              if (pw.match(regxs[i])) {
+                strength++;
+              }
             }
+            if (strength == 1) {
+              //弱
+              this.color1 = 'red';
+              this.color2 = '';
+              this.color3 = '';
+              this.isStrengthTab='tabRed';
+            } else if (strength == 2) {
+              //中
+              this.color1 = 'orange';
+              this.color2 = 'orange';
+              this.color3 = '';
+              this.isStrengthTab='tabOrange';
+            } else if (strength == 3) {
+              //强
+              this.color1 = '#66cc00';
+              this.color2 = '#66cc00';
+              this.color3 = '#66cc00';
+              this.isStrengthTab='tabGreen';
+            }
+          }
         } else {
           this.passWordSUInfo = '密码不能为空';
         }
@@ -279,6 +361,9 @@
                   params: {},
                   baseURL: '/liftVue',
                   withCredentials: false
+                }).then(function () {
+                  //跳转到主页面
+                  this.$router.push('/home');
                 })
               } else {
                 this.signUpPW2 = false;
@@ -522,7 +607,6 @@
 
   /*强度等级*/
   #strength {
-    display: none;
     float: left;
   }
 
@@ -549,90 +633,78 @@
     position: relative;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    top: 28px;
-    left: 2px;
+    top: 15px;
+    left: 3px;
   }
 
   #strengthTab:after {
     position: absolute;
     left: 4px;
+    top: 2px;
   }
 
   /*弱*/
-  .change1 {
+  .tabRed {
     background: red;
-    /*left: -105px;*/
+    left: 5px;
   }
 
-  .change1:after {
+  .tabRed:after {
     content: "弱";
   }
 
-  .change1:before {
+  .tabRed:before {
     border-top: 9px solid red;
   }
 
   /*中*/
-  .change2 {
+  .tabOrange {
     background: orange;
-    /*left: -70px;*/
+    left: 45px;
   }
 
-  .change2:after {
+  .tabOrange:after {
     content: "中";
   }
 
-  .change2:before {
+  .tabOrange:before {
     border-top: 9px solid orange;
   }
 
   /*强*/
-  .change3 {
+  .tabGreen {
     background: #66cc00;
-    /*left: -35px;*/
+    left: 80px;
   }
 
-  .change3:after {
+  .tabGreen:after {
     content: "强";
   }
 
-  .change3:before {
+  .tabGreen:before {
     border-top: 9px solid #66cc00;
   }
 
   /*强度等级条*/
-  #strength1 {
+  .strength1 {
     height: 15px;
     width: 40px;
     border: 2px solid #c2c2c2;
     border-radius: 10px 0px 0px 10px;
   }
 
-  #strength2 {
+  .strength2 {
     height: 15px;
     width: 40px;
     border: 2px solid #c2c2c2;
   }
 
-  #strength3 {
+  .strength3 {
     height: 15px;
     width: 40px;
     border: 2px solid #c2c2c2;
     border-radius: 0px 10px 10px 0px;
   }
-
-  .red {
-    background: red;
-  }
-
-  .orange {
-    background: orange;
-  }
-
-  .green {
-    background: #66cc00;
-  }
-
   /*验证码*/
   #verification input {
     width: 150px;

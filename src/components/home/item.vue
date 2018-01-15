@@ -50,7 +50,6 @@
         let id = this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
-            userId: 1,
             taskId: id,
             taskDetailId: detailId,
             dataState: dataState,
@@ -75,7 +74,6 @@
           //保存、传数据
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
-              userId: 1,
               taskId: id,
               taskDetailId: detailId,
               taskDetailName: inputItem
@@ -88,7 +86,6 @@
           this.getDetail[index].dataState = 3;
           axios.get('/taskDetail/updateDetail.action?', {
             params: {
-              userId: 1,
               taskId: id,
               taskDetailId: detailId,
               dataState: 3
@@ -105,7 +102,6 @@
         let id = this.$store.state.taskIdStore;
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
-            userId: 1,
             taskId: id,
             taskDetailId: delId,
             dataState: 3
@@ -130,7 +126,6 @@
         //回传数据并赋值新的item
         axios.get('/taskDetail/insertTaskDetail.action', {
           params: {
-            userId: 1,
             taskId: id,
             taskDetailName: '',
           },

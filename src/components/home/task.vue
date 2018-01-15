@@ -83,7 +83,6 @@
         //获取数据
         axios.get('/task/getTaskList.action?', {
           params: {
-            userId: 1
           },
           baseURL: '/liftVue',
           withCredentials: false
@@ -191,7 +190,6 @@
         let inputDate = '' + newDate[0];
         axios.get('/task/updateTask.action', {
           params: {
-            userId: 1,
             taskId: taskId,
             beginTime: inputDate,
             taskName: inputName
@@ -208,7 +206,6 @@
         let taskId = this.tasks[index].taskId;
         axios.get('/task/updateTask.action', {
           params: {
-            userId: 1,
             taskId: taskId,
             dataState: 2
           },
@@ -232,7 +229,6 @@
         //回传数据?
         axios.get('/task/insertTask.action', {
           params: {
-            userId: 1,
           },
           baseURL: '/liftVue',
           withCredentials: false

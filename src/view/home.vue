@@ -37,6 +37,9 @@
     data() {
       return {}
     },
+    mounted:function(){
+      this.$store.commit('updateNavLinkTo','/home');
+    },
     components: {
       navTop: navTop,
       navLeft: navLeft,

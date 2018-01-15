@@ -44,6 +44,9 @@
       itemBox: itemBox,
       add: add
     },
+    mounted:function(){
+      this.$store.commit('updateNavLinkTo','/taskdel');
+    },
     methods:{
 
     }

@@ -28,6 +28,9 @@
     data() {
       return {}
     },
+    mounted:function(){
+      this.$store.commit('updateNavLinkTo','/notes');
+    },
     components: {
       navTop: navTop,
       navLeft: navLeft,

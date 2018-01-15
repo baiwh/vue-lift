@@ -5,7 +5,7 @@
       v-bind:to="item.linkTo"
       v-bind:title="item.tit"
       class="navLeftA"
-      v-bind:class="{navChoose:isNavChoose==index}"
+      v-bind:class="{navChoose:isNavChoose==navInfo[index].linkTo}"
       v-on:click="navChooseClick(index)">
       <img v-bind:src="'/static/icon/'+item.imgSrc"/>
     </router-link>
@@ -49,13 +49,17 @@
               imgSrc:'delete.png'
             }
           ],
-        isNavChoose:0
+      }
+    },
+    computed:{
+      isNavChoose(){
+          return this.$store.state.navLinkTo;
       }
     },
     methods:{
         //导航的选中效果？
       navChooseClick:function (index) {
-//        this.isNavChoose=index;
+        this.isNavChoose=index;
       }
     }
   }

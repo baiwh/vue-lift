@@ -60,7 +60,6 @@
         //获取数据
         axios.get('/task/getTaskList.action?', {
           params: {
-            userId: 1
           },
           baseURL: '/liftVue',
           withCredentials: false
