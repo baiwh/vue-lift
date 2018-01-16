@@ -36,7 +36,6 @@
       getAllTag:function () {
         axios.get('/label/getLabelList.action?',{
           params:{
-            userId:1,
           },
           baseURL: '/liftVue',
           withCredentials: false
@@ -73,7 +72,6 @@
       addTagOk:function () {
         // push数组
         this.tags.unshift({
-          userId:1,
           labelName:'',
           dataState:1,
           labelId:''
@@ -84,7 +82,6 @@
         let newTag=this.tags[0].labelName;
         axios.get('/label/insertLabel.action',{
           params:{
-            userId:1,
             labelName:newTag
           },
           baseURL: '/liftVue',
@@ -105,7 +102,6 @@
         let delTagId=this.tags[index].labelId;
         axios.get('/label/updateLabel.action',{
           params:{
-            userId:1,
             labelId:delTagId,
             dataState:2
           },

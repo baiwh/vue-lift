@@ -10,9 +10,7 @@
     </div>
     <h2>{{this.itemTitel}}</h2>
     <div id="toDoList">
-      <div class="items">
         <item></item>
-      </div>
     </div>
   </div>
 </template>

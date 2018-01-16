@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item,index) in getDetail" v-if="item.dataState!=3">
-      <div>
+      <div class="items">
         <input type="checkbox"/>
         <div class="checkBox" v-bind:class="{'c':item.dataState==2}"></div>
         <span v-bind:class="{'spanChecked':item.dataState==2}">{{item.taskDetailName}}</span>
@@ -25,7 +25,6 @@
       }
     },
     methods: {
-
     }
   }
 </script>
@@ -53,7 +52,7 @@
   input[type=checkbox] {
     display: none;
   }
-  @-moz-keyframes dothabottomcheck {
+  @-moz-keyframes two {
     0% {
       height: 0;
     }
@@ -61,7 +60,7 @@
       height: 17px;
     }
   }
-  @-webkit-keyframes dothabottomcheck {
+  @-webkit-keyframes two {
     0% {
       height: 0;
     }
@@ -69,7 +68,7 @@
       height: 17px;
     }
   }
-  @keyframes dothabottomcheck {
+  @keyframes two {
     0% {
       height: 0;
     }
@@ -77,7 +76,7 @@
       height: 17px;
     }
   }
-  @keyframes dothatopcheck {
+  @keyframes one {
     0% {
       height: 0;
     }
@@ -88,7 +87,7 @@
       height: 27px;
     }
   }
-  @-webkit-keyframes dothatopcheck {
+  @-webkit-keyframes one {
     0% {
       height: 0;
     }
@@ -99,7 +98,7 @@
       height: 27px;
     }
   }
-  @-moz-keyframes dothatopcheck {
+  @-moz-keyframes one {
     0% {
       height: 0;
     }
@@ -117,7 +116,7 @@
     position: absolute;
     height: 0;
     width: 5px;
-    background-color: #34b93d;
+    background-color: #808080;
     display: inline-block;
     -moz-transform-origin: left top;
     -ms-transform-origin: left top;
@@ -174,17 +173,17 @@
   /*点击对勾追加效果*/
   .c:after {
     height: 20px;
-    -moz-animation: dothabottomcheck 0.2s ease 0s forwards;
-    -o-animation: dothabottomcheck 0.2s ease 0s forwards;
-    -webkit-animation: dothabottomcheck 0.2s ease 0s forwards;
-    animation: dothabottomcheck 0.2s ease 0s forwards;
+    -moz-animation: two 0.2s ease 0s forwards;
+    -o-animation: two 0.2s ease 0s forwards;
+    -webkit-animation: two 0.2s ease 0s forwards;
+    animation: two 0.2s ease 0s forwards;
   }
 
   .c:before {
     height: 30px;
-    -moz-animation: dothatopcheck 0.4s ease 0s forwards;
-    -o-animation: dothatopcheck 0.4s ease 0s forwards;
-    -webkit-animation: dothatopcheck 0.4s ease 0s forwards;
-    animation: dothatopcheck 0.4s ease 0s forwards;
+    -moz-animation: one 0.4s ease 0s forwards;
+    -o-animation: one 0.4s ease 0s forwards;
+    -webkit-animation: one 0.4s ease 0s forwards;
+    animation: one 0.4s ease 0s forwards;
   }
 </style>

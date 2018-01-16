@@ -54,7 +54,6 @@
         let gradeTaskId=this.taskNum;
         axios.get('/task/updateTask.action',{
           params:{
-            userId:1,
             taskId:gradeTaskId,
             gradeId:updateGrade
           },

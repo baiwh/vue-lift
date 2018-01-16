@@ -1,5 +1,5 @@
 <template>
-  <div class="item" id="item">
+  <div class="item">
     <div class="header">
       <div>
         <!--紧急程度-->

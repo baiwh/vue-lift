@@ -26,7 +26,6 @@
       getAllTag:function () {
         axios.get('/label/getLabelList.action?',{
             params:{
-                userId:1,
             },
           baseURL: '/liftVue',
           withCredentials: false
@@ -37,12 +36,7 @@
           let name1=this.$store.state.tagStore;
           let len=this.tags.length;
           let ind='';
-          for (let i=0;i<len;i++){
-            let name2=this.tags[i].labelName;
-            if(name1==name2){
-              ind=i;
-            }
-          }
+
           //改颜色
           this.isTagColor=ind;
           this.isTagChoose=ind;
@@ -63,7 +57,6 @@
         let gradeTaskId=this.$store.state.taskIdStore;
         axios.get('/task/updateTask.action',{
           params:{
-            userId:1,
             taskId:gradeTaskId,
             labelName:updateTag
           },

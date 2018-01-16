@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1" class="task"
          v-bind:class="{'choose':isChoose==index}">
       <!--附加信息-->
@@ -23,7 +24,7 @@
       </div>
       <!--日期-->
       <div class="day">
-        <span v-show="daySpan!=index" v-on:click="dayInputChange(index)">{{item.beginDate | time}}</span>
+        <span v-show="daySpan!=index" v-on:click="dayInputChange(index)">{{item.beginDate | taskTime}}</span>
         <input type="date" v-show="dayInput==index" v-model="item.beginDate" v-on:blur="inputBlur(index)">
       </div>
       <!--进度条-->
@@ -60,7 +61,7 @@
     },
     filters: {
       //时间格式过滤器。后台非要我把时分秒去掉
-      time: function (value) {
+      taskTime: function (value) {
         function newTime(str) {
           let arr = str.split(' ');
           let showTime = '' + arr[0];
@@ -82,8 +83,7 @@
       getTask: function () {
         //获取数据
         axios.get('/task/getTaskList.action?', {
-          params: {
-          },
+          params: {},
           baseURL: '/liftVue',
           withCredentials: false
         }).then((task) => {
@@ -93,6 +93,7 @@
           //获取第一个task的id
           let taskIdStore = tasks[0].taskId;
           this.$store.commit('updateStoreTaskId', taskIdStore);
+          this.$store.commit('changeToGet', 'ok');
           //获取第一个task的grade状态
           let gradeIdStore = tasks[0].gradeId;
           this.$store.commit('updateStoreGrade', gradeIdStore);
@@ -211,6 +212,12 @@
           },
           baseURL: '/liftVue',
           withCredentials: false
+        }).then(res => {
+          let del = res.data;
+          let status = del.status;
+          if (status ) {
+            this.getTask();
+          }
         })
       },
       //新增task(父组件调用）
@@ -228,14 +235,18 @@
         })
         //回传数据?
         axios.get('/task/insertTask.action', {
-          params: {
-          },
+          params: {},
           baseURL: '/liftVue',
           withCredentials: false
         }).then((newTask) => {
           //返回数据后还要把返回的东西重新赋给新增的数组
           let res = newTask.data;
-          this.tasks[0] = res.data;
+          let task = res.data;
+          this.tasks[0] = task;
+          let taskId = task.taskId;
+          this.$store.commit('updateStoreTaskId', taskId);
+          this.$store.commit('changeToGet', 'ok');
+          this.$store.commit('updateStoreTitle', '新任务');
         })
       },
       //进度条？
@@ -254,26 +265,32 @@
     overflow: visible;
     display: block;
   }
+
   .task:hover {
     border: 2px solid #46B6FD;
     border-radius: 5px;
   }
+
   /*左边小列表被选中*/
   .choose {
     border: 2px solid #46B6FD;
     border-radius: 5px;
   }
+
   .stateBar {
     height: 50px;
     margin: 5px 10px;
   }
+
   .stateBar .tag {
     top: 15px;
   }
+
   /*标题*/
   .title {
     margin: 5px 25px;
   }
+
   .title input {
     z-index: 2;
     height: 25px;
@@ -282,11 +299,13 @@
     border-radius: 5px;
     border: 1px solid #C2C2C2;
   }
+
   .day {
     color: #808080;
     margin: 5px 25px;
     overflow: visible;
   }
+
   /*进度条*/
   .rate {
     height: 10px;
@@ -296,6 +315,7 @@
     margin: 20px 25px;
     overflow: hidden;
   }
+
   .ratio {
     height: 10px;
     width: 325px;
@@ -303,13 +323,16 @@
     border-radius: 10px;
     text-align: right;
   }
+
   .rateVal {
     color: #808080;
     margin: 0px 25px;
   }
+
   .task .ratio {
     left: -325px;
   }
+
   /*删除小列表的垃圾桶图*/
   .del {
     opacity: 0.3;
@@ -319,9 +342,11 @@
     right: 10px;
     cursor: pointer;
   }
+
   .del:hover {
     opacity: 0.6;
   }
+
   .title, .day {
     height: 25px;
   }

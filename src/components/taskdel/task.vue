@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1"
+    <div v-for="(item,index) in delTask" v-on:click="chooseTask(index)" v-if="item.dataState==2"
          class="task" v-bind:class="{'choose':isChoose==index}">
       <!--附加信息-->
       <div class="stateBar">
@@ -23,7 +23,7 @@
       </div>
       <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
       <!--恢复删除-->
-      <img src="../../../static/icon/restore.png" class="del">
+      <img src="../../../static/icon/restore.png" class="del" v-on:click="revertTask(index)">
       <img src="../../../static/icon/del.png" class="del" v-on:click="taskDelete(index)">
     </div>
   </div>
@@ -35,7 +35,7 @@
     name: 'task',
     data() {
       return {
-        tasks: [],
+        delTask: [],
         isChoose: '0',
         theGradeColor: ['', 'red', 'orange', 'green']
       }
@@ -58,27 +58,29 @@
       //初始加载
       getTask: function () {
         //获取数据
-        axios.get('/task/getTaskList.action?', {
+        axios.get('/task/getDelTask.action?', {
           params: {
           },
           baseURL: '/liftVue',
           withCredentials: false
         }).then((task) => {
           let res = task.data;
-          let tasks = res.data;
-          this.tasks = tasks;
+          let delTask = res.data;
+          this.delTask = delTask;
           //获取第一个task的id
-          let taskIdStore = tasks[0].taskId;
+          let taskIdStore = delTask[0].taskId;
           this.$store.commit('updateStoreTaskId', taskIdStore);
+          this.$store.commit('changeToGet', 'ok');
           //获取第一个task的grade状态
-          let gradeIdStore = tasks[0].gradeId;
+          let gradeIdStore = delTask[0].gradeId;
           this.$store.commit('updateStoreGrade', gradeIdStore);
           //获取第一个task的tag
-          let tagStore = tasks[0].labelName;
+          let tagStore = delTask[0].labelName;
           this.$store.commit('updateStoreTag', tagStore);
           //获取第一个task的title
-          let titleStore = tasks[0].taskName;
+          let titleStore = delTask[0].taskName;
           this.$store.commit('updateStoreTitle', titleStore);
+
         })
       },
       //点击task
@@ -86,37 +88,45 @@
         //添加选中效果
         this.isChoose = index;
         //获取点击的task的ID
-        let taskIdStore = this.tasks[index].taskId;
+        let taskIdStore = this.delTask[index].taskId;
         this.$store.commit('updateStoreTaskId', taskIdStore);
         this.$store.commit('changeToGet', 'ok');
         //获取点击的task的grade状态
-        let gradeIdStore = this.tasks[index].gradeId;
+        let gradeIdStore = this.delTask[index].gradeId;
         this.$store.commit('updateStoreGrade', gradeIdStore);
         //获取点击的task的tag
-        let tagStore = this.tasks[index].labelName;
+        let tagStore = this.delTask[index].labelName;
         this.$store.commit('updateStoreTag', tagStore);
         //获取点击的task的title
-        let titleStore = this.tasks[index].taskName;
+        let titleStore = this.delTask[index].taskName;
         this.$store.commit('updateStoreTitle', titleStore);
       },
       //删除task
       taskDelete: function (index) {
         //改变状态
-        this.tasks[index].dataState = 2;
+        this.delTask[index].dataState = 3;
         //传数据
-        let taskId = this.tasks[index].taskId;
-        axios.get('/task/updateTask.action', {
+        let taskId = this.delTask[index].taskId;
+        axios.get('/task/deleteTask.action', {
           params: {
-            userId: 1,
-            taskId: taskId,
-            dataState: 2
+            taskId: taskId
           },
           baseURL: '/liftVue',
           withCredentials: false
         })
       },
       //恢复task
-
+      revertTask:function (index) {
+        this.delTask[index].dataState = 1;
+        let taskId = this.delTask[index].taskId;
+        axios.get('/task/revertTask.action', {
+          params: {
+            taskId: taskId
+          },
+          baseURL: '/liftVue',
+          withCredentials: false
+        })
+      }
     }
   }
 </script>

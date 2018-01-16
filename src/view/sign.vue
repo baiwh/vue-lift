@@ -327,7 +327,7 @@
           this.passWordSU2Info = '重复密码不能为空';
         }
       },
-      //注册按钮
+      //注册按钮?
       signUpBtn: function () {
         let email = this.emailSU;
         let pw = this.passWordSU;
@@ -358,12 +358,19 @@
               if (pw == pw2) {
                 //跳转。回传数据
                 axios.get('/index/signUp.action', {
-                  params: {},
+                  params: {
+                      userName:email,
+                    password:pw
+                  },
                   baseURL: '/liftVue',
                   withCredentials: false
-                }).then(function () {
-                  //跳转到主页面
-                  this.$router.push('/home');
+                }).then(res=>{
+                  let sign = res.data;
+                  let signUp = sign.status;
+                  if (signUp) {
+                    //跳转到主页面
+                    this.$router.push('/home');
+                  }
                 })
               } else {
                 this.signUpPW2 = false;

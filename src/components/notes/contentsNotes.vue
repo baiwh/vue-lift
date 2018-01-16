@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="contentsNotes" v-for="(item,index) in notes">
+    <div class="contentsNotes" v-for="(item,index) in notes" v-if="item.dataState==1">
       <!--便签-->
       <div class="note"
            v-on:mouseover="delNoteOver(index)"
@@ -8,12 +8,12 @@
            v-on:click="noteClick(index)" >
         <!--时间-->
         <div class="hour" v-bind:class="{'blueHour':isBlueHour==index,'greyHour':isGreyHour==index}">
-          <span>23:50</span>
+          <span>{{item.createTime | noteTime}}</span>
         </div>
         <!--便签内容-->
         <div class="notes" v-bind:class="{'chooseNotes':isChooseNotes==index}">
           <!--输入-->
-          <div class="noteInput" contenteditable="true" v-on:blur="noteInputBlur(index)">{{item}}<br/></div>
+          <div class="noteInput" contenteditable="true" v-on:blur="noteInputBlur(index)" v-model="item.content">{{item.content}}<br/></div>
         </div>
         <!--删除-->
         <img class="delNote" src="../../../static/icon/del.png"
@@ -30,7 +30,7 @@
     name: 'contentsNotes',
     data() {
       return {
-        notes: ['',''],
+        notes: [],
         delNoteImg: 'no',
         isChooseNotes:'no',
         isBlueHour:'no',
@@ -38,18 +38,34 @@
       }
     },
     computed: {},
+    filters:{
+        noteTime:function (value) {
+            function newTime(str) {
+              let arr=str.split(' ');
+              let data=arr[0].split('-');
+              let time=arr[1].split(':');
+              let newtime=data[1]+'-'+data[2]+' '+time[0]+':'+time[1];
+              return newtime;
+            }
+            return newTime(value);
+        }
+    },
     mounted(){
+        this.getNoteList();
     },
     methods: {
         //获取note
-      getNowTime: function () {
-        axios.get('', {
+      getNoteList: function () {
+        axios.get('/note/noteList.action', {
           params: {
-            userId: 1
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then()
+        }).then((res)=>{
+            let note=res.data;
+            let notes=note.data;
+            this.notes=notes;
+        })
       },
       //鼠标点击某个便签
       noteClick:function (index) {
@@ -65,18 +81,16 @@
       delNoteOut: function () {
         this.delNoteImg = 'no';
       },
-      //鼠标离开输入框保存
+      //鼠标离开输入框保存?
       noteInputBlur:function (index) {
         this.isChooseNotes='no';
         this.isBlueHour='no';
         let noteId = this.notes[index].noteId;
-        let note=this.notes[index].note;
-//        let time=
-//        let content=
-        axios.get('',{
+        let content=this.notes[index].content;
+        axios.get('/note/updateNote.action',{
           params: {
-            userId: 1,
-            noteId: noteId
+            noteId: noteId,
+            content:content,
           },
           baseURL: '/liftVue',
           withCredentials: false
@@ -85,25 +99,55 @@
       //删除note
       delNote: function (index) {
         let noteId = this.notes[index].noteId;
+        this.notes[index].dataState=2;
         axios('/note/updateNote.action', {
           params: {
-            userId: 1,
-            noteId: noteId
+            noteId: noteId,
+            del:'yes'
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then()
+        })
       },
       //新增note(父组件调用）
       addNote: function () {
-        this.notes.unshift({})
-        axios.get('', {
+        let date=new Date();
+        let year=date.getFullYear();
+        let month=date.getMonth()+1;
+        if(month<10){
+            month='0'+month;
+        }
+        let day=date.getDate();
+        if(day<10){
+          day='0'+day;
+        }
+        let hour=date.getHours();
+        if(hour<10){
+          hour='0'+hour;
+        }
+        let minute=date.getMinutes();
+        if(minute<10){
+          minute='0'+minute;
+        }
+        let second=date.getSeconds();
+        let createTime=''+year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
+        this.notes.unshift({
+          content:' ',
+          dataState:1,
+          createTime:createTime,
+          noteId:''
+        })
+        axios.get('/note/insertNote.action', {
           params: {
-            userId: 1
+              content:' '
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then()
+        }).then((res)=>{
+            let insert=res.data;
+            let id=insert.data;
+            this.notes[0].noteId=id;
+        })
       },
 
     }

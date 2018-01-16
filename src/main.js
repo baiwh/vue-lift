@@ -56,7 +56,6 @@ const store = new Vuex.Store({
       if (state.taskIdStore != ''&&state.toGet=='ok') {
         axios.get('/taskDetail/getDetailJson.action?', {
           params: {
-            userId: 1,
             taskId: state.taskIdStore
           },
           baseURL: '/liftVue',

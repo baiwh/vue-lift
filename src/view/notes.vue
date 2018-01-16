@@ -42,7 +42,7 @@
       //新增note
       addNoteBtn: function () {
         let father=this;
-        father.$refs.$refs.contentsNotes.addNote();
+        father.$refs.contentsNotes.addNote();
       }
     }
   }

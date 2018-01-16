@@ -45,6 +45,7 @@
         let date=new Date();
         let hour=date.getHours();
         let minute=date.getMinutes();
+        let second=date.getSeconds();
       },
 
     },
@@ -52,7 +53,8 @@
         //自动获取当天时间
         //时间筛选：点击年月日。选择/取消选择。调整滚动条位置
       yearChoose:function (index) {
-
+          let num=this.theYear[index];
+          let h=(num-2017)*40;
       },
       monthChoose:function (index) {
 

@@ -53,6 +53,8 @@
             taskId: id,
             taskDetailId: detailId,
             dataState: dataState,
+//            checkedNo:被选
+//            totalNo：总数
           },
           baseURL: '/liftVue',
           withCredentials: false,
@@ -214,7 +216,7 @@
     display: none;
   }
 
-  @-moz-keyframes dothabottomcheck {
+  @-moz-keyframes two {
     0% {
       height: 0;
     }
@@ -223,7 +225,7 @@
     }
   }
 
-  @-webkit-keyframes dothabottomcheck {
+  @-webkit-keyframes two {
     0% {
       height: 0;
     }
@@ -232,7 +234,7 @@
     }
   }
 
-  @keyframes dothabottomcheck {
+  @keyframes two {
     0% {
       height: 0;
     }
@@ -241,7 +243,7 @@
     }
   }
 
-  @keyframes dothatopcheck {
+  @keyframes one {
     0% {
       height: 0;
     }
@@ -253,7 +255,7 @@
     }
   }
 
-  @-webkit-keyframes dothatopcheck {
+  @-webkit-keyframes one {
     0% {
       height: 0;
     }
@@ -265,7 +267,7 @@
     }
   }
 
-  @-moz-keyframes dothatopcheck {
+  @-moz-keyframes one {
     0% {
       height: 0;
     }
@@ -341,17 +343,17 @@
   /*点击对勾追加效果*/
   .c:after {
     height: 20px;
-    -moz-animation: dothabottomcheck 0.2s ease 0s forwards;
-    -o-animation: dothabottomcheck 0.2s ease 0s forwards;
-    -webkit-animation: dothabottomcheck 0.2s ease 0s forwards;
-    animation: dothabottomcheck 0.2s ease 0s forwards;
+    -moz-animation: two 0.2s ease 0s forwards;
+    -o-animation: two 0.2s ease 0s forwards;
+    -webkit-animation: two 0.2s ease 0s forwards;
+    animation: two 0.2s ease 0s forwards;
   }
 
   .c:before {
     height: 30px;
-    -moz-animation: dothatopcheck 0.4s ease 0s forwards;
-    -o-animation: dothatopcheck 0.4s ease 0s forwards;
-    -webkit-animation: dothatopcheck 0.4s ease 0s forwards;
-    animation: dothatopcheck 0.4s ease 0s forwards;
+    -moz-animation: one 0.4s ease 0s forwards;
+    -o-animation: one 0.4s ease 0s forwards;
+    -webkit-animation: one 0.4s ease 0s forwards;
+    animation: one 0.4s ease 0s forwards;
   }
 </style>
