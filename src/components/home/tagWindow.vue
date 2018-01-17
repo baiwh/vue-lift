@@ -1,8 +1,8 @@
 <template>
   <div class="allTag">
     <span class="tag"
+          v-for="(item,index) in tagList"
           v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}"
-          v-for="(item,index) in tags"
           v-on:click="changeTagBox(index)">{{item.labelName}}</span>
   </div>
 </template>
@@ -16,32 +16,28 @@
     ],
     data() {
       return {
-        tags:[],
         isTagColor:'no',
         isTagChoose:'no'
       }
     },
+    computed: {
+      tagList(){
+        //改颜色
+        let name1=this.$store.state.tagStore;
+        let len=this.$store.state.tagList.length;
+        let ind='';
+        for (let i=0;i<len;i++){
+          let name2=this.$store.state.tagList[i].labelName;
+          if(name1==name2){
+            ind=i;
+          }
+        }
+        this.isTagColor=ind;
+        this.isTagChoose=ind;
+        return this.$store.state.tagList;
+      }
+    },
     methods:{
-        //获取所有tag
-      getAllTag:function () {
-        axios.get('/label/getLabelList.action?',{
-            params:{
-            },
-          baseURL: '/liftVue',
-          withCredentials: false
-        }).then((tags)=>{
-            let res=tags.data;
-            this.tags=res.data;
-          //获取到相同的name的索引
-          let name1=this.$store.state.tagStore;
-          let len=this.tags.length;
-          let ind='';
-
-          //改颜色
-          this.isTagColor=ind;
-          this.isTagChoose=ind;
-        })
-      },
       //点击悬浮穿内的标签时
       changeTagBox:function (index) {
         //先把所有的都改成灰色
@@ -51,7 +47,7 @@
         this.isTagColor=index;
         this.isTagChoose=index;
         //通知爸爸
-        let updateTag=this.tags[index].labelName;
+        let updateTag=this.tagList[index].labelName;
         this.$emit('update:tagName',updateTag);
         //回传数据
         let gradeTaskId=this.$store.state.taskIdStore;

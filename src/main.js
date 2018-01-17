@@ -17,9 +17,22 @@ const store = new Vuex.Store({
     detailStore: [],
     toGet:'ok',
     titleStore:'',
-    navLinkTo:'/home'
+    navLinkTo:'/home',
+    taskList:[],
+    toGetTask:'ok',
+    tagList:[],
+    toGetTag:'ok',
+    taskIndex:'0',
   },
   mutations: {
+    //修改taskIndex
+    updateTaskIndex(state,taskIndex){
+      state.taskIndex=taskIndex;
+    },
+    updateTaskRate(state,rate){
+      state.taskList[rate.index].completedDetail=rate.completedDetail;
+      state.taskList[rate.index].totalDetail=rate.totalDetail;
+    },
     //获取itemBox中需要的taskId
     updateStoreTaskId(state, taskIdStore){
       state.taskIdStore = taskIdStore;
@@ -47,7 +60,21 @@ const store = new Vuex.Store({
     //导航
     updateNavLinkTo(state,navLinkTo){
       state.navLinkTo=navLinkTo;
-    }
+    },
+    //获取taskList
+    getTask(state,taskList){
+      state.taskList=taskList;
+    },
+    changeToGetTask(state,toGetTask){
+      state.toGetTask = toGetTask;
+    },
+    //获取tagList
+    getTag(state,tagList){
+      state.tagList=tagList;
+    },
+    changeToGetTag(state,toGetTag){
+      state.toGetTag = toGetTag;
+    },
   },
   actions: {
     //detail的item的get请求
@@ -67,8 +94,54 @@ const store = new Vuex.Store({
           commit('changeToGet','stop');
         })
       }
-    }
-
+    },
+    //task的get
+    getTask({commit,state}){
+      // //如果taskId非空。且允许执行
+      if (state.toGetTask=='ok') {
+        axios.get('/task/getTaskList.action?', {
+          params: {},
+          baseURL: '/liftVue',
+          withCredentials: false
+        }).then((res) => {
+          let task = res.data;
+          let taskList = task.data;
+          commit('getTask',taskList);
+          //获取第一个task的id
+          let taskIdStore = taskList[0].taskId;
+          commit('updateStoreTaskId', taskIdStore);
+          commit('changeToGet', 'ok');
+          //获取第一个task的grade状态
+          let gradeIdStore = taskList[0].gradeId;
+          commit('updateStoreGrade', gradeIdStore);
+          //获取第一个task的tag
+          let tagStore = taskList[0].labelName;
+          commit('updateStoreTag', tagStore);
+          //获取第一个task的title
+          let titleStore = taskList[0].taskName;
+          commit('updateStoreTitle', titleStore);
+          commit('changeToGetTask', 'stop');
+        })
+      }
+    },
+    //tag
+    getTag({commit,state}){
+      //如果taskId非空。且允许执行
+      if (state.toGetTag=='ok') {
+        axios.get('/label/getLabelList.action?', {
+          params: {
+          },
+          baseURL: '/liftVue',
+          withCredentials: false
+        }).then((res)=>{
+          let list=res.data;
+          let tag=list.data;
+          commit('getTag',tag);
+          //停止执行
+          commit('changeToGetTag','stop');
+        })
+      }
+    },
 
   }
 

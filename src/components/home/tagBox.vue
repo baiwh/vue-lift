@@ -2,7 +2,7 @@
   <div id="tag-box">
     <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../../static/icon/changeOk2.png" alt="">
     <img v-on:click="changeTagBtn" v-show="tagChange" src="../../../static/icon/change.png" alt="">
-    <div v-for="(item,index) in tags" v-if="item.dataState==1">
+    <div v-for="(item,index) in tagList" v-if="item.dataState==1">
       <span class="tag" v-on:click="tagFilter(index)" v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
       <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>
     </div>
@@ -17,7 +17,6 @@
     name: 'tagBox',
     data() {
       return {
-        tags:[],
         tagOk:false,
         tagChange:true,
         isTagColor:'no',
@@ -28,22 +27,13 @@
         inputNewTag:''
       }
     },
-    mounted:function () {
-        this.getAllTag();
+    computed: {
+      tagList(){
+        this.$store.dispatch('getTag');
+        return this.$store.state.tagList;
+      }
     },
     methods:{
-        //获取全部tag
-      getAllTag:function () {
-        axios.get('/label/getLabelList.action?',{
-          params:{
-          },
-          baseURL: '/liftVue',
-          withCredentials: false
-        }).then((tags)=>{
-          let res=tags.data;
-          this.tags=res.data;
-        })
-      },
       //修改按钮
       changeTagBtn:function () {
         //切换按钮
@@ -71,15 +61,15 @@
       //鼠标离开新标签输入框
       addTagOk:function () {
         // push数组
-        this.tags.unshift({
+        this.tagList.unshift({
           labelName:'',
           dataState:1,
           labelId:''
         })
         //同步输入框内容
-        this.tags[0].labelName=this.inputNewTag;
+        this.tagList[0].labelName=this.inputNewTag;
         // 回传数据、赋值
-        let newTag=this.tags[0].labelName;
+        let newTag=this.tagList[0].labelName;
         axios.get('/label/insertLabel.action',{
           params:{
             labelName:newTag
@@ -88,7 +78,7 @@
           withCredentials: false
         }).then((newTags)=>{
           let res=newTags.data;
-          this.tags[0].labelId=res.data;
+          this.tagList[0].labelId=res.data;
         })
         //隐藏输入框显示新增按钮
         this.isInputTag=false;
@@ -97,9 +87,9 @@
       //点击减号
       tagDelBtn:function (index) {
         // 改变状态
-        this.tags[index].dataState=2;
+        this.tagList[index].dataState=2;
         // 回传数据
-        let delTagId=this.tags[index].labelId;
+        let delTagId=this.tagList[index].labelId;
         axios.get('/label/updateLabel.action',{
           params:{
             labelId:delTagId,

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="contentsNotes" v-for="(item,index) in notes" v-if="item.dataState==1">
+    <div class="contentsNotes">
       <!--便签-->
-      <div class="note"
+      <div class="note" v-for="(item,index) in notes" v-if="item.dataState==1"
            v-on:mouseover="delNoteOver(index)"
            v-on:mouseout="delNoteOut()"
            v-on:click="noteClick(index)" >

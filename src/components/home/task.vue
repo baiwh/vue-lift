@@ -47,7 +47,6 @@
     name: 'task',
     data() {
       return {
-        tasks: [],
         titInput: 'no',
         titSpan: 'no',
         dayInput: 'no',
@@ -67,7 +66,6 @@
           let showTime = '' + arr[0];
           return showTime;
         }
-
         return newTime(value);
       }
     },
@@ -75,36 +73,13 @@
       allGrade: allGrade,
       tagWindow: tagWindow
     },
-    mounted: function () {
-      this.getTask();
+    computed:{
+      tasks(){
+        this.$store.dispatch('getTask');
+        return this.$store.state.taskList;
+      }
     },
     methods: {
-      //初始加载
-      getTask: function () {
-        //获取数据
-        axios.get('/task/getTaskList.action?', {
-          params: {},
-          baseURL: '/liftVue',
-          withCredentials: false
-        }).then((task) => {
-          let res = task.data;
-          let tasks = res.data;
-          this.tasks = tasks;
-          //获取第一个task的id
-          let taskIdStore = tasks[0].taskId;
-          this.$store.commit('updateStoreTaskId', taskIdStore);
-          this.$store.commit('changeToGet', 'ok');
-          //获取第一个task的grade状态
-          let gradeIdStore = tasks[0].gradeId;
-          this.$store.commit('updateStoreGrade', gradeIdStore);
-          //获取第一个task的tag
-          let tagStore = tasks[0].labelName;
-          this.$store.commit('updateStoreTag', tagStore);
-          //获取第一个task的title
-          let titleStore = tasks[0].taskName;
-          this.$store.commit('updateStoreTitle', titleStore);
-        })
-      },
       //点击task
       chooseTask: function (index) {
         //添加选中效果
@@ -149,9 +124,6 @@
           //相等隐藏
           this.tagWindowIndex = 'no';
         }
-        //调用子组件方法改变里边的颜色
-        let father = this;
-        father.$refs.tagWindow[index].getAllTag();
       },
       //点击tagWindow
       changeTagWindow: function () {
