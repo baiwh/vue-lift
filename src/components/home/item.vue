@@ -2,7 +2,8 @@
   <div>
     <div v-for="(item,index) in getDetail" v-if="item.dataState!=3">
       <div class="items" v-show="isItems" v-on:click="checkBoxChoose(index)">
-        <input type="checkbox"/>
+        <input type="checkbox" v-bind:value="item.taskDetailName"
+               v-bind:checked="item.dataState==2"/>
         <div class="checkBox" v-bind:class="{'c':item.dataState==2}"></div>
         <span v-bind:class="{'spanChecked':item.dataState==2}">{{item.taskDetailName}}</span>
       </div>
@@ -31,6 +32,16 @@
       getDetail(){
         this.$store.dispatch('updateStoreDetail');
         return this.$store.state.detailStore;
+      },
+      getCompletedDetail: function () {
+        return this.getDetail.filter(item =>
+          item.dataState == 2
+        ).map(item => item.taskDetailName);
+      },
+      getTotalDetail: function () {
+        return this.getDetail.filter(item =>
+          item.dataState == 1 || item.dataState == 2
+        ).map(item => item.taskDetailName);
       }
     },
     methods: {
@@ -43,7 +54,7 @@
           this.getDetail[index].dataState = 2;
         }
         //进度条
-
+        this.changeRate();
         //传数据回去
         let detailId = this.getDetail[index].taskDetailId;
         let dataState = this.getDetail[index].dataState;
@@ -52,9 +63,7 @@
           params: {
             taskId: id,
             taskDetailId: detailId,
-            dataState: dataState,
-//            checkedNo:被选
-//            totalNo：总数
+            dataState: dataState
           },
           baseURL: '/liftVue',
           withCredentials: false,
@@ -94,7 +103,8 @@
             },
             baseURL: '/liftVue',
             withCredentials: false,
-          })
+          });
+          this.changeRate();
         }
       },
       //删除item、传数据
@@ -102,6 +112,7 @@
         this.getDetail[index].dataState = 3;
         let delId = this.getDetail[index].taskDetailId;
         let id = this.$store.state.taskIdStore;
+        this.changeRate();
         axios.get('/taskDetail/updateDetail.action?', {
           params: {
             taskId: id,
@@ -125,6 +136,7 @@
         //切换input
         this.isItems = false;
         this.isItemInput = true;
+        this.changeRate();
         //回传数据并赋值新的item
         axios.get('/taskDetail/insertTaskDetail.action', {
           params: {
@@ -138,8 +150,30 @@
           let len = this.getDetail.length - 1;
           this.getDetail[len].taskDetailId = res.data;
         })
-      }
+      },
       //进度条
+      changeRate: function () {
+        let completedDetail = this.getCompletedDetail.length;
+        let totalDetail = this.getTotalDetail.length;
+        let id = this.$store.state.taskIdStore;
+        let index = this.$store.state.taskIndex;
+        //回传进度条
+        axios.get('/task/updateTask.action?', {
+          params: {
+            taskId: id,
+            completedDetail: completedDetail,
+            totalDetail: totalDetail
+          },
+          baseURL: '/liftVue',
+          withCredentials: false,
+        });
+        //修改页面进度条
+        this.$store.commit('updateTaskRate', {
+          'index': index,
+          'completedDetail': completedDetail,
+          'totalDetail': totalDetail
+        })
+      }
     }
   }
 </script>
@@ -212,7 +246,7 @@
   }
 
   /*对勾*/
-  input[type=checkbox] {
+  .items input[type=checkbox] {
     display: none;
   }
 

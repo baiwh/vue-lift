@@ -23,15 +23,18 @@ const store = new Vuex.Store({
     tagList:[],
     toGetTag:'ok',
     taskIndex:'0',
+    rateAnimation:''
   },
   mutations: {
     //修改taskIndex
     updateTaskIndex(state,taskIndex){
       state.taskIndex=taskIndex;
     },
+    //修改进度条
     updateTaskRate(state,rate){
       state.taskList[rate.index].completedDetail=rate.completedDetail;
       state.taskList[rate.index].totalDetail=rate.totalDetail;
+      state.rateAnimation=rate.completedDetail/rate.totalDetail;
     },
     //获取itemBox中需要的taskId
     updateStoreTaskId(state, taskIdStore){
