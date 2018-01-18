@@ -23,9 +23,23 @@ const store = new Vuex.Store({
     tagList:[],
     toGetTag:'ok',
     taskIndex:'0',
-    rateAnimation:''
+    labels:'',
   },
   mutations: {
+    removeLabels(state,labels){
+      let label=state.labels;
+      let labelList=label.split(',');
+      let newLabels=labelList.filter(item=>item!=labels);
+      state.labels=newLabels;
+    },
+    //增加label列表
+    addLabels(state,labels){
+      if(state.labels==''){
+        state.labels=state.labels+labels;
+      }else{
+        state.labels=state.labels+','+labels;
+      }
+    },
     //修改taskIndex
     updateTaskIndex(state,taskIndex){
       state.taskIndex=taskIndex;
@@ -34,7 +48,6 @@ const store = new Vuex.Store({
     updateTaskRate(state,rate){
       state.taskList[rate.index].completedDetail=rate.completedDetail;
       state.taskList[rate.index].totalDetail=rate.totalDetail;
-      state.rateAnimation=rate.completedDetail/rate.totalDetail;
     },
     //获取itemBox中需要的taskId
     updateStoreTaskId(state, taskIdStore){
@@ -100,10 +113,13 @@ const store = new Vuex.Store({
     },
     //task的get
     getTask({commit,state}){
-      // //如果taskId非空。且允许执行
+      //如果taskId非空。且允许执行
+      let labels=state.labels;
       if (state.toGetTask=='ok') {
         axios.get('/task/getTaskList.action?', {
-          params: {},
+          params: {
+            labels:labels
+          },
           baseURL: '/liftVue',
           withCredentials: false
         }).then((res) => {
@@ -145,7 +161,6 @@ const store = new Vuex.Store({
         })
       }
     },
-
   }
 
 

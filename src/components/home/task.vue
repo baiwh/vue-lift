@@ -29,7 +29,8 @@
       </div>
       <!--进度条-->
       <div class="rate">
-        <div class="ratio"></div>
+        <div class="ratio"
+             v-bind:style="{'left':-325+325*item.completedDetail/item.totalDetail+'px'}"></div>
       </div>
       <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
       <!--删除-->
@@ -66,6 +67,7 @@
           let showTime = '' + arr[0];
           return showTime;
         }
+
         return newTime(value);
       }
     },
@@ -73,7 +75,7 @@
       allGrade: allGrade,
       tagWindow: tagWindow
     },
-    computed:{
+    computed: {
       tasks(){
         this.$store.dispatch('getTask');
         return this.$store.state.taskList;
@@ -84,6 +86,7 @@
       chooseTask: function (index) {
         //添加选中效果
         this.isChoose = index;
+        this.$store.commit('updateTaskIndex', index);
         //获取点击的task的ID
         let taskIdStore = this.tasks[index].taskId;
         this.$store.commit('updateStoreTaskId', taskIdStore);
@@ -187,7 +190,7 @@
         }).then(res => {
           let del = res.data;
           let status = del.status;
-          if (status ) {
+          if (status) {
             this.getTask();
           }
         })
@@ -221,8 +224,6 @@
           this.$store.commit('updateStoreTitle', '新任务');
         })
       },
-      //进度条？
-
     }
   }
 </script>
@@ -258,11 +259,6 @@
     top: 15px;
   }
 
-  /*标题*/
-  .title {
-    margin: 5px 25px;
-  }
-
   .title input {
     z-index: 2;
     height: 25px;
@@ -274,7 +270,6 @@
 
   .day {
     color: #808080;
-    margin: 5px 25px;
     overflow: visible;
   }
 
@@ -294,15 +289,12 @@
     background: #46B6FD;
     border-radius: 10px;
     text-align: right;
+    transition: 0.5s ease;
   }
 
   .rateVal {
     color: #808080;
     margin: 0px 25px;
-  }
-
-  .task .ratio {
-    left: -325px;
   }
 
   /*删除小列表的垃圾桶图*/
@@ -321,5 +313,7 @@
 
   .title, .day {
     height: 25px;
+    margin: 5px 25px;
   }
+
 </style>

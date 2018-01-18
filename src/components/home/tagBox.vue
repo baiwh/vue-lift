@@ -3,11 +3,13 @@
     <img v-on:click="changeTagOkBtn" v-show="tagOk" src="../../../static/icon/changeOk2.png" alt="">
     <img v-on:click="changeTagBtn" v-show="tagChange" src="../../../static/icon/change.png" alt="">
     <div v-for="(item,index) in tagList" v-if="item.dataState==1">
-      <span class="tag" v-on:click="tagFilter(index)" v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
+      <span class="tag" v-on:click="tagFilter(index)"
+            v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
       <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>
     </div>
     <span class="addTag" v-on:click="addTag" v-show="isAddTag">添加新标签</span>
-    <input class="inputTag" v-model="inputNewTag" v-show="isInputTag" v-on:blur="addTagOk" v-on:keyup.enter="addTagOk" type="text" placeholder="新标签">
+    <input class="inputTag" v-model="inputNewTag" v-show="isInputTag" v-on:blur="addTagOk" v-on:keyup.enter="addTagOk"
+           type="text" placeholder="新标签">
   </div>
 </template>
 
@@ -17,14 +19,14 @@
     name: 'tagBox',
     data() {
       return {
-        tagOk:false,
-        tagChange:true,
-        isTagColor:'no',
-        isTagChoose:'no',
-        isTagDel:false,
-        isAddTag:false,
-        isInputTag:false,
-        inputNewTag:''
+        tagOk: false,
+        tagChange: true,
+        isTagColor: 'no',
+        isTagChoose: 'no',
+        isTagDel: false,
+        isAddTag: false,
+        isInputTag: false,
+        inputNewTag: ''
       }
     },
     computed: {
@@ -33,96 +35,106 @@
         return this.$store.state.tagList;
       }
     },
-    methods:{
+    methods: {
       //修改按钮
-      changeTagBtn:function () {
+      changeTagBtn: function () {
         //切换按钮
-        this.tagOk=true;
-        this.tagChange=false;
+        this.tagOk = true;
+        this.tagChange = false;
         //显示减号和新增
-        this.isTagDel=true;
-          this.isAddTag=true;
+        this.isTagDel = true;
+        this.isAddTag = true;
       },
       //修改完成按钮
-      changeTagOkBtn:function () {
+      changeTagOkBtn: function () {
         //切换按钮
-        this.tagOk=false;
-        this.tagChange=true;
+        this.tagOk = false;
+        this.tagChange = true;
         //隐藏减号和新增
-        this.isTagDel=false;
-          this.isAddTag=false;
+        this.isTagDel = false;
+        this.isAddTag = false;
       },
       //点击新增标签
-      addTag:function () {
+      addTag: function () {
         //显示输入框
-        this.isInputTag=true;
-        this.isAddTag=false;
+        this.isInputTag = true;
+        this.isAddTag = false;
       },
       //鼠标离开新标签输入框
-      addTagOk:function () {
+      addTagOk: function () {
         // push数组
         this.tagList.unshift({
-          labelName:'',
-          dataState:1,
-          labelId:''
+          labelName: '',
+          dataState: 1,
+          labelId: ''
         })
         //同步输入框内容
-        this.tagList[0].labelName=this.inputNewTag;
+        this.tagList[0].labelName = this.inputNewTag;
         // 回传数据、赋值
-        let newTag=this.tagList[0].labelName;
-        axios.get('/label/insertLabel.action',{
-          params:{
-            labelName:newTag
+        let newTag = this.tagList[0].labelName;
+        axios.get('/label/insertLabel.action', {
+          params: {
+            labelName: newTag
           },
           baseURL: '/liftVue',
           withCredentials: false
-        }).then((newTags)=>{
-          let res=newTags.data;
-          this.tagList[0].labelId=res.data;
+        }).then((newTags) => {
+          let res = newTags.data;
+          this.tagList[0].labelId = res.data;
         })
         //隐藏输入框显示新增按钮
-        this.isInputTag=false;
-        this.isAddTag=true;
+        this.isInputTag = false;
+        this.isAddTag = true;
       },
       //点击减号
-      tagDelBtn:function (index) {
+      tagDelBtn: function (index) {
         // 改变状态
-        this.tagList[index].dataState=2;
+        this.tagList[index].dataState = 2;
         // 回传数据
-        let delTagId=this.tagList[index].labelId;
-        axios.get('/label/updateLabel.action',{
-          params:{
-            labelId:delTagId,
-            dataState:2
+        let delTagId = this.tagList[index].labelId;
+        axios.get('/label/updateLabel.action', {
+          params: {
+            labelId: delTagId,
+            dataState: 2
           },
           baseURL: '/liftVue',
           withCredentials: false
         })
       },
       //点击tag筛选。修改颜色？
-      tagFilter:function (index) {
-          //改变颜色
-        this.isTagColor=index;
-        this.isTagChoose=index;
+      tagFilter: function (index) {
+        //改变颜色
+        this.isTagColor = index;
+        this.isTagChoose = index;
+        //筛选
+        let labels = this.tagList[index].labelId;
+
+        this.$store.commit('addLabels', labels);
+        //重新加载task
+        this.$store.commit('changeToGetTask', 'ok');
+        this.$store.dispatch('getTask');
+        this.$store.commit('changeToGetTask', 'stop');
       }
     }
   }
 </script>
 <style>
-  #tag-box{
+  #tag-box {
     height: 50px;
     padding: 10px;
   }
+
   /*上方标签部分的img*/
-  #tag-box img{
+  #tag-box img {
     float: right;
     height: 20px;
     width: 20px;
     margin: 5px;
     cursor: pointer;
   }
+
   /*删除标签（减号）*/
-  .tagDel{
+  .tagDel {
     float: right;
     height: 20px;
     width: 20px;
@@ -138,8 +150,9 @@
     left: 7px;
     top: 2px;
   }
+
   /*添加新标签*/
-  .addTag{
+  .addTag {
     float: right;
     height: 25px;
     width: 90px;
@@ -152,7 +165,8 @@
     line-height: 23px;
     text-align: center;
   }
-  .inputTag{
+
+  .inputTag {
     top: 4px;
     width: 80px;
     height: 25px;
