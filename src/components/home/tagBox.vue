@@ -85,6 +85,8 @@
         //隐藏输入框显示新增按钮
         this.isInputTag = false;
         this.isAddTag = true;
+        commit('changeToGetTag','ok');
+        this.$store.dispatch('getTag');
       },
       //点击减号
       tagDelBtn: function (index) {
@@ -100,6 +102,8 @@
           baseURL: '/liftVue',
           withCredentials: false
         })
+        commit('changeToGetTag','ok');
+        this.$store.dispatch('getTag');
       },
       //点击tag筛选。修改颜色？
       tagFilter: function (index) {

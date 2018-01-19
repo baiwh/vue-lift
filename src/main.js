@@ -24,8 +24,15 @@ const store = new Vuex.Store({
     toGetTag:'ok',
     taskIndex:'0',
     labels:'',
+    labelIndex:'',
   },
   mutations: {
+    //修改label的状态?
+    updateLabelIndex(state,labelIndex){
+      let ind=labelIndex;
+      state.tagList[ind].state=3;
+    },
+    //移除label列表
     removeLabels(state,labels){
       let label=state.labels;
       let labelList=label.split(',');
