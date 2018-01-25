@@ -1,6 +1,5 @@
 <template>
   <div class="time">
-    <span>{{dateIndex}}</span>
     <!--年-->
     <div class="cover">
       <div class="covered" id="Year">
@@ -159,11 +158,10 @@
   }
 
   .theTime:hover {
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   .chooseTime {
     opacity: 1;
-    transition: 0.5s ease;
   }
 </style>

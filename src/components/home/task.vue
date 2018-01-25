@@ -1,41 +1,42 @@
 <template>
   <div>
 
-    <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1" class="task"
-         v-bind:class="{'choose':isChoose==index}">
-      <!--附加信息-->
-      <div class="stateBar">
-        <!--紧急程度-->
-        <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}"
-             v-on:click="changeGrade(index)" v-show="gradeChoose!=index"></div>
-        <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-show="allGradeIndex==index"
-                  v-on:click.native="changeGradeBox" ref="allGrade"></allGrade>
-        <!--标签-->
-        <span class="tag tagChoose" v-on:click="changeTag(index)">{{item.labelName}}</span>
+      <div v-for="(item,index) in tasks" v-on:click="chooseTask(index)" v-if="item.dataState==1" class="task"
+           v-bind:class="{'choose':isChoose==index}">
+        <!--附加信息-->
+        <div class="stateBar">
+          <!--紧急程度-->
+          <div class="grade" v-bind:style="{border:'5px solid '+theGradeColor[item.gradeId]}"
+               v-on:click="changeGrade(index)" v-show="gradeChoose!=index"></div>
+          <allGrade v-bind:gradeNum.sync="item.gradeId" v-bind:taskNum="item.taskId" v-show="allGradeIndex==index"
+                    v-on:click.native="changeGradeBox" ref="allGrade"></allGrade>
+          <!--标签-->
+          <span class="tag tagChoose" v-on:click="changeTag(index)">{{item.labelName}}</span>
+        </div>
+        <!--标签悬浮-->
+        <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"
+                    v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
+        <!--标题-->
+        <div class="title">
+          <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
+          <input type="text" v-show="titInput==index" v-model="item.taskName" v-on:blur="inputBlur(index)"
+                 v-on:keyup.enter="inputBlur(index)" v-on:keyup="titleInputKeyup(index)">
+        </div>
+        <!--日期-->
+        <div class="day">
+          <span v-show="daySpan!=index" v-on:click="dayInputChange(index)">{{item.beginDate | taskTime}}</span>
+          <input type="date" v-show="dayInput==index" v-model="item.beginDate" v-on:blur="inputBlur(index)">
+        </div>
+        <!--进度条-->
+        <div class="rate">
+          <div class="ratio"
+               v-bind:style="{'left':-325+325*item.completedDetail/item.totalDetail+'px'}"></div>
+        </div>
+        <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
+        <!--删除-->
+        <img src="../../../static/icon/del.png" class="del" v-on:click="taskDelete(index)">
       </div>
-      <!--标签悬浮-->
-      <tag-window v-on:click.native="changeTagWindow" v-bind:tagName.sync="item.labelName"
-                  v-show="tagWindowIndex==index" ref="tagWindow"></tag-window>
-      <!--标题-->
-      <div class="title">
-        <span v-show="titSpan!=index" v-on:click="titInputChange(index)">{{item.taskName}}</span>
-        <input type="text" v-show="titInput==index" v-model="item.taskName" v-on:blur="inputBlur(index)"
-               v-on:keyup.enter="inputBlur(index)" v-on:keyup="titleInputKeyup(index)">
-      </div>
-      <!--日期-->
-      <div class="day">
-        <span v-show="daySpan!=index" v-on:click="dayInputChange(index)">{{item.beginDate | taskTime}}</span>
-        <input type="date" v-show="dayInput==index" v-model="item.beginDate" v-on:blur="inputBlur(index)">
-      </div>
-      <!--进度条-->
-      <div class="rate">
-        <div class="ratio"
-             v-bind:style="{'left':-325+325*item.completedDetail/item.totalDetail+'px'}"></div>
-      </div>
-      <span class="rateVal">{{item.completedDetail}}/{{item.totalDetail}}</span>
-      <!--删除-->
-      <img src="../../../static/icon/del.png" class="del" v-on:click="taskDelete(index)">
-    </div>
+
   </div>
 </template>
 
@@ -164,15 +165,17 @@
         let falseDate = this.tasks[index].beginDate;
         let newDate = falseDate.split(' ');
         let inputDate = '' + newDate[0];
-        axios.get('/task/updateTask.action', {
-          params: {
-            taskId: taskId,
-            beginTime: inputDate,
-            taskName: inputName
-          },
-          baseURL: '/liftVue',
-          withCredentials: false
-        })
+        if(inputName!=''){
+          axios.get('/task/updateTask.action', {
+            params: {
+              taskId: taskId,
+              beginTime: inputDate,
+              taskName: inputName
+            },
+            baseURL: '/liftVue',
+            withCredentials: false
+          })
+        }
       },
       //删除task
       taskDelete: function (index) {
@@ -191,7 +194,8 @@
           let del = res.data;
           let status = del.status;
           if (status) {
-            this.getTask();
+            this.$store.dispatch('getTask');
+            this.$store.commit('changeToGetTask', 'stop');
           }
         })
       },

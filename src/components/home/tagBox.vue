@@ -4,7 +4,7 @@
     <img v-on:click="changeTagBtn" v-show="tagChange" src="../../../static/icon/change.png" alt="">
     <div v-for="(item,index) in tagList" v-if="item.dataState==1">
       <span class="tag" v-on:click="tagFilter(index)"
-            v-bind:class="{'tagColor':index!=isTagColor,'tagChoose':index==isTagChoose}">{{item.labelName}}</span>
+            v-bind:class="{'tagColor':col.indexOf(item.labelId)==-1,'tagChoose':col.indexOf(item.labelId)!=-1}">{{item.labelName}}</span>
       <span class="tagDel" v-show="isTagDel" v-on:click="tagDelBtn(index)">-</span>
     </div>
     <span class="addTag" v-on:click="addTag" v-show="isAddTag">添加新标签</span>
@@ -21,18 +21,28 @@
       return {
         tagOk: false,
         tagChange: true,
-        isTagColor: 'no',
-        isTagChoose: 'no',
         isTagDel: false,
         isAddTag: false,
         isInputTag: false,
-        inputNewTag: ''
+        inputNewTag: '',
+        isTagColor: 'no',
+        isTagChoose: 'no',
+        col:[]
       }
     },
     computed: {
       tagList(){
         this.$store.dispatch('getTag');
         return this.$store.state.tagList;
+      }
+    },
+    filters: {
+      changeColor: function (value) {
+        if (value == 'blue') {
+          return 'tagChoose';
+        } else {
+          return 'tagColor';
+        }
       }
     },
     methods: {
@@ -85,7 +95,7 @@
         //隐藏输入框显示新增按钮
         this.isInputTag = false;
         this.isAddTag = true;
-        commit('changeToGetTag','ok');
+        commit('changeToGetTag', 'ok');
         this.$store.dispatch('getTag');
       },
       //点击减号
@@ -102,18 +112,23 @@
           baseURL: '/liftVue',
           withCredentials: false
         })
-        commit('changeToGetTag','ok');
+        this.$store.commit('changeToGetTag', 'ok');
         this.$store.dispatch('getTag');
       },
       //点击tag筛选。修改颜色？
       tagFilter: function (index) {
-        //改变颜色
-        this.isTagColor = index;
-        this.isTagChoose = index;
-        //筛选
         let labels = this.tagList[index].labelId;
-
-        this.$store.commit('addLabels', labels);
+        let color=this.col;
+        if (color.indexOf(labels)!=-1) {
+          //移除
+          let newLabel=color.filter(item=>item!=labels);
+          this.col=newLabel;
+          this.$store.commit('removeLabels', labels);
+        } else {
+          //增加
+          this.col.push(labels);
+          this.$store.commit('addLabels', labels);
+        }
         //重新加载task
         this.$store.commit('changeToGetTask', 'ok');
         this.$store.dispatch('getTask');

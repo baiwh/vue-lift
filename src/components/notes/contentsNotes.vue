@@ -13,7 +13,9 @@
         <!--便签内容-->
         <div class="notes" v-bind:class="{'chooseNotes':isChooseNotes==index}">
           <!--输入-->
-          <div class="noteInput" contenteditable="true" v-on:blur="noteInputBlur(index)" v-model="item.content">{{item.content}}<br/></div>
+          <!--<div class="noteInput" contenteditable="true"-->
+               <!--v-on:blur="noteInputBlur(index)">{{item.content}}<br/></div>-->
+          <div-input class="noteInput" v-model="item.content">{{item.content}}</div-input>
         </div>
         <!--删除-->
         <img class="delNote" src="../../../static/icon/del.png"
@@ -26,6 +28,7 @@
 
 <script>
   import axios from 'axios'
+  import divInput from './divInput.vue'
   export default {
     name: 'contentsNotes',
     data() {
@@ -34,10 +37,16 @@
         delNoteImg: 'no',
         isChooseNotes:'no',
         isBlueHour:'no',
-        isGreyHour:'no'
+        isGreyHour:'no',
+        comment:''
       }
     },
-    computed: {},
+    computed: {
+
+    },
+    components:{
+      divInput:divInput
+    },
     filters:{
         noteTime:function (value) {
             function newTime(str) {

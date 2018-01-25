@@ -33,7 +33,8 @@
     data() {
       return {
         addItem: true,
-        changeOk: false
+        changeOk: false,
+
       }
     },
     components: {

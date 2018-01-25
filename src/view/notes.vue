@@ -53,6 +53,7 @@
     top: 150px;
     margin: 0px 0px 50px 0px;
     left: 10%;
+    width: 1100px;
   }
 
   body {

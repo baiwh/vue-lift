@@ -8,14 +8,18 @@
     <div id="contentHome">
       <!--标签-->
       <div id="contentTag">
-        <tag-box></tag-box>
+        <!--<transition name="taskLeave">-->
+          <tag-box></tag-box>
+        <!--</transition>-->
       </div>
+      <img src="./../../static/icon/emptyBG.png" v-show="backgroundImg=='showImg'">
       <!--列表-->
-      <div id="list-box">
+      <div id="list-box" v-show="backgroundImg!='showImg'">
+
         <task ref="task"></task>
       </div>
       <!--内容-->
-      <div id="item-box">
+      <div id="item-box" v-show="backgroundImg!='showImg'">
         <item-box></item-box>
       </div>
     </div>
@@ -37,8 +41,20 @@
     data() {
       return {}
     },
-    mounted:function(){
-      this.$store.commit('updateNavLinkTo','/home');
+    mounted: function () {
+      this.$store.commit('updateNavLinkTo', '/home');
+    },
+    computed: {
+      //背景图
+      backgroundImg(){
+        let taskId = this.$store.state.taskIdStore;
+        let show = this.$store.state.backgroundImg;
+        if (taskId == '' && show == 'yes') {
+          return 'showImg';
+        } else {
+          return 'hideImg';
+        }
+      }
     },
     components: {
       navTop: navTop,
@@ -46,31 +62,42 @@
       tagBox: tagBox,
       task: task,
       itemBox: itemBox,
-      add:add
+      add: add
     },
-    methods:{
-        //新增task
-        addTaskBtn:function () {
-            //调用组件的插入task
-          let father=this;
-          father.$refs.task.addTask();
-        },
-        //搜索功能？
+    methods: {
+      //新增task
+      addTaskBtn: function () {
+        //调用组件的插入task
+        let father = this;
+        father.$refs.task.addTask();
+      },
+      //搜索功能？
 
     }
   }
 </script>
 <style>
+  .taskLeave-enter-active, .taskLeave-leave-active {
+    transition: all 5s ease;
+  }
+
+  .taskLeave-enter, .taskLeave-leave-to {
+    top: 0;
+  }
+
   #homeDiv {
     height: 100vh;
     width: 100vw;
   }
+
   a {
     text-decoration: none;
   }
+
   body {
     background: #efefef;
   }
+
   /*主体部分*/
   #contentHome {
     top: 100px;
@@ -78,11 +105,13 @@
     left: 10%;
     width: 1200px;
   }
+
   /*标签*/
   #contentTag {
     width: 1100px;
     overflow: visible;
   }
+
   /*列表大盒子*/
   #list-box {
     width: 400px;
@@ -90,14 +119,16 @@
     padding: 10px 10px;
     margin: 0 0 70px 0;
   }
+
   /*右边详细内容的大盒子*/
   #item-box {
     float: left;
     padding: 10px 10px;
     margin: 0 0 70px 0;
   }
+
   /*标签*/
-  .tag{
+  .tag {
     float: right;
     height: 25px;
     width: auto;
@@ -110,8 +141,9 @@
     text-align: center;
     color: #FFFFFF;
   }
+
   /*标签的白色圆点*/
-  .tag:after{
+  .tag:after {
     content: "";
     width: 5px;
     height: 5px;
@@ -121,8 +153,9 @@
     left: -5px;
     top: 8px;
   }
+
   /*标签的小三角*/
-  .tag:before{
+  .tag:before {
     content: "";
     width: 0;
     height: 4px;
@@ -132,20 +165,24 @@
     left: -9px;
     top: -2px;
   }
+
   /*标签颜色*/
-  .tagColor{
+  .tagColor {
     border: 2px solid #C2C2C2;
     background: #C2C2C2;
   }
-  .tagColor:before{
+
+  .tagColor:before {
     border-right: 10px solid #C2C2C2;
   }
+
   /*选中。蓝色*/
-  .tagChoose{
+  .tagChoose {
     background: #46B6FD;
     border: 2px solid #46B6FD;
   }
-  .tagChoose:before{
+
+  .tagChoose:before {
     border-right: 10px solid #46B6FD;
   }
 </style>

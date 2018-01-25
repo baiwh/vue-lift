@@ -25,18 +25,18 @@ const store = new Vuex.Store({
     taskIndex:'0',
     labels:'',
     labelIndex:'',
+    backgroundImg:'no'
   },
   mutations: {
-    //修改label的状态?
-    updateLabelIndex(state,labelIndex){
-      let ind=labelIndex;
-      state.tagList[ind].state=3;
+    //修改背景图的显示和隐藏
+    updateBackgroundImg(state,backgroundImg){
+      state.backgroundImg=backgroundImg;
     },
     //移除label列表
     removeLabels(state,labels){
       let label=state.labels;
       let labelList=label.split(',');
-      let newLabels=labelList.filter(item=>item!=labels);
+      let newLabels=''+labelList.filter(item=>item!=labels);
       state.labels=newLabels;
     },
     //增加label列表
@@ -147,6 +147,7 @@ const store = new Vuex.Store({
           let titleStore = taskList[0].taskName;
           commit('updateStoreTitle', titleStore);
           commit('changeToGetTask', 'stop');
+          commit('updateBackgroundImg','yes');
         })
       }
     },
