@@ -7,7 +7,7 @@
       class="navLeftA"
       v-bind:class="{navChoose:isNavChoose==navInfo[index].linkTo}"
       v-on:click="navChooseClick(index)">
-      <img v-bind:src="'/static/icon/'+item.imgSrc"/>
+      <img v-bind:src="'/vueLift/static/icon/'+item.imgSrc"/>
     </router-link>
   </div>
 </template>

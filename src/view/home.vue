@@ -88,14 +88,11 @@
   #homeDiv {
     height: 100vh;
     width: 100vw;
+    background: #efefef;
   }
 
   a {
     text-decoration: none;
-  }
-
-  body {
-    background: #efefef;
   }
 
   /*主体部分*/

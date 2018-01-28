@@ -401,10 +401,7 @@
   #contentDiv {
     height: 100vh;
     width: 100vw;
-  }
-
-  div {
-
+    background: #ffffff;
   }
 
   a {
