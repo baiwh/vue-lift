@@ -30,5 +30,6 @@ export default new Router({
       component: notes
     }
   ],
-  mode: 'history'
+  mode: 'history',
+  base:'/vueLift/'
 })

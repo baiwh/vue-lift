@@ -51,10 +51,12 @@
         this.$emit('update:tagName',updateTag);
         //回传数据
         let gradeTaskId=this.$store.state.taskIdStore;
+        let labelId=this.$store.state.tagList.labelId;
         axios.get('/task/updateTask.action',{
           params:{
             taskId:gradeTaskId,
-            labelName:updateTag
+            labelName:updateTag,
+            labelId:labelId
           },
           baseURL: '/liftVue',
           withCredentials: false
